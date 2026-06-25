@@ -16,9 +16,9 @@
   ];
 
   var services = [
-    { n: '01', id: 'ext', title: 'Bespoke Home Extensions', short: 'Single & double-storey, wrap-around and rear extensions that add space, light and value.', body: 'From concept design to final handover — single-storey, two-storey, wrap-around and rear extensions that add space, light and lasting value to your home. We manage structural calculations, building control and the full build so you have a single point of contact throughout.', included: ['Architectural & structural drawings', 'Building Regulations sign-off', 'Groundworks & foundations', 'Steelwork & roofing', 'Plastering, electrics & plumbing', 'Full internal finishing'], timeline: '8–16 weeks', priceFrom: '£45,000' },
-    { n: '02', id: 'reno', title: 'High-End Renovations', short: 'Complete property transformations, structural alterations and sympathetic restorations.', body: 'Complete property transformations and structural alterations — from full refurbishments to the sympathetic restoration of period features. Ideal for tired properties, dated layouts or homes that need to work harder for modern living.', included: ['Design & space planning', 'Removal of load-bearing walls', 'Kitchen & bathroom fit-out', 'Rewiring & re-plumbing', 'Joinery & bespoke storage', 'Decoration & flooring'], timeline: '6–14 weeks', priceFrom: '£30,000' },
-    { n: '03', id: 'build', title: 'Modern New Builds', short: 'Turn-key new homes and self-build support, built to exacting modern standards.', body: 'Turn-key new homes and self-build support, blending contemporary design with proven traditional craftsmanship. We work from your plans or help develop them, delivering an energy-efficient home built to last.', included: ['Site survey & groundworks', 'Foundations & drainage', 'Full structural build', 'Energy-efficient systems', 'Bespoke joinery & glazing', 'Landscaping & handover'], timeline: '6–12 months', priceFrom: 'POA' }
+    { n: '01', id: 'ext', img: 'assets/img/extension.jpg', title: 'Bespoke Home Extensions', short: 'Single & double-storey, wrap-around and rear extensions that add space, light and value.', body: 'From concept design to final handover — single-storey, two-storey, wrap-around and rear extensions that add space, light and lasting value to your home. We manage structural calculations, building control and the full build so you have a single point of contact throughout.', included: ['Architectural & structural drawings', 'Building Regulations sign-off', 'Groundworks & foundations', 'Steelwork & roofing', 'Plastering, electrics & plumbing', 'Full internal finishing'], timeline: '8–16 weeks', priceFrom: '£45,000' },
+    { n: '02', id: 'reno', img: 'assets/img/renovation.jpg', title: 'High-End Renovations', short: 'Complete property transformations, structural alterations and sympathetic restorations.', body: 'Complete property transformations and structural alterations — from full refurbishments to the sympathetic restoration of period features. Ideal for tired properties, dated layouts or homes that need to work harder for modern living.', included: ['Design & space planning', 'Removal of load-bearing walls', 'Kitchen & bathroom fit-out', 'Rewiring & re-plumbing', 'Joinery & bespoke storage', 'Decoration & flooring'], timeline: '6–14 weeks', priceFrom: '£30,000' },
+    { n: '03', id: 'build', img: 'assets/img/newbuild.jpg', title: 'Modern New Builds', short: 'Turn-key new homes and self-build support, built to exacting modern standards.', body: 'Turn-key new homes and self-build support, blending contemporary design with proven traditional craftsmanship. We work from your plans or help develop them, delivering an energy-efficient home built to last.', included: ['Site survey & groundworks', 'Foundations & drainage', 'Full structural build', 'Energy-efficient systems', 'Bespoke joinery & glazing', 'Landscaping & handover'], timeline: '6–12 months', priceFrom: 'POA' }
   ];
 
   var faqs = [
@@ -47,9 +47,9 @@
   ];
 
   var projectList = [
-    { id: 'sleaford', tag: 'Renovation', title: 'Sleaford Cottage Refurbishment', location: 'Sleaford, Lincolnshire', short: 'A sympathetic full restoration of a listed cottage using reclaimed local stone and lime mortar.', body: 'A sympathetic full restoration of a listed cottage, preserving traditional features while integrating modern amenities using reclaimed local stone and lime mortar.', points: ['Traditional stone façade restored', 'Lime mortar repointing', 'Sympathetic glazing'] },
-    { id: 'lincoln', tag: 'Extension', title: 'Lincoln Modern Home Extension', location: 'Lincoln, Lincolnshire', short: 'A contemporary extension maximising open-plan living and connecting the home to the garden.', body: 'A contemporary extension maximising open-plan living, seamlessly connecting the home to the garden with floor-to-ceiling bifold doors and bespoke finishes.', points: ['Open-plan living space', 'High-performance bifold doors', 'Bespoke finishes'] },
-    { id: 'grantham', tag: 'New Build', title: 'Grantham Contemporary New Build', location: 'Grantham, Lincolnshire', short: 'A five-bedroom turn-key family home built to exacting specifications with eco-friendly features.', body: 'A stunning five-bedroom turn-key family home built to exacting specifications with eco-friendly features and bespoke structural glazing, designed for modern luxury.', points: ['Bespoke architectural design', 'Structural glazing façade', 'Energy-efficient systems'] }
+    { id: 'sleaford', tag: 'Renovation', cover: 'assets/img/cottages.jpg', thumbA: 'assets/img/renovation.jpg', thumbB: 'assets/img/cottages.jpg', title: 'Sleaford Cottage Refurbishment', location: 'Sleaford, Lincolnshire', short: 'A sympathetic full restoration of a listed cottage using reclaimed local stone and lime mortar.', body: 'A sympathetic full restoration of a listed cottage, preserving traditional features while integrating modern amenities using reclaimed local stone and lime mortar.', points: ['Traditional stone façade restored', 'Lime mortar repointing', 'Sympathetic glazing'] },
+    { id: 'lincoln', tag: 'Extension', cover: 'assets/img/extension.jpg', thumbA: 'assets/img/extension.jpg', thumbB: 'assets/img/street.jpg', title: 'Lincoln Modern Home Extension', location: 'Lincoln, Lincolnshire', short: 'A contemporary extension maximising open-plan living and connecting the home to the garden.', body: 'A contemporary extension maximising open-plan living, seamlessly connecting the home to the garden with floor-to-ceiling bifold doors and bespoke finishes.', points: ['Open-plan living space', 'High-performance bifold doors', 'Bespoke finishes'] },
+    { id: 'grantham', tag: 'New Build', cover: 'assets/img/newbuild-interior.jpg', thumbA: 'assets/img/newbuild.jpg', thumbB: 'assets/img/newbuild-interior.jpg', title: 'Grantham Contemporary New Build', location: 'Grantham, Lincolnshire', short: 'A five-bedroom turn-key family home built to exacting specifications with eco-friendly features.', body: 'A stunning five-bedroom turn-key family home built to exacting specifications with eco-friendly features and bespoke structural glazing, designed for modern luxury.', points: ['Bespoke architectural design', 'Structural glazing façade', 'Energy-efficient systems'] }
   ];
 
   var comingSoon = [
@@ -65,20 +65,24 @@
   ];
 
   var accreditations = [
-    { id: 'check', name: 'Checkatrade' },
-    { id: 'trustmark', name: 'TrustMark' },
-    { id: 'fmb', name: 'FMB' },
-    { id: 'gassafe', name: 'Gas Safe' },
-    { id: 'nhbc', name: 'NHBC' },
-    { id: 'which', name: 'Which? Trusted' }
+    { file: 'checkatrade.png', name: 'Checkatrade' },
+    { file: 'trustmark.png', name: 'TrustMark' },
+    { file: 'fmb.png', name: 'Federation of Master Builders' },
+    { file: 'gas-safe.png', name: 'Gas Safe Register' },
+    { file: 'nhbc.png', name: 'NHBC' },
+    { file: 'which.png', name: 'Which? Trusted Trader' }
   ];
 
-  var gallery = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8'];
+  // gallery reuses the uploaded work/location photos (no separate uploads needed)
+  var gallery = [
+    'assets/img/newbuild.jpg', 'assets/img/renovation.jpg', 'assets/img/extension.jpg', 'assets/img/cottages.jpg',
+    'assets/img/street.jpg', 'assets/img/builders-planning.jpg', 'assets/img/blueprint-hardhat.jpg', 'assets/img/newbuild-interior.jpg'
+  ];
 
   var team = [
-    { id: 'lead', name: 'Lee', role: 'Founder & Lead Contractor', bio: 'Leads every build on-site, from first survey to final handover, with decades of hands-on experience.' },
-    { id: 'site', name: 'Site Manager', role: 'Project & Site Management', bio: 'Keeps every project on programme and on budget, coordinating trades and quality control.' },
-    { id: 'joiner', name: 'Lead Joiner', role: 'Joinery & Finishes', bio: 'Responsible for the premium finishing touches that define an LME build.' }
+    { id: 'lead', img: 'assets/img/portrait.jpg', name: 'Lee', role: 'Founder & Lead Contractor', bio: 'Leads every build on-site, from first survey to final handover, with decades of hands-on experience.' },
+    { id: 'site', img: 'assets/img/portrait.jpg', name: 'Site Manager', role: 'Project & Site Management', bio: 'Keeps every project on programme and on budget, coordinating trades and quality control.' },
+    { id: 'joiner', img: 'assets/img/portrait.jpg', name: 'Lead Joiner', role: 'Joinery & Finishes', bio: 'Responsible for the premium finishing touches that define an LME build.' }
   ];
 
   /* ---------- helpers ---------- */
@@ -88,8 +92,12 @@
     });
   }
   function el(id) { return document.getElementById(id); }
-  function slot(extra, label) {
-    return '<div class="img-slot ' + extra + '"><span>' + esc(label) + '</span></div>';
+  // image slot: shows the real photo when present, falls back to the labelled placeholder
+  function slot(extra, label, src, alt) {
+    var img = src
+      ? '<img src="' + src + '" alt="' + esc(alt || label) + '" loading="lazy" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">'
+      : '';
+    return '<div class="img-slot ' + extra + '">' + img + '<span>' + esc(label) + '</span></div>';
   }
   var CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>';
   var PIN = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.4"></circle></svg>';
@@ -123,7 +131,7 @@
     el('home-services').innerHTML = services.map(function (svc) {
       return '<a class="card card-link reveal zoom-wrap" href="#services" data-nav="services" style="overflow:hidden;display:block;text-decoration:none;">' +
         '<div style="position:relative;height:210px;overflow:hidden;">' +
-          slot('fill zoom', 'Drop service photo') +
+          slot('fill zoom', 'Drop service photo', svc.img, svc.title) +
           '<span style="position:absolute;top:14px;left:14px;font-family:\'Archivo\',sans-serif;font-weight:800;font-size:12px;color:#06222c;background:#33b8de;padding:6px 11px;border-radius:5px;">' + esc(svc.n) + '</span>' +
         '</div>' +
         '<div style="padding:26px 26px 30px;">' +
@@ -146,7 +154,7 @@
     el('home-featured').innerHTML = projectList.map(function (proj) {
       return '<a class="card card-link reveal zoom-wrap" href="#projects" data-nav="projects" style="overflow:hidden;display:block;text-decoration:none;">' +
         '<div style="position:relative;height:230px;overflow:hidden;">' +
-          slot('fill zoom', 'Drop cover photo') +
+          slot('fill zoom', 'Drop cover photo', proj.cover, proj.title) +
           '<span style="position:absolute;top:14px;left:14px;font-family:\'Archivo\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;color:#06222c;background:#33b8de;padding:6px 12px;border-radius:5px;">' + esc(proj.tag) + '</span>' +
         '</div>' +
         '<div style="padding:24px 26px 28px;">' +
@@ -157,8 +165,9 @@
     }).join('');
 
     /* gallery */
-    el('home-gallery').innerHTML = gallery.map(function () {
-      return '<div class="img-slot r8" style="width:100%;aspect-ratio:1/1;"><span>Photo</span></div>';
+    el('home-gallery').innerHTML = gallery.map(function (src) {
+      return slot('r8', 'Photo', src, 'LME Building Contractors project photo')
+        .replace('class="img-slot r8"', 'class="img-slot r8" style="width:100%;aspect-ratio:1/1;"');
     }).join('');
 
     /* process */
@@ -182,9 +191,12 @@
         '</div></div>';
     }).join('');
 
-    /* accreditations */
+    /* accreditations — uniform white chips, logo contained, name as text fallback */
     el('home-acc').innerHTML = accreditations.map(function (acc) {
-      return '<div class="img-slot" style="width:100%;height:64px;"><span>' + esc(acc.name) + '</span></div>';
+      return '<div class="acc-chip">' +
+        '<img src="assets/img/accreditations/' + acc.file + '" alt="' + esc(acc.name) + '" loading="lazy" ' +
+        'onerror="var s=document.createElement(\'span\');s.className=\'fallback\';s.textContent=this.alt;this.replaceWith(s)">' +
+        '</div>';
     }).join('');
 
     /* services page — detailed rows */
@@ -193,7 +205,7 @@
         return '<div style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#3a414c;font-weight:500;line-height:1.4;"><span class="diamond" style="margin-top:6px;"></span>' + esc(i) + '</div>';
       }).join('');
       return '<div class="card reveal g-svc" style="overflow:hidden;">' +
-        '<div style="position:relative;min-height:340px;overflow:hidden;">' + slot('fill', 'Drop service photo') + '</div>' +
+        '<div style="position:relative;min-height:340px;overflow:hidden;">' + slot('fill', 'Drop service photo', svc.img, svc.title) + '</div>' +
         '<div style="padding:clamp(30px,3.4vw,52px);display:flex;flex-direction:column;justify-content:center;">' +
           '<div style="font-family:\'Archivo\',sans-serif;font-weight:800;font-size:14px;letter-spacing:1px;color:#1192bb;margin-bottom:14px;">/ ' + esc(svc.n) + ' — SERVICE</div>' +
           '<h2 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:clamp(24px,2.4vw,32px);margin:0 0 14px;color:#15191f;">' + esc(svc.title) + '</h2>' +
@@ -237,12 +249,12 @@
       }).join('');
       return '<div class="card reveal" style="overflow:hidden;">' +
         '<div class="zoom-wrap" style="position:relative;height:250px;overflow:hidden;">' +
-          slot('fill zoom', 'Drop cover photo') +
+          slot('fill zoom', 'Drop cover photo', proj.cover, proj.title) +
           '<span style="position:absolute;top:14px;left:14px;font-family:\'Archivo\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;color:#06222c;background:#33b8de;padding:6px 12px;border-radius:5px;">' + esc(proj.tag) + '</span>' +
         '</div>' +
         '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;">' +
-          '<div style="position:relative;height:84px;"><div class="img-slot r6 fill"><span>Before</span></div></div>' +
-          '<div style="position:relative;height:84px;"><div class="img-slot r6 fill"><span>After</span></div></div>' +
+          '<div style="position:relative;height:84px;">' + slot('r6 fill', 'Detail', proj.thumbA, proj.title + ' detail') + '</div>' +
+          '<div style="position:relative;height:84px;">' + slot('r6 fill', 'Detail', proj.thumbB, proj.title + ' detail') + '</div>' +
         '</div>' +
         '<div style="padding:10px 26px 30px;">' +
           '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:21px;margin:0 0 8px;color:#15191f;line-height:1.2;">' + esc(proj.title) + '</h3>' +
@@ -256,7 +268,9 @@
     /* about team */
     el('about-team').innerHTML = team.map(function (m) {
       return '<div class="card reveal" style="overflow:hidden;">' +
-        '<div class="img-slot" style="width:100%;height:320px;"><span>Drop portrait</span></div>' +
+        '<div class="img-slot" style="width:100%;height:320px;">' +
+          (m.img ? '<img src="' + m.img + '" alt="' + esc(m.name) + '" loading="lazy" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">' : '') +
+          '<span>Drop portrait</span></div>' +
         '<div style="padding:24px 26px 28px;">' +
           '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:20px;margin:0 0 4px;color:#15191f;">' + esc(m.name) + '</h3>' +
           '<div style="font-family:\'Archivo\',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.6px;color:#1192bb;margin-bottom:12px;">' + esc(m.role) + '</div>' +
