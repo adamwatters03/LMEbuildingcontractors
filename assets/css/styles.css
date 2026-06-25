@@ -206,6 +206,11 @@ textarea.field{resize:vertical}
 .foot-link{font-size:14.5px;color:#9aa4b1;cursor:pointer;text-decoration:none;transition:color .2s}
 .foot-link:hover{color:#5cc6e8}
 
+/* area chips (Areas We Cover) */
+.area-chip{background:#fff;border:1px solid #e7e5e0;border-radius:100px;padding:11px 20px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px;color:#2c333d;display:inline-flex;align-items:center;gap:9px;transition:border-color .2s,color .2s,transform .2s}
+.area-chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#33b8de;flex:none}
+.area-chip:hover{border-color:#1192bb;color:#1192bb;transform:translateY(-2px)}
+
 /* =========================================================
    Inner-page heroes (Services / Projects / About / Contact)
    ========================================================= */

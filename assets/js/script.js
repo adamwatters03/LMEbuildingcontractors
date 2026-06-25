@@ -22,12 +22,14 @@
   ];
 
   var faqs = [
-    { q: 'Do you provide free quotes?', a: 'Yes. Every project starts with a free, no-obligation site visit and consultation, followed by a clear, itemised written quotation.' },
-    { q: 'Are you insured and accredited?', a: 'We carry full public liability and employer’s insurance and hold recognised industry accreditations. Documentation is available on request.' },
-    { q: 'Do you handle planning and building control?', a: 'Yes. We manage architectural drawings, structural calculations, Building Regulations and planning applications where required, so you have a single point of contact.' },
-    { q: 'How long will my project take?', a: 'It depends on scope, but a typical extension runs 8–16 weeks and a new build 6–12 months. We agree a programme up front and keep you updated at every stage.' },
-    { q: 'What areas do you cover?', a: 'We are based in Sleaford and work across Lincolnshire — including Lincoln, Grantham, Boston and surrounding villages — within roughly a 25-mile radius.' },
-    { q: 'Do you offer a guarantee?', a: 'Yes. All our work is backed by a 10-year workmanship guarantee for genuine peace of mind long after handover.' }
+    { q: 'How much does a house extension cost in Lincolnshire?', a: 'As a rough guide, a single-storey extension in Lincolnshire usually works out around £1,800–£2,800 per m² — so roughly £40,000–£70,000 for a typical 20m² build. A two-storey extension often costs a little less per m², because the foundations and roof are shared. VAT at 20% applies to most extension work, and we price every job individually after a free site visit.' },
+    { q: 'Do I need planning permission for an extension?', a: 'Often you won’t. Many single-storey rear extensions fall under Permitted Development (up to 4m for a detached house, 3m for others, within the size limits), so they don’t need full planning permission — though Building Regulations approval is still required. Conservation areas and listed buildings have tighter rules. We sort the drawings, Building Control and any planning application for you.' },
+    { q: 'How long does a house extension take to build?', a: 'On site, a single-storey extension typically takes 8–16 weeks and a two-storey 14–24 weeks. Before we break ground there’s usually design, structural drawings and any approvals to allow for — often another 8–12 weeks. We agree a clear programme up front and keep you posted at every stage.' },
+    { q: 'Do you handle the design, drawings and building regulations?', a: 'Yes. We manage architectural and structural drawings, Building Regulations sign-off and any planning application, so you’ve got one accountable point of contact from first sketch to final handover instead of juggling separate trades and consultants.' },
+    { q: 'How much does a loft or garage conversion cost?', a: 'A dormer loft conversion is usually somewhere around £30,000–£55,000 depending on type and size, while a garage conversion is a more affordable way to add a room, often £8,000–£18,000. Both are quoted individually once we’ve checked head height, structure and what you want from the space.' },
+    { q: 'Are you insured, accredited and do you guarantee your work?', a: 'Yes to all three. We carry full public liability and employer’s liability insurance, hold recognised industry accreditations, and back every project with a 10-year workmanship guarantee. We’re happy to show our paperwork before you commit to anything.' },
+    { q: 'What areas of Lincolnshire do you cover?', a: 'We’re based in Sleaford and work across roughly a 25-mile radius — Lincoln, Grantham, Boston, Spalding, Bourne, Newark and the surrounding villages. If your town isn’t on the list, give us a call anyway; there’s a good chance we can still help.' },
+    { q: 'Do you provide free, no-obligation quotes?', a: 'Always. Every project starts with a free site visit and a proper chat about what you’re after, followed by a clear, itemised written quote with no hidden extras and no pressure to go ahead.' }
   ];
 
   var coverage = ['Sleaford', 'Lincoln', 'Grantham', 'Boston', 'Spalding', 'Bourne', 'Newark', 'Surrounding villages'];
@@ -329,15 +331,31 @@
   /* ---------- routing ---------- */
   var PAGES = ['home', 'services', 'projects', 'about', 'contact', 'privacy', 'cookies', 'terms'];
   var TITLES = {
-    home: 'LME Building Contractors — Extensions, Renovations & New Builds in Lincolnshire',
-    services: 'Services — LME Building Contractors',
-    projects: 'Projects — LME Building Contractors',
-    about: 'About — LME Building Contractors',
-    contact: 'Contact — LME Building Contractors',
-    privacy: 'Privacy Policy — LME Building Contractors',
-    cookies: 'Cookie Policy — LME Building Contractors',
-    terms: 'Terms & Conditions — LME Building Contractors'
+    home: 'Builders in Sleaford & Lincolnshire | LME Building Contractors',
+    services: 'Building Services in Lincolnshire | Extensions, Renovations & New Builds',
+    projects: 'Our Projects | Lincolnshire Builders | LME Building Contractors',
+    about: 'About Us | Sleaford & Lincolnshire Builders | LME Building Contractors',
+    contact: 'Contact Us | Free Quote in Lincolnshire | LME Building Contractors',
+    privacy: 'Privacy Policy | LME Building Contractors',
+    cookies: 'Cookie Policy | LME Building Contractors',
+    terms: 'Terms & Conditions | LME Building Contractors'
   };
+  var DESCRIPTIONS = {
+    home: 'Sleaford-based builders covering Lincoln, Grantham, Boston & across Lincolnshire. Home extensions, renovations & new builds — fully insured, 10-yr guarantee, free quotes.',
+    services: 'Home extensions, high-end renovations, new builds and loft conversions across Lincolnshire. Fixed pricing, free site visits and a 10-year workmanship guarantee.',
+    projects: 'See recent extensions, renovations and new builds across Sleaford, Lincoln and Grantham — before-and-after photos of real Lincolnshire projects by LME Building Contractors.',
+    about: 'Reliable local Lincolnshire contractors with 15+ years on the tools. Fully insured and accredited, every build led on-site with a 10-year workmanship guarantee.',
+    contact: 'Get a free, no-obligation quote within one working day. Extensions, renovations and new builds across Lincolnshire. Call LME Building Contractors on 01205 835 030.',
+    privacy: 'How LME Building Contractors collects, uses and protects your personal information, in line with UK GDPR.',
+    cookies: 'How this website uses cookies and how you can control them.',
+    terms: 'The terms and conditions for using the LME Building Contractors website.'
+  };
+  function setMeta(name, content, attr) {
+    attr = attr || 'name';
+    var m = document.head.querySelector('meta[' + attr + '="' + name + '"]');
+    if (!m) { m = document.createElement('meta'); m.setAttribute(attr, name); document.head.appendChild(m); }
+    m.setAttribute('content', content);
+  }
 
   function showPage(page, skipScroll) {
     if (PAGES.indexOf(page) === -1) page = 'home';
@@ -348,7 +366,14 @@
     document.querySelectorAll('.nav-link').forEach(function (a) {
       a.classList.toggle('active', a.getAttribute('data-nav') === page);
     });
-    document.title = TITLES[page] || TITLES.home;
+    var title = TITLES[page] || TITLES.home;
+    var desc = DESCRIPTIONS[page] || DESCRIPTIONS.home;
+    document.title = title;
+    setMeta('description', desc);
+    setMeta('og:title', title, 'property');
+    setMeta('og:description', desc, 'property');
+    setMeta('twitter:title', title);
+    setMeta('twitter:description', desc);
     closeMenu();
     if (!skipScroll) window.scrollTo({ top: 0, behavior: 'auto' });
     observeReveals();
