@@ -13,8 +13,8 @@ input::placeholder,textarea::placeholder{color:#9aa2ac}
 
 .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,44px);width:100%}
 .sec{padding:clamp(62px,8vw,116px) 0}
-.eyebrow{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;color:#1192bb;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px}
-.eyebrow::before{content:"";width:26px;height:2px;background:#33b8de;display:inline-block}
+.eyebrow{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;color:#1192bb;text-transform:uppercase;display:block}
+.eyebrow::before{content:"";width:26px;height:2px;background:#33b8de;display:inline-block;vertical-align:middle;margin-right:10px;margin-bottom:3px}
 .h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(28px,4vw,46px);letter-spacing:-.8px;line-height:1.04;color:#15191f;margin:0}
 .lead{font-size:clamp(15px,1.15vw,18px);line-height:1.7;color:#5b6470;margin:0;font-weight:400}
 .card{background:#fff;border:1px solid #e7e5e0;border-radius:14px;box-shadow:0 1px 2px rgba(15,25,35,.03)}
@@ -127,7 +127,9 @@ input::placeholder,textarea::placeholder{color:#9aa2ac}
    ========================================================= */
 .g-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(18px,2.2vw,28px)}
 .g-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(16px,2vw,26px)}
-.g-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:clamp(22px,3vw,18px)}
+.g-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,2.5vw,32px)}
+@media(max-width:760px){.g-stats{grid-template-columns:1fr 1fr;gap:34px 18px}}
+@media(max-width:380px){.g-stats{grid-template-columns:1fr}}
 .g-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
 .g-acc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:14px;align-items:center}
 .g-svc{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
@@ -175,16 +177,16 @@ input::placeholder,textarea::placeholder{color:#9aa2ac}
 .zoom-wrap:hover .zoom{transform:scale(1.06)}
 
 /* =========================================================
-   Stats band (dark, count-up)
+   Stats (light, descriptive, count-up)
    ========================================================= */
-.stats-band{background:#0f1318;color:#fff;position:relative;overflow:hidden}
-.stat{text-align:center;position:relative;padding:6px 10px}
-.stat-num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(40px,5.4vw,66px);line-height:1;letter-spacing:-2px;color:#fff;display:flex;justify-content:center;align-items:baseline}
+.stat{text-align:center;position:relative;padding:10px 16px}
+.stat-num{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(40px,4.9vw,60px);line-height:1;letter-spacing:-1.6px;color:#1192bb;display:flex;justify-content:center;align-items:baseline}
 .stat-num .num{font-variant-numeric:tabular-nums}
-.stat-num .suf{color:#5cc6e8;margin-left:3px}
-.stat-rule{display:block;width:34px;height:3px;background:#33b8de;margin:18px auto 13px;border-radius:2px;transform:scaleX(0);transform-origin:center;transition:transform .6s ease .2s}
-.stat.in .stat-rule{transform:scaleX(1)}
-.stat-label{font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.7px;color:#9fb0bd;text-transform:uppercase}
+.stat-num .suf{color:#33b8de;margin-left:2px}
+.stat-label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:clamp(15px,1.4vw,17px);letter-spacing:.2px;color:#15191f;margin-top:12px}
+.stat-desc{font-size:13px;line-height:1.6;color:#8a929c;max-width:230px;margin:9px auto 0;font-weight:400}
+/* slim divider between stats on wider screens */
+@media(min-width:760px){.g-stats .stat:not(:last-child)::after{content:"";position:absolute;right:0;top:14%;height:72%;width:1px;background:#ececea}}
 
 /* numbered marker (process etc.) */
 .num-mark{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:#5cc6e8;letter-spacing:1px}
@@ -201,3 +203,88 @@ textarea.field{resize:vertical}
 /* footer links */
 .foot-link{font-size:14.5px;color:#9aa4b1;cursor:pointer;text-decoration:none;transition:color .2s}
 .foot-link:hover{color:#5cc6e8}
+
+/* =========================================================
+   Inner-page heroes (Services / Projects / About / Contact)
+   ========================================================= */
+.hero-inner{min-height:clamp(440px,62vh,620px);align-items:flex-end}
+.hero-inner .wrap{padding-top:clamp(120px,16vh,150px);padding-bottom:clamp(40px,6vw,72px);max-width:1280px}
+.hero-inner .eyebrow{color:#7fd6f0;margin-bottom:18px}
+.hero-inner .eyebrow::before{background:#33b8de}
+.hero-h1{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(34px,5.4vw,62px);letter-spacing:-1.2px;line-height:1.03;color:#fff;margin:0 0 16px;max-width:18ch;text-shadow:0 6px 34px rgba(0,0,0,.34)}
+.hero-isub{font-size:clamp(16px,1.45vw,20px);line-height:1.6;color:#dde4ea;max-width:620px;margin:0;font-weight:400}
+.hero-proof{display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap;margin-top:30px;padding-top:24px;border-top:1px solid rgba(255,255,255,.18)}
+.proof-rating{display:flex;align-items:center;gap:9px;color:#fff;font-weight:600;font-size:14px}
+.proof-rating b{font-weight:800}
+.proof-rating .muted{color:#c4ced6;font-weight:500}
+.proof-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:100px;padding:9px 15px;color:#eef4f7;font-weight:600;font-size:12.5px;letter-spacing:.3px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.proof-chip svg{flex:none}
+
+/* =========================================================
+   Boxed layouts (About: feature cards, value boxes, story)
+   ========================================================= */
+.box{background:#fff;border:1px solid #e7e5e0;border-radius:16px;padding:clamp(26px,3vw,38px);box-shadow:0 1px 2px rgba(15,25,35,.03);transition:transform .25s,box-shadow .25s,border-color .25s}
+.box.hoverable:hover{transform:translateY(-5px);box-shadow:0 22px 44px rgba(15,25,35,.10);border-color:#dfe3e1}
+.box-icon{width:54px;height:54px;border-radius:13px;background:#eaf7fc;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.box-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:clamp(18px,1.7vw,21px);color:#15191f;margin:0 0 10px}
+.box-text{font-size:14.6px;line-height:1.7;color:#5b6470;margin:0}
+.g-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.2vw,26px)}
+@media(max-width:760px){.g-2{grid-template-columns:1fr}}
+
+/* story split */
+.g-story{display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,5vw,64px);align-items:center}
+@media(max-width:860px){.g-story{grid-template-columns:1fr;gap:32px}}
+
+/* numbered process boxes (light) */
+.proc-box{position:relative;background:#fff;border:1px solid #e7e5e0;border-radius:16px;padding:clamp(26px,2.6vw,34px);overflow:hidden}
+.proc-box::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#1192bb,#33b8de)}
+.proc-num{font-family:'Montserrat',sans-serif;font-weight:800;font-size:30px;color:#cfe8f2;line-height:1;margin-bottom:14px}
+.proc-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:19px;color:#15191f;margin:0 0 9px}
+.proc-text{font-size:14.4px;line-height:1.65;color:#5b6470;margin:0}
+
+/* =========================================================
+   Mobile flyout drawer
+   ========================================================= */
+.nav-backdrop{position:fixed;inset:0;background:rgba(8,11,15,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s;z-index:130}
+.nav-backdrop.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(88vw,370px);background:#10141a;z-index:140;display:flex;flex-direction:column;padding:24px 26px 30px;transform:translateX(105%);transition:transform .42s cubic-bezier(.5,0,.2,1);box-shadow:-24px 0 60px rgba(0,0,0,.45);overflow-y:auto}
+.drawer.open{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+.drawer-close{width:42px;height:42px;border-radius:11px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.drawer-close:hover{background:rgba(255,255,255,.12)}
+.drawer-nav{display:flex;flex-direction:column}
+.drawer-link{font-family:'Montserrat',sans-serif;font-weight:700;font-size:19px;letter-spacing:.3px;color:#fff;padding:17px 2px;border-bottom:1px solid rgba(255,255,255,.08);text-decoration:none;display:flex;align-items:center;justify-content:space-between;background:none;border-left:0;border-right:0;border-top:0;text-align:left;cursor:pointer;transition:color .2s,padding-left .2s}
+.drawer-link::after{content:"→";color:#5cc6e8;opacity:0;transform:translateX(-6px);transition:opacity .2s,transform .2s}
+.drawer-link:hover{color:#5cc6e8;padding-left:8px}
+.drawer-link:hover::after{opacity:1;transform:none}
+.drawer-foot{margin-top:auto;padding-top:26px}
+.drawer-foot .btn{width:100%;margin-bottom:20px}
+.drawer-contact{display:flex;flex-direction:column;gap:10px;font-size:14px;color:#9aa4b1}
+.drawer-contact a{color:#cdd6de;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:10px}
+.drawer-contact a:hover{color:#5cc6e8}
+@media(min-width:981px){.drawer,.nav-backdrop{display:none!important}}
+
+/* burger -> X */
+.burger{position:relative;width:40px;height:34px;justify-content:center;z-index:141}
+.burger span{position:relative;transition:transform .3s ease,opacity .2s ease}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* =========================================================
+   Responsive / even-padding refinements
+   ========================================================= */
+@media(max-width:600px){
+  .sec{padding:clamp(46px,12vw,64px) 0}
+  .hero-cta{width:100%}
+  .hero-cta .btn{flex:1 1 auto;justify-content:center}
+  .btn{padding:15px 22px}
+  .g-cards{gap:18px}
+  .hero-title{letter-spacing:-1px}
+}
+@media(max-width:420px){
+  .hero-trustbar{gap:12px 16px}
+  .hero-trustbar .t-item{font-size:12px}
+}
+/* keep fixed-header offset consistent on hash-targeted content */
+.page{scroll-margin-top:90px}

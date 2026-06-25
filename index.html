@@ -50,15 +50,30 @@
       <span></span><span></span><span></span>
     </button>
   </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#home" data-nav="home" class="m-link">Home</a>
-    <a href="#services" data-nav="services" class="m-link">Services</a>
-    <a href="#projects" data-nav="projects" class="m-link">Projects</a>
-    <a href="#about" data-nav="about" class="m-link">About</a>
-    <a href="#contact" data-nav="contact" class="m-link">Contact</a>
-    <a class="btn btn-cy" href="#contact" data-nav="contact" style="margin-top:14px;width:100%;">Get a Free Quote</a>
-  </div>
 </header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+<aside class="drawer" id="mobileMenu" aria-label="Mobile navigation">
+    <div class="drawer-head">
+      <span style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:16px;letter-spacing:.4px;color:#fff;">LME <span style="color:#5cc6e8;">BUILDING</span></span>
+      <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6 L18 18 M18 6 L6 18"></path></svg>
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a class="drawer-link" href="#home" data-nav="home">Home</a>
+      <a class="drawer-link" href="#services" data-nav="services">Services</a>
+      <a class="drawer-link" href="#projects" data-nav="projects">Projects</a>
+      <a class="drawer-link" href="#about" data-nav="about">About</a>
+      <a class="drawer-link" href="#contact" data-nav="contact">Contact</a>
+    </nav>
+    <div class="drawer-foot">
+      <a class="btn btn-cy" href="#contact" data-nav="contact">Get a Free Quote</a>
+      <div class="drawer-contact">
+        <a href="tel:01205835030"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"></path></svg>01205 835 030</a>
+        <a href="mailto:enquiries@lmebuilding.co.uk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg>enquiries@lmebuilding.co.uk</a>
+      </div>
+    </div>
+  </aside>
 
 <!-- ============ HOME ============ -->
 <main id="home" class="page" role="main">
@@ -95,8 +110,14 @@
   </section>
 
   <!-- STATS / TRUST -->
-  <section class="stats-band tex tex-grid-d">
-    <div class="wrap g-stats" id="home-stats" style="padding-top:clamp(58px,6vw,84px);padding-bottom:clamp(58px,6vw,84px);"></div>
+  <section class="sec tex tex-dots" style="background:#fff;">
+    <div class="wrap">
+      <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(42px,5vw,62px);">
+        <span class="eyebrow" style="margin-bottom:16px;">By The Numbers</span>
+        <h2 class="h2">Our results in numbers</h2>
+      </div>
+      <div class="g-stats" id="home-stats"></div>
+    </div>
   </section>
 
   <!-- SERVICES -->
@@ -195,14 +216,18 @@
 
 <!-- ============ SERVICES ============ -->
 <main id="services" class="page">
-  <section class="hero" style="min-height:clamp(360px,52vh,540px);">
+  <section class="hero hero-inner">
     <div class="img-slot dark fill"><img src="assets/img/services-hero.jpg" alt="Construction blueprints with hard hat and safety glasses" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop services hero photo</span></div>
-    <div class="hero-overlay" style="background:linear-gradient(90deg,rgba(13,17,23,0.74) 0%,rgba(13,17,23,0.34) 60%,rgba(13,17,23,0.06) 100%),linear-gradient(180deg,rgba(13,17,23,0) 50%,rgba(13,17,23,0.55) 100%);"></div>
+    <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
-      <div style="max-width:840px;">
-        <span class="eyebrow" style="color:#5cc6e8;margin-bottom:16px;">Services We Offer</span>
-        <h1 style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(36px,5.4vw,62px);letter-spacing:-1px;line-height:1.03;margin:0 0 16px;color:#fff;">Comprehensive Construction Solutions</h1>
-        <p style="font-size:clamp(16px,1.4vw,20px);line-height:1.55;color:#d3dae2;max-width:620px;margin:0;">From a single room to a full build, every LME project is delivered with the same structural rigour and premium finish.</p>
+      <span class="eyebrow">Services We Offer</span>
+      <h1 class="hero-h1">Comprehensive Construction Solutions</h1>
+      <p class="hero-isub">From a single room to a full build, every LME project is delivered with the same structural rigour and premium finish.</p>
+      <div class="hero-proof">
+        <div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Free Quotes</span>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Fixed Pricing</span>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>10-Yr Guarantee</span>
       </div>
     </div>
   </section>
@@ -256,14 +281,18 @@
 
 <!-- ============ PROJECTS ============ -->
 <main id="projects" class="page">
-  <section class="hero" style="min-height:clamp(360px,52vh,540px);">
+  <section class="hero hero-inner">
     <div class="img-slot dark fill"><img src="assets/img/projects-hero.jpg" alt="LME builders reviewing project plans" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop portfolio hero photo</span></div>
-    <div class="hero-overlay" style="background:linear-gradient(90deg,rgba(13,17,23,0.74) 0%,rgba(13,17,23,0.34) 60%,rgba(13,17,23,0.06) 100%),linear-gradient(180deg,rgba(13,17,23,0) 50%,rgba(13,17,23,0.55) 100%);"></div>
+    <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
-      <div style="max-width:840px;">
-        <span class="eyebrow" style="color:#5cc6e8;margin-bottom:16px;">Portfolio</span>
-        <h1 style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(36px,5.4vw,62px);letter-spacing:-1px;line-height:1.03;margin:0 0 16px;color:#fff;">Our Premier Construction Portfolio</h1>
-        <p style="font-size:clamp(16px,1.4vw,20px);line-height:1.55;color:#d3dae2;max-width:620px;margin:0;">A range of successful builds and sympathetic renovations across Lincolnshire.</p>
+      <span class="eyebrow">Portfolio</span>
+      <h1 class="hero-h1">Our Premier Construction Portfolio</h1>
+      <p class="hero-isub">A range of successful builds and sympathetic renovations delivered across Lincolnshire.</p>
+      <div class="hero-proof">
+        <div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>250+ Completed</span>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Before &amp; After</span>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Lincolnshire-wide</span>
       </div>
     </div>
   </section>
@@ -285,39 +314,96 @@
 
 <!-- ============ ABOUT ============ -->
 <main id="about" class="page">
-  <section class="hero" style="min-height:clamp(360px,52vh,540px);">
+  <section class="hero hero-inner">
     <div class="img-slot dark fill"><img src="assets/img/about-hero.jpg" alt="Two builders in hi-vis shaking hands on site" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop team / on-site hero photo</span></div>
-    <div class="hero-overlay" style="background:radial-gradient(120% 90% at 50% 50%,rgba(13,17,23,0.28) 0%,rgba(13,17,23,0.62) 100%);"></div>
-    <div class="wrap hin" style="text-align:center;">
-      <div style="max-width:900px;margin:0 auto;">
-        <span class="eyebrow" style="color:#5cc6e8;margin-bottom:16px;">About LME</span>
-        <h1 style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(34px,5vw,60px);letter-spacing:-1px;line-height:1.03;margin:0;color:#fff;">Meet the Craftsmen Behind LME Building Contractors</h1>
+    <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
+    <div class="wrap hin">
+      <span class="eyebrow">About LME</span>
+      <h1 class="hero-h1">Meet the Craftsmen Behind LME</h1>
+      <p class="hero-isub">Reliable local contractors crafting premium spaces across Lincolnshire — led personally on every site, from first survey to final handover.</p>
+      <div class="hero-proof">
+        <div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Fully Insured</span>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>15+ Years</span>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>250+ Projects</span>
       </div>
     </div>
   </section>
 
+  <!-- OUR STORY -->
   <section class="sec tex tex-dots" style="background:#fff;">
-    <div class="wrap g-about">
+    <div class="wrap g-story">
       <div class="reveal">
-        <h2 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:clamp(22px,2vw,26px);margin:0 0 16px;color:#15191f;">Our Mission</h2>
-        <p style="font-size:15.5px;line-height:1.75;color:#5b6470;margin:0 0 16px;">We're reliable local contractors serving Lincolnshire, dedicated to crafting premium spaces from concept design to final handover.</p>
-        <p style="font-size:15.5px;line-height:1.75;color:#5b6470;margin:0;">We combine modern design with traditional craftsmanship to create spaces that stand the test of time — and build trust locally along the way.</p>
+        <span class="eyebrow" style="margin-bottom:16px;">Who We Are</span>
+        <h2 class="h2" style="margin-bottom:20px;">Local builders, premium standards.</h2>
+        <p style="font-size:15.5px;line-height:1.78;color:#5b6470;margin:0 0 16px;">We're reliable local contractors serving Lincolnshire, dedicated to crafting premium spaces from concept design to final handover. Every job is led personally on-site, so you always have a single, accountable point of contact.</p>
+        <p style="font-size:15.5px;line-height:1.78;color:#5b6470;margin:0 0 26px;">We combine modern design with traditional craftsmanship to create spaces that stand the test of time — and build trust locally along the way.</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+          <a class="btn btn-cy" href="#contact" data-nav="contact">Start Your Project</a>
+          <a class="btn btn-go" href="#projects" data-nav="projects">See Our Work</a>
+        </div>
       </div>
-      <div class="img-slot r10" style="width:100%;height:clamp(320px,38vw,460px);"><img src="assets/img/newbuild.jpg" alt="New build under construction by LME Building Contractors" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop team / on-site photo</span></div>
-      <div class="reveal">
-        <h2 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:clamp(22px,2vw,26px);margin:0 0 16px;color:#15191f;">Our Approach</h2>
-        <p style="font-size:15.5px;line-height:1.75;color:#5b6470;margin:0 0 22px;">Our expertise spans bespoke home extensions, high-end renovations and modern new builds — every project led on-site, start to finish.</p>
-        <div style="display:flex;flex-direction:column;gap:13px;">
-          <div style="display:flex;align-items:center;gap:12px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:15px;color:#15191f;"><span style="width:8px;height:8px;background:#33b8de;transform:rotate(45deg);flex:none;"></span>Bespoke extensions</div>
-          <div style="display:flex;align-items:center;gap:12px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:15px;color:#15191f;"><span style="width:8px;height:8px;background:#33b8de;transform:rotate(45deg);flex:none;"></span>High-end renovations</div>
-          <div style="display:flex;align-items:center;gap:12px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:15px;color:#15191f;"><span style="width:8px;height:8px;background:#33b8de;transform:rotate(45deg);flex:none;"></span>Modern new builds</div>
+      <div class="img-slot r10 reveal r-right" style="width:100%;height:clamp(340px,40vw,480px);"><img src="assets/img/newbuild.jpg" alt="New build under construction by LME Building Contractors" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop team / on-site photo</span></div>
+    </div>
+  </section>
+
+  <!-- WHAT DRIVES US (boxes) -->
+  <section class="sec tex tex-grid" style="background:#f5f4f1;">
+    <div class="wrap">
+      <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(40px,5vw,58px);">
+        <span class="eyebrow" style="margin-bottom:16px;">What Drives Us</span>
+        <h2 class="h2">Built on craftsmanship and trust</h2>
+      </div>
+      <div class="g-2">
+        <div class="box hoverable reveal">
+          <div class="box-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4.5"></circle><circle cx="12" cy="12" r="1"></circle></svg></div>
+          <h3 class="box-title">Our Mission</h3>
+          <p class="box-text">Crafting premium spaces from concept to completion — and building lasting trust in our community along the way.</p>
+        </div>
+        <div class="box hoverable reveal">
+          <div class="box-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l10-4 10 4-10 4z"></path><path d="M2 7v10l10 4 10-4V7"></path><path d="M12 11v10"></path></svg></div>
+          <h3 class="box-title">Our Approach</h3>
+          <p class="box-text">Modern design meets traditional craftsmanship, with every project led on-site from first survey to final handover.</p>
+        </div>
+        <div class="box hoverable reveal">
+          <div class="box-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"></circle><path d="M8.5 14 7 22l5-3 5 3-1.5-8"></path></svg></div>
+          <h3 class="box-title">Quality &amp; Craftsmanship</h3>
+          <p class="box-text">Premium materials and meticulous finishing on every build — all backed by our 10-year workmanship guarantee.</p>
+        </div>
+        <div class="box hoverable reveal">
+          <div class="box-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.4"></circle></svg></div>
+          <h3 class="box-title">Local &amp; Reliable</h3>
+          <p class="box-text">Lincolnshire-based and proud of it — delivered on time, on budget, with a single accountable point of contact.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="stats-band tex tex-grid-d">
-    <div class="wrap g-stats" id="about-stats" style="padding-top:clamp(58px,6vw,84px);padding-bottom:clamp(58px,6vw,84px);"></div>
+  <!-- STATS -->
+  <section class="sec tex tex-dots" style="background:#fff;">
+    <div class="wrap">
+      <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(42px,5vw,62px);">
+        <span class="eyebrow" style="margin-bottom:16px;">By The Numbers</span>
+        <h2 class="h2">Our results in numbers</h2>
+      </div>
+      <div class="g-stats" id="about-stats"></div>
+    </div>
+  </section>
+
+  <!-- HOW WE WORK (process boxes) -->
+  <section class="sec tex tex-grid" style="background:#f5f4f1;">
+    <div class="wrap">
+      <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(40px,5vw,58px);">
+        <span class="eyebrow" style="margin-bottom:16px;">How We Work</span>
+        <h2 class="h2">A clear, structured process</h2>
+      </div>
+      <div class="g-4">
+        <div class="proc-box reveal"><div class="proc-num">01</div><h3 class="proc-title">Consultation</h3><p class="proc-text">A free, no-obligation site visit to understand your vision, budget and timeline.</p></div>
+        <div class="proc-box reveal"><div class="proc-num">02</div><h3 class="proc-title">Design &amp; Quote</h3><p class="proc-text">Detailed design proposals and a clear, itemised quotation with no surprises.</p></div>
+        <div class="proc-box reveal"><div class="proc-num">03</div><h3 class="proc-title">Build</h3><p class="proc-text">On-site delivery led personally, with regular updates and rigorous quality control.</p></div>
+        <div class="proc-box reveal"><div class="proc-num">04</div><h3 class="proc-title">Handover</h3><p class="proc-text">A finished space, signed off to the highest standard, with aftercare support.</p></div>
+      </div>
+    </div>
   </section>
 
   <section class="sec tex tex-dots" style="background:#fff;">
@@ -341,13 +427,18 @@
 
 <!-- ============ CONTACT ============ -->
 <main id="contact" class="page">
-  <section class="hero" style="min-height:clamp(300px,40vh,440px);">
+  <section class="hero hero-inner">
     <div class="img-slot dark fill"><img src="assets/img/contact-hero.jpg" alt="Handshake over building plans with hard hat" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop handshake / team hero photo</span></div>
-    <div class="hero-overlay" style="background:radial-gradient(120% 90% at 50% 50%,rgba(13,17,23,0.28) 0%,rgba(13,17,23,0.62) 100%);"></div>
-    <div class="wrap hin" style="text-align:center;">
-      <div style="max-width:760px;margin:0 auto;">
-        <span class="eyebrow" style="color:#5cc6e8;margin-bottom:16px;">Get In Touch</span>
-        <h1 style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(32px,4.6vw,54px);letter-spacing:-1px;line-height:1.06;margin:0;color:#fff;">Let's talk about your project</h1>
+    <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
+    <div class="wrap hin">
+      <span class="eyebrow">Get In Touch</span>
+      <h1 class="hero-h1">Let's talk about your project</h1>
+      <p class="hero-isub">Free, no-obligation quotes and design consultations — we'll get back to you within one working day.</p>
+      <div class="hero-proof">
+        <div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Reply in 1 Working Day</span>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Free Consultation</span>
+        <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>No Obligation</span>
       </div>
     </div>
   </section>

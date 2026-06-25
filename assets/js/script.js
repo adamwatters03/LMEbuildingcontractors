@@ -9,10 +9,10 @@
   var heroTrust = ['Fully Insured', '15+ Years', '10-Year Guarantee'];
 
   var stats = [
-    { n: 250, dec: 0, suf: '+', l: 'Projects Completed' },
-    { n: 15, dec: 0, suf: '', l: 'Years Experience' },
-    { n: 4.9, dec: 1, suf: '★', l: 'Average Rating' },
-    { n: 10, dec: 0, suf: '-Yr', l: 'Workmanship Guarantee' }
+    { n: 250, dec: 0, suf: '+', l: 'Projects Completed', d: 'Homes extended, renovated and built across Lincolnshire.' },
+    { n: 15, dec: 0, suf: '', l: 'Years Experience', d: 'Hands-on building expertise on every single project.' },
+    { n: 4.9, dec: 1, suf: '★', l: 'Average Rating', d: 'From 127 verified reviews by local homeowners.' },
+    { n: 10, dec: 0, suf: '-Yr', l: 'Workmanship Guarantee', d: 'Every build backed long after we hand over the keys.' }
   ];
 
   var services = [
@@ -109,8 +109,8 @@
       return '<div class="stat reveal">' +
         '<div class="stat-num"><span class="num" data-count="' + st.n + '" data-dec="' + st.dec + '">0</span>' +
         (st.suf ? '<span class="suf">' + esc(st.suf) + '</span>' : '') + '</div>' +
-        '<span class="stat-rule"></span>' +
         '<div class="stat-label">' + esc(st.l) + '</div>' +
+        '<div class="stat-desc">' + esc(st.d) + '</div>' +
         '</div>';
     }).join('');
   }
@@ -379,18 +379,20 @@
   /* ---------- mobile menu ---------- */
   var burger = el('burger');
   var menu = el('mobileMenu');
-  function closeMenu() {
-    if (menu) menu.classList.remove('open');
-    if (burger) burger.setAttribute('aria-expanded', 'false');
+  var backdrop = el('navBackdrop');
+  var drawerClose = el('drawerClose');
+  function setMenu(open) {
+    if (menu) menu.classList.toggle('open', open);
+    if (backdrop) backdrop.classList.toggle('open', open);
+    if (burger) { burger.classList.toggle('open', open); burger.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    document.body.style.overflow = open ? 'hidden' : '';
     updateHeader();
   }
-  if (burger) {
-    burger.addEventListener('click', function () {
-      var open = menu.classList.toggle('open');
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      updateHeader();
-    });
-  }
+  function closeMenu() { setMenu(false); }
+  if (burger) burger.addEventListener('click', function () { setMenu(!(menu && menu.classList.contains('open'))); });
+  if (backdrop) backdrop.addEventListener('click', closeMenu);
+  if (drawerClose) drawerClose.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
 
   /* ---------- count-up numbers ---------- */
   function countUp(node) {
