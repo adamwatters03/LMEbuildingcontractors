@@ -9,10 +9,10 @@
   var heroTrust = ['Fully Insured', '15+ Years', '10-Year Guarantee'];
 
   var stats = [
-    { v: '250+', l: 'Projects Completed' },
-    { v: '15', l: 'Years Experience' },
-    { v: '4.9★', l: 'Average Rating' },
-    { v: '10-Yr', l: 'Workmanship Guarantee' }
+    { n: 250, dec: 0, suf: '+', l: 'Projects Completed' },
+    { n: 15, dec: 0, suf: '', l: 'Years Experience' },
+    { n: 4.9, dec: 1, suf: '★', l: 'Average Rating' },
+    { n: 10, dec: 0, suf: '-Yr', l: 'Workmanship Guarantee' }
   ];
 
   var services = [
@@ -106,10 +106,11 @@
   /* ---------- render: statistic blocks ---------- */
   function statsHTML() {
     return stats.map(function (st) {
-      return '<div class="reveal" style="text-align:center;">' +
-        '<div style="font-family:\'Archivo\',sans-serif;font-weight:800;font-size:clamp(34px,4.4vw,52px);color:#15191f;line-height:1;letter-spacing:-1px;">' + esc(st.v) + '</div>' +
-        '<div style="width:26px;height:3px;background:#33b8de;margin:13px auto;"></div>' +
-        '<div style="font-family:\'Archivo\',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.3px;color:#79828f;text-transform:uppercase;">' + esc(st.l) + '</div>' +
+      return '<div class="stat reveal">' +
+        '<div class="stat-num"><span class="num" data-count="' + st.n + '" data-dec="' + st.dec + '">0</span>' +
+        (st.suf ? '<span class="suf">' + esc(st.suf) + '</span>' : '') + '</div>' +
+        '<span class="stat-rule"></span>' +
+        '<div class="stat-label">' + esc(st.l) + '</div>' +
         '</div>';
     }).join('');
   }
@@ -119,7 +120,7 @@
     var ht = document.querySelector('.hero-trust');
     if (ht) {
       ht.parentNode.innerHTML = heroTrust.map(function (t) {
-        return '<div style="display:flex;align-items:center;gap:9px;font-family:\'Archivo\',sans-serif;font-weight:600;font-size:13.5px;color:#eef4f7;">' + CHECK + esc(t) + '</div>';
+        return '<div style="display:flex;align-items:center;gap:9px;font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:13.5px;color:#eef4f7;">' + CHECK + esc(t) + '</div>';
       }).join('');
     }
 
@@ -132,12 +133,12 @@
       return '<a class="card card-link reveal zoom-wrap" href="#services" data-nav="services" style="overflow:hidden;display:block;text-decoration:none;">' +
         '<div style="position:relative;height:210px;overflow:hidden;">' +
           slot('fill zoom', 'Drop service photo', svc.img, svc.title) +
-          '<span style="position:absolute;top:14px;left:14px;font-family:\'Archivo\',sans-serif;font-weight:800;font-size:12px;color:#06222c;background:#33b8de;padding:6px 11px;border-radius:5px;">' + esc(svc.n) + '</span>' +
+          '<span style="position:absolute;top:14px;left:14px;font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:12px;color:#06222c;background:#33b8de;padding:6px 11px;border-radius:5px;">' + esc(svc.n) + '</span>' +
         '</div>' +
         '<div style="padding:26px 26px 30px;">' +
-          '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:21px;margin:0 0 10px;color:#15191f;">' + esc(svc.title) + '</h3>' +
+          '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:21px;margin:0 0 10px;color:#15191f;">' + esc(svc.title) + '</h3>' +
           '<p style="font-size:15px;line-height:1.6;color:#5b6470;margin:0 0 18px;">' + esc(svc.short) + '</p>' +
-          '<span style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.6px;color:#1192bb;">LEARN MORE →</span>' +
+          '<span style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.6px;color:#1192bb;">LEARN MORE →</span>' +
         '</div></a>';
     }).join('');
 
@@ -145,7 +146,7 @@
     el('home-values').innerHTML = valueProps.map(function (vp) {
       return '<div class="reveal" style="text-align:center;padding:0 6px;">' +
         '<div style="display:flex;justify-content:center;margin-bottom:18px;">' + TICK_CIRCLE + '</div>' +
-        '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:18px;margin:0 0 10px;color:#15191f;">' + esc(vp.title) + '</h3>' +
+        '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:18px;margin:0 0 10px;color:#15191f;">' + esc(vp.title) + '</h3>' +
         '<p style="font-size:14.5px;line-height:1.6;color:#5b6470;margin:0;">' + esc(vp.body) + '</p>' +
         '</div>';
     }).join('');
@@ -155,10 +156,10 @@
       return '<a class="card card-link reveal zoom-wrap" href="#projects" data-nav="projects" style="overflow:hidden;display:block;text-decoration:none;">' +
         '<div style="position:relative;height:230px;overflow:hidden;">' +
           slot('fill zoom', 'Drop cover photo', proj.cover, proj.title) +
-          '<span style="position:absolute;top:14px;left:14px;font-family:\'Archivo\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;color:#06222c;background:#33b8de;padding:6px 12px;border-radius:5px;">' + esc(proj.tag) + '</span>' +
+          '<span style="position:absolute;top:14px;left:14px;font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;color:#06222c;background:#33b8de;padding:6px 12px;border-radius:5px;">' + esc(proj.tag) + '</span>' +
         '</div>' +
         '<div style="padding:24px 26px 28px;">' +
-          '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:20px;margin:0 0 8px;color:#15191f;line-height:1.2;">' + esc(proj.title) + '</h3>' +
+          '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:20px;margin:0 0 8px;color:#15191f;line-height:1.2;">' + esc(proj.title) + '</h3>' +
           '<div style="display:flex;align-items:center;gap:7px;font-size:13px;color:#79828f;font-weight:500;margin-bottom:14px;"><span class="dot"></span>' + esc(proj.location) + '</div>' +
           '<p style="font-size:14.5px;line-height:1.6;color:#5b6470;margin:0;">' + esc(proj.short) + '</p>' +
         '</div></a>';
@@ -173,8 +174,8 @@
     /* process */
     el('home-process').innerHTML = process.map(function (step) {
       return '<div class="reveal" style="border-top:2px solid #33b8de;padding-top:22px;">' +
-        '<div style="font-family:\'Archivo\',sans-serif;font-weight:800;font-size:15px;color:#5cc6e8;margin-bottom:14px;">/ ' + esc(step.n) + '</div>' +
-        '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:20px;margin:0 0 10px;color:#fff;">' + esc(step.title) + '</h3>' +
+        '<div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:15px;color:#5cc6e8;margin-bottom:14px;">/ ' + esc(step.n) + '</div>' +
+        '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:20px;margin:0 0 10px;color:#fff;">' + esc(step.title) + '</h3>' +
         '<p style="font-size:14.5px;line-height:1.65;color:#aab3c0;margin:0;">' + esc(step.body) + '</p>' +
         '</div>';
     }).join('');
@@ -186,7 +187,7 @@
         '<p style="font-size:15.5px;line-height:1.65;color:#2c333d;margin:0;flex:1;">“' + esc(t.quote) + '”</p>' +
         '<div style="display:flex;align-items:center;gap:13px;border-top:1px solid #efeee9;padding-top:18px;">' +
           '<div class="img-slot circle" style="width:46px;height:46px;flex:none;"><span></span></div>' +
-          '<div><div style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:15px;color:#15191f;">' + esc(t.name) + '</div>' +
+          '<div><div style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:15px;color:#15191f;">' + esc(t.name) + '</div>' +
           '<div style="font-size:13px;color:#79828f;">' + esc(t.meta) + '</div></div>' +
         '</div></div>';
     }).join('');
@@ -207,14 +208,14 @@
       return '<div class="card reveal g-svc" style="overflow:hidden;">' +
         '<div style="position:relative;min-height:340px;overflow:hidden;">' + slot('fill', 'Drop service photo', svc.img, svc.title) + '</div>' +
         '<div style="padding:clamp(30px,3.4vw,52px);display:flex;flex-direction:column;justify-content:center;">' +
-          '<div style="font-family:\'Archivo\',sans-serif;font-weight:800;font-size:14px;letter-spacing:1px;color:#1192bb;margin-bottom:14px;">/ ' + esc(svc.n) + ' — SERVICE</div>' +
-          '<h2 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:clamp(24px,2.4vw,32px);margin:0 0 14px;color:#15191f;">' + esc(svc.title) + '</h2>' +
+          '<div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:14px;letter-spacing:1px;color:#1192bb;margin-bottom:14px;">/ ' + esc(svc.n) + ' — SERVICE</div>' +
+          '<h2 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:clamp(24px,2.4vw,32px);margin:0 0 14px;color:#15191f;">' + esc(svc.title) + '</h2>' +
           '<p style="font-size:16px;line-height:1.7;color:#5b6470;margin:0 0 22px;">' + esc(svc.body) + '</p>' +
-          '<div style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#15191f;text-transform:uppercase;margin-bottom:14px;">What\'s Included</div>' +
+          '<div style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#15191f;text-transform:uppercase;margin-bottom:14px;">What\'s Included</div>' +
           '<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:26px;">' + inc + '</div>' +
           '<div style="display:flex;gap:30px;flex-wrap:wrap;padding:20px 0;border-top:1px solid #efeee9;border-bottom:1px solid #efeee9;margin-bottom:26px;">' +
-            '<div><div style="font-family:\'Archivo\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.3px;color:#79828f;text-transform:uppercase;margin-bottom:6px;">Typical Timeline</div><div style="font-family:\'Archivo\',sans-serif;font-weight:800;font-size:20px;color:#15191f;">' + esc(svc.timeline) + '</div></div>' +
-            '<div><div style="font-family:\'Archivo\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.3px;color:#79828f;text-transform:uppercase;margin-bottom:6px;">Investment From</div><div style="font-family:\'Archivo\',sans-serif;font-weight:800;font-size:20px;color:#15191f;">' + esc(svc.priceFrom) + '</div></div>' +
+            '<div><div style="font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.3px;color:#79828f;text-transform:uppercase;margin-bottom:6px;">Typical Timeline</div><div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:20px;color:#15191f;">' + esc(svc.timeline) + '</div></div>' +
+            '<div><div style="font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.3px;color:#79828f;text-transform:uppercase;margin-bottom:6px;">Investment From</div><div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:20px;color:#15191f;">' + esc(svc.priceFrom) + '</div></div>' +
           '</div>' +
           '<a class="btn btn-cy" href="#contact" data-nav="contact" style="align-self:flex-start;">Enquire About ' + esc(svc.title) + '</a>' +
         '</div></div>';
@@ -223,15 +224,15 @@
     /* services FAQ */
     el('services-faq').innerHTML = faqs.map(function (f) {
       return '<div style="border-bottom:1px solid #ececea;padding:24px 0;">' +
-        '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:clamp(17px,1.6vw,20px);margin:0 0 10px;color:#15191f;">' + esc(f.q) + '</h3>' +
+        '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:clamp(17px,1.6vw,20px);margin:0 0 10px;color:#15191f;">' + esc(f.q) + '</h3>' +
         '<p style="font-size:15px;line-height:1.65;color:#5b6470;margin:0;">' + esc(f.a) + '</p></div>';
     }).join('');
 
     /* coming soon (services + projects) */
     var comingHTML = comingSoon.map(function (cs) {
       return '<div class="reveal" style="background:#fff;border:1px dashed #cdd2c9;border-radius:10px;padding:clamp(26px,2.4vw,34px);">' +
-        '<div style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:#1192bb;margin-bottom:14px;">' + esc(cs.note) + '</div>' +
-        '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:21px;margin:0 0 10px;color:#3a414c;">' + esc(cs.title) + '</h3>' +
+        '<div style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:#1192bb;margin-bottom:14px;">' + esc(cs.note) + '</div>' +
+        '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:21px;margin:0 0 10px;color:#3a414c;">' + esc(cs.title) + '</h3>' +
         '<p style="font-size:14.5px;line-height:1.6;color:#79828f;margin:0;">' + esc(cs.body) + '</p></div>';
     }).join('');
     el('services-coming').innerHTML = comingHTML;
@@ -239,7 +240,7 @@
 
     /* coverage chips */
     el('services-coverage').innerHTML = coverage.map(function (town) {
-      return '<div style="background:#fff;border:1px solid #e7e5e0;border-radius:100px;padding:11px 22px;font-family:\'Archivo\',sans-serif;font-weight:600;font-size:14px;color:#2c333d;display:flex;align-items:center;gap:9px;">' + PIN + esc(town) + '</div>';
+      return '<div style="background:#fff;border:1px solid #e7e5e0;border-radius:100px;padding:11px 22px;font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:14px;color:#2c333d;display:flex;align-items:center;gap:9px;">' + PIN + esc(town) + '</div>';
     }).join('');
 
     /* projects page cards (with before/after) */
@@ -250,18 +251,18 @@
       return '<div class="card reveal" style="overflow:hidden;">' +
         '<div class="zoom-wrap" style="position:relative;height:250px;overflow:hidden;">' +
           slot('fill zoom', 'Drop cover photo', proj.cover, proj.title) +
-          '<span style="position:absolute;top:14px;left:14px;font-family:\'Archivo\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;color:#06222c;background:#33b8de;padding:6px 12px;border-radius:5px;">' + esc(proj.tag) + '</span>' +
+          '<span style="position:absolute;top:14px;left:14px;font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;color:#06222c;background:#33b8de;padding:6px 12px;border-radius:5px;">' + esc(proj.tag) + '</span>' +
         '</div>' +
         '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;">' +
           '<div style="position:relative;height:84px;">' + slot('r6 fill', 'Detail', proj.thumbA, proj.title + ' detail') + '</div>' +
           '<div style="position:relative;height:84px;">' + slot('r6 fill', 'Detail', proj.thumbB, proj.title + ' detail') + '</div>' +
         '</div>' +
         '<div style="padding:10px 26px 30px;">' +
-          '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:21px;margin:0 0 8px;color:#15191f;line-height:1.2;">' + esc(proj.title) + '</h3>' +
+          '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:21px;margin:0 0 8px;color:#15191f;line-height:1.2;">' + esc(proj.title) + '</h3>' +
           '<div style="display:flex;align-items:center;gap:7px;font-size:13px;color:#79828f;font-weight:500;margin-bottom:16px;"><span class="dot"></span>' + esc(proj.location) + '</div>' +
           '<p style="font-size:14.5px;line-height:1.6;color:#5b6470;margin:0 0 18px;">' + esc(proj.body) + '</p>' +
           '<div style="display:flex;flex-direction:column;gap:9px;margin-bottom:22px;">' + pts + '</div>' +
-          '<div style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.8px;color:#1192bb;cursor:pointer;">VIEW DETAILED GALLERY →</div>' +
+          '<div style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.8px;color:#1192bb;cursor:pointer;">VIEW DETAILED GALLERY →</div>' +
         '</div></div>';
     }).join('');
 
@@ -272,8 +273,8 @@
           (m.img ? '<img src="' + m.img + '" alt="' + esc(m.name) + '" loading="lazy" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">' : '') +
           '<span>Drop portrait</span></div>' +
         '<div style="padding:24px 26px 28px;">' +
-          '<h3 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:20px;margin:0 0 4px;color:#15191f;">' + esc(m.name) + '</h3>' +
-          '<div style="font-family:\'Archivo\',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.6px;color:#1192bb;margin-bottom:12px;">' + esc(m.role) + '</div>' +
+          '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:20px;margin:0 0 4px;color:#15191f;">' + esc(m.name) + '</h3>' +
+          '<div style="font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.6px;color:#1192bb;margin-bottom:12px;">' + esc(m.role) + '</div>' +
           '<p style="font-size:14px;line-height:1.6;color:#5b6470;margin:0;">' + esc(m.bio) + '</p>' +
         '</div></div>';
     }).join('');
@@ -288,7 +289,7 @@
       '<p style="font-size:13px;color:#79828f;margin:0 0 28px;">Last updated: June 2026</p>' +
       '<p class="lead" style="margin-bottom:30px;">' + intro + '</p>';
     body += sections.map(function (s) {
-      return '<h2 style="font-family:\'Archivo\',sans-serif;font-weight:700;font-size:20px;color:#15191f;margin:28px 0 10px;">' + esc(s.h) + '</h2>' +
+      return '<h2 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:20px;color:#15191f;margin:28px 0 10px;">' + esc(s.h) + '</h2>' +
         '<p style="font-size:15px;line-height:1.7;color:#5b6470;margin:0;">' + s.p + '</p>';
     }).join('');
     return body;
@@ -351,6 +352,8 @@
     closeMenu();
     if (!skipScroll) window.scrollTo({ top: 0, behavior: 'auto' });
     observeReveals();
+    updateHeader();
+    parallax();
   }
 
   function routeFromHash(skipScroll) {
@@ -379,12 +382,32 @@
   function closeMenu() {
     if (menu) menu.classList.remove('open');
     if (burger) burger.setAttribute('aria-expanded', 'false');
+    updateHeader();
   }
   if (burger) {
     burger.addEventListener('click', function () {
       var open = menu.classList.toggle('open');
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      updateHeader();
     });
+  }
+
+  /* ---------- count-up numbers ---------- */
+  function countUp(node) {
+    if (node.dataset.done) return;
+    node.dataset.done = '1';
+    var target = parseFloat(node.getAttribute('data-count')) || 0;
+    var dec = parseInt(node.getAttribute('data-dec') || '0', 10);
+    var dur = 1600, start = null;
+    function fmt(v) { return dec ? v.toFixed(dec) : Math.round(v).toLocaleString('en-GB'); }
+    function tick(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      node.textContent = fmt(target * eased);
+      if (p < 1) requestAnimationFrame(tick); else node.textContent = fmt(target);
+    }
+    requestAnimationFrame(tick);
   }
 
   /* ---------- scroll reveals (IntersectionObserver) ---------- */
@@ -392,7 +415,11 @@
   function observeReveals() {
     var nodes = document.querySelectorAll('.page.active .reveal:not(.in), .page.active .hin:not(.in)');
     if (!('IntersectionObserver' in window)) {
-      nodes.forEach(function (n) { n.classList.add('in'); });
+      nodes.forEach(function (n) {
+        n.classList.add('in');
+        var num = n.querySelector && n.querySelector('.num[data-count]');
+        if (num) countUp(num);
+      });
       return;
     }
     if (!io) {
@@ -401,11 +428,22 @@
           if (en.isIntersecting) {
             en.target.classList.add('in');
             io.unobserve(en.target);
+            var num = en.target.querySelector && en.target.querySelector('.num[data-count]');
+            if (num) countUp(num);
           }
         });
       }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
     }
-    nodes.forEach(function (n) { io.observe(n); });
+    nodes.forEach(function (n) {
+      // stagger grid children for a seamless cascade
+      if (n.classList.contains('reveal') && !n.dataset.stag && n.parentNode) {
+        var sibs = n.parentNode.querySelectorAll(':scope > .reveal');
+        var idx = Array.prototype.indexOf.call(sibs, n);
+        if (idx > 0) n.style.transitionDelay = (Math.min(idx, 6) * 0.075) + 's';
+        n.dataset.stag = '1';
+      }
+      io.observe(n);
+    });
   }
 
   /* ---------- scroll progress bar ---------- */
@@ -416,8 +454,43 @@
     var pct = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
     progress.style.width = (pct * 100) + '%';
   }
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  window.addEventListener('resize', updateProgress);
+
+  /* ---------- premium header: transparent over hero -> solid on scroll ---------- */
+  var header = el('siteHeader');
+  function activeHero() {
+    var ap = document.querySelector('.page.active');
+    return ap ? ap.querySelector(':scope > .hero') : null;
+  }
+  function updateHeader() {
+    if (!header) return;
+    var y = window.scrollY || document.documentElement.scrollTop || 0;
+    var hero = activeHero();
+    var overHero = !!hero && y < (hero.offsetHeight - 80);
+    if (menu && menu.classList.contains('open')) overHero = false;
+    header.classList.toggle('over-hero', overHero);
+    header.classList.toggle('scrolled', y > 12 && !overHero);
+  }
+
+  /* ---------- hero parallax ---------- */
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function parallax() {
+    if (reduceMotion) return;
+    var img = document.querySelector('.page.active .hero-home .img-slot.fill img');
+    if (img) {
+      var y = window.scrollY || 0;
+      img.style.transform = 'translate3d(0,' + (y * 0.15) + 'px,0) scale(1.12)';
+    }
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(function () { updateProgress(); updateHeader(); parallax(); ticking = false; });
+      ticking = true;
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { updateProgress(); updateHeader(); });
 
   /* ---------- contact form ---------- */
   var form = el('contact-form');
@@ -451,4 +524,6 @@
   routeFromHash(true);
   observeReveals();
   updateProgress();
+  updateHeader();
+  parallax();
 })();
