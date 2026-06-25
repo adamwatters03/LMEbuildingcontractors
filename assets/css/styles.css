@@ -84,7 +84,7 @@ input::placeholder,textarea::placeholder{color:#9aa2ac}
 /* =========================================================
    Premium header (transparent over hero -> solid on scroll)
    ========================================================= */
-.site-header{position:fixed;top:0;left:0;right:0;z-index:120;transition:background .35s ease,box-shadow .35s ease,border-color .35s ease,padding .35s ease;
+.site-header{position:fixed;top:0;left:0;right:0;z-index:120;transition:background .45s ease,box-shadow .45s ease,border-color .45s ease,backdrop-filter .45s ease,padding .4s ease;
   background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #ececea}
 .site-header.over-hero{background:transparent;border-bottom-color:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 .site-header.scrolled{box-shadow:0 8px 30px rgba(15,25,35,.08)}
@@ -143,10 +143,12 @@ input::placeholder,textarea::placeholder{color:#9aa2ac}
 @media(max-width:520px){.g-footer{grid-template-columns:1fr}}
 
 /* =========================================================
-   Page switching
+   Page switching (clean cross-page fade)
    ========================================================= */
 .page{display:none}
-.page.active{display:block}
+@keyframes pageIn{from{opacity:0}to{opacity:1}}
+.page.active{display:block;animation:pageIn .4s ease both}
+@media(prefers-reduced-motion:reduce){.page.active{animation:none}}
 
 /* =========================================================
    Hero

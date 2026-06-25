@@ -467,10 +467,11 @@
     if (!header) return;
     var y = window.scrollY || document.documentElement.scrollTop || 0;
     var hero = activeHero();
-    var overHero = !!hero && y < (hero.offsetHeight - 80);
+    // transparent only at the very top of a hero page; fades to solid white as soon as you scroll
+    var overHero = !!hero && y < 24;
     if (menu && menu.classList.contains('open')) overHero = false;
     header.classList.toggle('over-hero', overHero);
-    header.classList.toggle('scrolled', y > 12 && !overHero);
+    header.classList.toggle('scrolled', y > 10 && !overHero);
   }
 
   /* ---------- hero parallax ---------- */
