@@ -47,9 +47,9 @@
   ];
 
   var projectList = [
-    { id: 'sleaford', tag: 'Renovation', cover: 'assets/img/cottages.jpg', thumbA: 'assets/img/renovation.jpg', thumbB: 'assets/img/cottages.jpg', title: 'Sleaford Cottage Refurbishment', location: 'Sleaford, Lincolnshire', short: 'A sympathetic full restoration of a listed cottage using reclaimed local stone and lime mortar.', body: 'A sympathetic full restoration of a listed cottage, preserving traditional features while integrating modern amenities using reclaimed local stone and lime mortar.', points: ['Traditional stone façade restored', 'Lime mortar repointing', 'Sympathetic glazing'] },
-    { id: 'lincoln', tag: 'Extension', cover: 'assets/img/extension.jpg', thumbA: 'assets/img/extension.jpg', thumbB: 'assets/img/street.jpg', title: 'Lincoln Modern Home Extension', location: 'Lincoln, Lincolnshire', short: 'A contemporary extension maximising open-plan living and connecting the home to the garden.', body: 'A contemporary extension maximising open-plan living, seamlessly connecting the home to the garden with floor-to-ceiling bifold doors and bespoke finishes.', points: ['Open-plan living space', 'High-performance bifold doors', 'Bespoke finishes'] },
-    { id: 'grantham', tag: 'New Build', cover: 'assets/img/newbuild-interior.jpg', thumbA: 'assets/img/newbuild.jpg', thumbB: 'assets/img/newbuild-interior.jpg', title: 'Grantham Contemporary New Build', location: 'Grantham, Lincolnshire', short: 'A five-bedroom turn-key family home built to exacting specifications with eco-friendly features.', body: 'A stunning five-bedroom turn-key family home built to exacting specifications with eco-friendly features and bespoke structural glazing, designed for modern luxury.', points: ['Bespoke architectural design', 'Structural glazing façade', 'Energy-efficient systems'] }
+    { id: 'sleaford', tag: 'Renovation', cover: 'assets/img/sleaford.jpg', thumbA: 'assets/img/renovation.jpg', thumbB: 'assets/img/sleaford.jpg', title: 'Sleaford Cottage Refurbishment', location: 'Sleaford, Lincolnshire', short: 'A sympathetic full restoration of a listed cottage using reclaimed local stone and lime mortar.', body: 'A sympathetic full restoration of a listed cottage, preserving traditional features while integrating modern amenities using reclaimed local stone and lime mortar.', points: ['Traditional stone façade restored', 'Lime mortar repointing', 'Sympathetic glazing'] },
+    { id: 'lincoln', tag: 'Extension', cover: 'assets/img/lincoln.jpg', thumbA: 'assets/img/extension.jpg', thumbB: 'assets/img/lincoln.jpg', title: 'Lincoln Modern Home Extension', location: 'Lincoln, Lincolnshire', short: 'A contemporary extension maximising open-plan living and connecting the home to the garden.', body: 'A contemporary extension maximising open-plan living, seamlessly connecting the home to the garden with floor-to-ceiling bifold doors and bespoke finishes.', points: ['Open-plan living space', 'High-performance bifold doors', 'Bespoke finishes'] },
+    { id: 'grantham', tag: 'New Build', cover: 'assets/img/grantham.jpg', thumbA: 'assets/img/newbuild.jpg', thumbB: 'assets/img/grantham.jpg', title: 'Grantham Contemporary New Build', location: 'Grantham, Lincolnshire', short: 'A five-bedroom turn-key family home built to exacting specifications with eco-friendly features.', body: 'A stunning five-bedroom turn-key family home built to exacting specifications with eco-friendly features and bespoke structural glazing, designed for modern luxury.', points: ['Bespoke architectural design', 'Structural glazing façade', 'Energy-efficient systems'] }
   ];
 
   var comingSoon = [
@@ -75,8 +75,8 @@
 
   // gallery reuses the uploaded work/location photos (no separate uploads needed)
   var gallery = [
-    'assets/img/newbuild.jpg', 'assets/img/renovation.jpg', 'assets/img/extension.jpg', 'assets/img/cottages.jpg',
-    'assets/img/street.jpg', 'assets/img/builders-planning.jpg', 'assets/img/blueprint-hardhat.jpg', 'assets/img/newbuild-interior.jpg'
+    'assets/img/newbuild.jpg', 'assets/img/renovation.jpg', 'assets/img/extension.jpg', 'assets/img/sleaford.jpg',
+    'assets/img/lincoln.jpg', 'assets/img/grantham.jpg', 'assets/img/projects-hero.jpg', 'assets/img/about-hero.jpg'
   ];
 
   var team = [
