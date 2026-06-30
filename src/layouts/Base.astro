@@ -114,6 +114,8 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
 </head>
 <body>
 <!-- LME content-source: {_diag} -->
+<div id="lme-diag" style="display:none;position:fixed;left:0;bottom:0;z-index:99999;background:#06222c;color:#5cf;font:13px/1.5 monospace;padding:10px 14px;max-width:100vw;word-break:break-word;">content-source: {_diag}</div>
+<script is:inline>if(location.search.indexOf('diag')>-1){var e=document.getElementById('lme-diag');if(e)e.style.display='block';}</script>
 <div class="progress" id="progress"></div>
 
 <header class="site-header over-hero" id="siteHeader">
