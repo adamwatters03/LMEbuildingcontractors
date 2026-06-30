@@ -425,36 +425,77 @@
   }
 
   /* ---------- single blog post ---------- */
+  var author = { name: 'Lee', role: 'Founder, LME Building Contractors', initials: 'L', bio: 'Lee has run building projects across Lincolnshire for over 15 years — from single-storey extensions to full new builds. He leads every LME job personally, from the first site visit to final handover.' };
+  var postMeta = {
+    'house-extension-cost-lincolnshire': { iso: '2026-06-12', tags: ['Home Extensions', 'Extension Costs', 'Budgeting', 'Lincolnshire'], service: { label: 'Home Extensions', hash: '#services' }, pull: 'The biggest cause of overspend is changing your mind mid-build — nail the design down early and keep a sensible contingency.' },
+    'planning-permission-extension': { iso: '2026-05-28', tags: ['Planning Permission', 'Permitted Development', 'Building Regs', 'Extensions'], service: { label: 'Home Extensions', hash: '#services' }, pull: 'Even when you don’t need planning permission, your extension almost always still needs Building Regulations approval.' },
+    'how-long-does-an-extension-take': { iso: '2026-05-14', tags: ['Extensions', 'Build Timeline', 'Project Planning'], service: { label: 'Home Extensions', hash: '#services' }, pull: 'Most people picture the build and forget the eight to twelve weeks of design and approvals that come before it.' },
+    'loft-vs-garage-conversion': { iso: '2026-04-30', tags: ['Loft Conversions', 'Garage Conversions', 'Adding Space', 'Costs'], service: { label: 'Loft & Garage Conversions', hash: '#services' }, pull: 'Need a cheap, fast extra room? Convert the garage. Need a bedroom that adds value? Go up into the loft.' },
+    'renovating-a-period-property-lincolnshire': { iso: '2026-04-16', tags: ['Renovations', 'Period Properties', 'Listed Buildings', 'Lincolnshire'], service: { label: 'High-End Renovations', hash: '#services' }, pull: 'Older buildings need to breathe — which is exactly why we use lime, not cement, on solid-wall properties.' },
+    'questions-to-ask-a-builder': { iso: '2026-04-02', tags: ['Hiring a Builder', 'Advice', 'Quotes', 'Guarantees'], service: { label: 'Our Services', hash: '#services' }, pull: 'A good builder will answer all ten of these without flinching. If someone’s cagey about any of them, take it as a sign.' }
+  };
+
+  function injectPostJsonLd(p, m, tags) {
+    var s = document.getElementById('post-jsonld');
+    if (!s) { s = document.createElement('script'); s.type = 'application/ld+json'; s.id = 'post-jsonld'; document.head.appendChild(s); }
+    var base = 'https://www.lmebuildingcontractors.uk/';
+    s.textContent = JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'BlogPosting',
+      headline: p.title, description: p.excerpt, image: base + p.img,
+      datePublished: m.iso, dateModified: m.iso,
+      author: { '@type': 'Person', name: author.name },
+      publisher: { '@type': 'Organization', name: 'LME Building Contractors', logo: { '@type': 'ImageObject', url: base + 'assets/favicon.svg' } },
+      keywords: (tags || []).join(', '),
+      mainEntityOfPage: base + '#blog/' + p.slug
+    });
+  }
+
   function renderPost(slug) {
     var p = null;
     for (var i = 0; i < posts.length; i++) { if (posts[i].slug === slug) { p = posts[i]; break; } }
     if (!p) return null;
+    var m = postMeta[slug] || {};
+    var tags = m.tags || [p.cat];
+    var service = m.service || { label: 'Our Services', hash: '#services' };
+    var tagsHTML = tags.map(function (t) { return '<span class="post-tag">' + esc(t) + '</span>'; }).join('');
+    var sideHTML =
+      '<a class="rel-service" href="' + service.hash + '" data-nav="services"><span class="rs-label">Related service</span><span class="rs-title">' + esc(service.label) + '</span><span class="rs-link">Learn more →</span></a>' +
+      (m.pull ? '<div class="pull-quote"><span class="pq-mark">“</span><p>' + esc(m.pull) + '</p></div>' : '');
     var related = posts.filter(function (x) { return x.slug !== p.slug; }).slice(0, 3);
     var relHTML = related.map(function (r) {
-      return '<a class="card card-link reveal" href="#blog/' + r.slug + '" style="overflow:hidden;display:block;text-decoration:none;">' +
-        '<div style="position:relative;height:150px;overflow:hidden;">' + slot('fill', 'Photo', r.img, r.title) + '</div>' +
-        '<div style="padding:18px 20px 22px;"><span class="post-cat">' + esc(r.cat) + '</span><h3 class="post-title" style="font-size:17px;margin:10px 0 0;">' + esc(r.title) + '</h3></div></a>';
+      return '<a class="card card-link reveal zoom-wrap" href="#blog/' + r.slug + '" style="overflow:hidden;display:block;text-decoration:none;">' +
+        '<div style="position:relative;height:190px;overflow:hidden;">' + slot('fill zoom', 'Photo', r.img, r.title) +
+          '<span class="post-cat" style="position:absolute;left:14px;bottom:14px;background:rgba(255,255,255,.94);">' + esc(r.cat) + '</span></div>' +
+        '<div style="padding:20px 22px 24px;"><div class="post-meta" style="margin-bottom:8px;">' + esc(r.date) + ' · ' + esc(r.read) + '</div>' +
+        '<h3 class="post-title" style="font-size:18px;margin:0 0 14px;">' + esc(r.title) + '</h3><span class="read-more">Read article →</span></div></a>';
     }).join('');
     el('post').innerHTML =
-      '<section class="hero hero-inner" style="min-height:clamp(360px,48vh,480px);">' +
-        '<div class="img-slot dark fill"><img src="' + p.img + '" alt="' + esc(p.title) + '" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()"><span>Photo</span></div>' +
-        '<div class="hero-overlay" style="background:linear-gradient(0deg,rgba(8,11,15,0.82) 0%,rgba(8,11,15,0.2) 70%),linear-gradient(95deg,rgba(8,11,15,0.6),rgba(8,11,15,0.2));"></div>' +
-        '<div class="wrap hin"><span class="eyebrow">' + esc(p.cat) + '</span>' +
-          '<h1 class="hero-h1" style="max-width:20ch;">' + esc(p.title) + '</h1>' +
-          '<p class="post-meta" style="color:#dde4ea;font-weight:500;margin-top:6px;">' + esc(p.date) + ' · ' + esc(p.read) + '</p></div>' +
-      '</section>' +
-      '<section class="sec" style="background:#fff;">' +
-        '<div class="wrap"><div class="prose">' +
-          '<a class="back-link" href="#blog">← All articles</a>' +
-          p.body +
-          '<div class="box" style="margin-top:36px;padding:30px;text-align:center;background:#f5f4f1;border:0;">' +
-            '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:21px;margin:0 0 8px;color:#15191f;">Thinking about a project?</h3>' +
-            '<p style="font-size:15px;color:#5b6470;margin:0 0 18px;">Get a free, no-obligation quote from a trusted Lincolnshire builder.</p>' +
-            '<a class="btn btn-cy" href="#contact" data-nav="contact">Get a Free Quote</a>' +
+      '<article>' +
+        '<section class="sec" style="background:#fff;padding-top:clamp(108px,13vw,150px);padding-bottom:0;">' +
+          '<div class="wrap" style="max-width:1080px;">' +
+            '<div class="post-crumb"><a href="#blog">Blog</a> &nbsp;/&nbsp; ' + esc(p.title) + '</div>' +
+            '<div class="post-metarow"><span class="post-cat">' + esc(p.cat) + '</span><span class="sep">·</span>' + esc(p.date) + '<span class="sep">·</span>' + esc(p.read) + '<span class="sep">·</span>By <a href="#about" data-nav="about">' + esc(author.name) + '</a></div>' +
+            '<h1 class="post-hero-title">' + esc(p.title) + '</h1>' +
+            '<p class="post-standfirst">' + esc(p.excerpt) + '</p>' +
+            '<div class="post-tags">' + tagsHTML + '</div>' +
           '</div>' +
-        '</div></div>' +
-      '</section>' +
-      (relHTML ? '<section class="sec tex tex-grid" style="background:#f5f4f1;"><div class="wrap"><div class="reveal" style="text-align:center;max-width:600px;margin:0 auto clamp(32px,4vw,44px);"><span class="eyebrow" style="margin-bottom:16px;">More Reading</span><h2 class="h2">Related articles</h2></div><div class="g-cards">' + relHTML + '</div></div></section>' : '');
+        '</section>' +
+        '<section style="background:#fff;padding:clamp(28px,4vw,44px) 0 0;">' +
+          '<div class="wrap" style="max-width:1080px;"><div class="post-cover">' + slot('fill', 'Photo', p.img, p.title) + '</div></div>' +
+        '</section>' +
+        '<section class="sec" style="background:#fff;">' +
+          '<div class="wrap post-layout" style="max-width:1080px;">' +
+            '<aside class="post-side">' + sideHTML + '</aside>' +
+            '<div><div class="prose" style="margin:0;">' + p.body +
+              '<p>We handle ' + esc(service.label.toLowerCase()) + ' across Sleaford, Lincoln, Grantham and the wider Lincolnshire area — <a href="' + service.hash + '" data-nav="services">see our services →</a></p>' +
+            '</div>' +
+            '<div class="author-box"><div class="author-av">' + esc(author.initials) + '</div><div><div class="ab-label">Written by</div><div class="ab-name">' + esc(author.name) + '</div><div class="ab-role">' + esc(author.role) + '</div><p class="ab-bio">' + esc(author.bio) + '</p></div></div>' +
+            '</div>' +
+          '</div>' +
+        '</section>' +
+        (relHTML ? '<section class="sec tex tex-grid" style="background:#f5f4f1;"><div class="wrap"><div class="reveal" style="margin-bottom:clamp(30px,4vw,44px);"><span class="eyebrow" style="margin-bottom:14px;">Related Articles</span><h2 class="h2">Keep reading.</h2></div><div class="g-cards">' + relHTML + '</div></div></section>' : '') +
+      '</article>';
+    injectPostJsonLd(p, m, tags);
     return p;
   }
 
@@ -575,6 +616,7 @@
 
   function showPage(page, skipScroll) {
     if (PAGES.indexOf(page) === -1) page = 'home';
+    if (page !== 'post') { var pj = document.getElementById('post-jsonld'); if (pj) pj.remove(); }
     PAGES.forEach(function (p) {
       var node = el(p);
       if (node) node.classList.toggle('active', p === page);
