@@ -119,6 +119,28 @@ function mapProject(story, local) {
   };
 }
 
+// generic per-page text merge (overrides defaults only where present)
+function mapPage(content, def) {
+  if (!content) return null;
+  const out = { ...def };
+  for (const k of Object.keys(def)) {
+    if (Array.isArray(def[k])) {
+      if (Array.isArray(content[k]) && content[k].length) {
+        out[k] = content[k].map((b, i) => ({ title: txt(b.title, (def[k][i] || {}).title), body: txt(b.body, (def[k][i] || {}).body) }));
+      }
+    } else {
+      out[k] = txt(content[k], def[k]);
+    }
+  }
+  return out;
+}
+
+export async function sbPage(slug, def) {
+  const json = await cdn('stories/' + slug);
+  if (!json || !json.story) return null;
+  return mapPage(json.story.content, def);
+}
+
 export async function sbConfig(local) {
   const json = await cdn('stories/config');
   if (!json || !json.story) return null;

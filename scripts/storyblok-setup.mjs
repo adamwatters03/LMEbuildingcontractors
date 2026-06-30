@@ -107,6 +107,18 @@ const components = [
   } },
 ];
 
+/* page content types — generated from content.js `pages` so fields always match */
+function pageSchema(def) {
+  const schema = {};
+  for (const [k, v] of Object.entries(def)) {
+    schema[k] = Array.isArray(v) ? BLOKS(k, ['value_prop']) : TA(k);
+  }
+  return schema;
+}
+for (const [name, def] of Object.entries(c.pages)) {
+  components.push({ name: 'page_' + name, is_root: true, is_nestable: false, schema: pageSchema(def) });
+}
+
 /* ---------- upsert components ---------- */
 async function upsertComponents() {
   const existing = (await mapi('GET', '/components/')).components || [];
@@ -167,6 +179,16 @@ function configContent() {
   };
 }
 
+function pageContent(name, def) {
+  const content = { component: 'page_' + name };
+  for (const [k, v] of Object.entries(def)) {
+    content[k] = Array.isArray(v)
+      ? v.map((b) => ({ component: 'value_prop', _uid: uid(), title: b.title, body: b.body }))
+      : v;
+  }
+  return content;
+}
+
 async function run() {
   console.log(`Setting up Storyblok space ${SPACE} (${REGION})…\n`);
   await upsertComponents();
@@ -174,6 +196,16 @@ async function run() {
 
   // global config
   await upsertStory({ name: 'Site Config', slug: 'config', content: configContent() });
+
+  // editable pages (home / services / about / contact) with real preview paths
+  for (const [name, def] of Object.entries(c.pages)) {
+    await upsertStory({
+      name: 'Page: ' + name.charAt(0).toUpperCase() + name.slice(1),
+      slug: name,
+      path: name === 'home' ? '/' : '/' + name,
+      content: pageContent(name, def),
+    });
+  }
 
   // blog
   const blogId = await ensureFolder('blog', 'Blog');

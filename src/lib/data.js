@@ -6,7 +6,7 @@
    in the CMS gracefully falls back — the build can't break.
    ========================================================= */
 import * as local from './content.js';
-import { sbConfig, sbPosts, sbProjects, storyblokEnabled } from './storyblok.js';
+import { sbConfig, sbPosts, sbProjects, sbPage, storyblokEnabled } from './storyblok.js';
 
 const defaults = {
   heroTrust: local.heroTrust,
@@ -30,6 +30,7 @@ const defaults = {
   phone: local.phone,
   phoneHref: local.phoneHref,
   email: local.email,
+  pages: local.pages,
 };
 
 let _cache = null;
@@ -39,10 +40,14 @@ export async function getData() {
   const d = { ...defaults };
 
   if (storyblokEnabled) {
-    const [config, posts, projects] = await Promise.all([
+    const [config, posts, projects, home, services, about, contact] = await Promise.all([
       sbConfig(local).catch(() => null),
       sbPosts(local).catch(() => null),
       sbProjects(local).catch(() => null),
+      sbPage('home', local.pages.home).catch(() => null),
+      sbPage('services', local.pages.services).catch(() => null),
+      sbPage('about', local.pages.about).catch(() => null),
+      sbPage('contact', local.pages.contact).catch(() => null),
     ]);
 
     if (config) Object.assign(d, config);
@@ -54,6 +59,13 @@ export async function getData() {
     }
 
     if (projects && projects.length) d.projectList = projects;
+
+    d.pages = {
+      home: home || local.pages.home,
+      services: services || local.pages.services,
+      about: about || local.pages.about,
+      contact: contact || local.pages.contact,
+    };
   }
 
   _cache = d;
