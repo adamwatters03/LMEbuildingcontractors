@@ -1,7 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
-import { fbUrl } from '../lib/content.js';
 import { statsHTML, teamHTML } from '../lib/render.js';
+import { getData } from '../lib/data.js';
+
+const d = await getData();
+const fbUrl = d.fbUrl;
 
 const title = 'About Us | Sleaford & Lincolnshire Builders | LME Building Contractors';
 const description = 'Reliable local Lincolnshire contractors with 15+ years on the tools. Fully insured and accredited, every build led on-site with a 10-year workmanship guarantee.';
@@ -80,7 +83,7 @@ const description = 'Reliable local Lincolnshire contractors with 15+ years on t
         <span class="eyebrow" style="margin-bottom:16px;">By The Numbers</span>
         <h2 class="h2">Our results in numbers</h2>
       </div>
-      <div class="g-stats" set:html={statsHTML()} />
+      <div class="g-stats" set:html={statsHTML(d)} />
     </div>
   </section>
 
@@ -107,7 +110,7 @@ const description = 'Reliable local Lincolnshire contractors with 15+ years on t
         <span class="eyebrow" style="margin-bottom:16px;">Our People</span>
         <h2 class="h2">Meet the Team</h2>
       </div>
-      <div class="g-cards" set:html={teamHTML()} />
+      <div class="g-cards" set:html={teamHTML(d)} />
     </div>
   </section>
 

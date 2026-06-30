@@ -1,6 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import { servicesListHTML, faqHTML, comingHTML, coverageChipsHTML } from '../lib/render.js';
+import { getData } from '../lib/data.js';
+
+const d = await getData();
 
 const title = 'Building Services in Lincolnshire | Extensions, Renovations & New Builds';
 const description = 'Home extensions, high-end renovations, new builds and loft conversions across Lincolnshire. Fixed pricing, free site visits and a 10-year workmanship guarantee.';
@@ -23,7 +26,7 @@ const description = 'Home extensions, high-end renovations, new builds and loft 
   </section>
 
   <section class="sec tex tex-dots" style="background:#fff;">
-    <div class="wrap" style="display:flex;flex-direction:column;gap:clamp(28px,3.5vw,48px);" set:html={servicesListHTML()} />
+    <div class="wrap" style="display:flex;flex-direction:column;gap:clamp(28px,3.5vw,48px);" set:html={servicesListHTML(d)} />
   </section>
 
   <section class="sec tex tex-dots" style="background:#fff;border-top:1px solid #ececea;">
@@ -32,7 +35,7 @@ const description = 'Home extensions, high-end renovations, new builds and loft 
         <span class="eyebrow" style="margin-bottom:16px;">Good To Know</span>
         <h2 class="h2">Frequently Asked Questions</h2>
       </div>
-      <div class="reveal" style="max-width:840px;margin:0 auto;" set:html={faqHTML()} />
+      <div class="reveal" style="max-width:840px;margin:0 auto;" set:html={faqHTML(d)} />
     </div>
   </section>
 
@@ -42,7 +45,7 @@ const description = 'Home extensions, high-end renovations, new builds and loft 
         <h2 class="h2" style="margin-bottom:12px;">Specialist Services <span style="color:#1192bb;">— Coming Soon</span></h2>
         <p class="lead">Detailed pages for these disciplines are in development.</p>
       </div>
-      <div class="g-cards" set:html={comingHTML()} />
+      <div class="g-cards" set:html={comingHTML(d)} />
     </div>
   </section>
 
@@ -53,7 +56,7 @@ const description = 'Home extensions, high-end renovations, new builds and loft 
         <h2 class="h2" style="margin-bottom:14px;">Proudly serving Lincolnshire</h2>
         <p class="lead">Based in Sleaford and covering roughly a 25-mile radius. If your town isn't listed, get in touch — we may still be able to help.</p>
       </div>
-      <div class="reveal" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:840px;margin:0 auto;" set:html={coverageChipsHTML()} />
+      <div class="reveal" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:840px;margin:0 auto;" set:html={coverageChipsHTML(d)} />
     </div>
   </section>
 

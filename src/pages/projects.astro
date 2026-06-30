@@ -1,6 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import { projectsListHTML, comingHTML } from '../lib/render.js';
+import { getData } from '../lib/data.js';
+
+const d = await getData();
 
 const title = 'Our Projects | Lincolnshire Builders | LME Building Contractors';
 const description = 'See recent extensions, renovations and new builds across Sleaford, Lincoln and Grantham — before-and-after photos of real Lincolnshire projects by LME Building Contractors.';
@@ -23,7 +26,7 @@ const description = 'See recent extensions, renovations and new builds across Sl
   </section>
 
   <section class="sec tex tex-dots" style="background:#fff;">
-    <div class="wrap g-cards" set:html={projectsListHTML()} />
+    <div class="wrap g-cards" set:html={projectsListHTML(d)} />
   </section>
 
   <section class="sec tex tex-grid" style="background:#f5f4f1;border-top:1px solid #ececea;">
@@ -32,7 +35,7 @@ const description = 'See recent extensions, renovations and new builds across Sl
         <h2 class="h2" style="margin-bottom:12px;">Upcoming Case Studies</h2>
         <p class="lead">New project galleries are added as builds complete.</p>
       </div>
-      <div class="g-cards" set:html={comingHTML()} />
+      <div class="g-cards" set:html={comingHTML(d)} />
     </div>
   </section>
 </Base>

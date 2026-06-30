@@ -1,11 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
-import { areaChips, fbUrl } from '../lib/content.js';
+import { getData } from '../lib/data.js';
 import {
   statsHTML, homeServicesHTML, valuePropsHTML, featuredHTML, galleryHTML,
   processHTML, testimonialsHTML, accHTML, homeBlogHTML,
 } from '../lib/render.js';
 
+const d = await getData();
+const areaChips = d.areaChips;
+const fbUrl = d.fbUrl;
 const title = 'Builders in Sleaford & Lincolnshire | LME Building Contractors';
 const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston & across Lincolnshire. Home extensions, renovations & new builds — fully insured, 10-yr guarantee, free quotes.';
 ---
@@ -76,7 +79,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
         <span class="eyebrow" style="margin-bottom:16px;">By The Numbers</span>
         <h2 class="h2">Our results in numbers</h2>
       </div>
-      <div class="g-stats" set:html={statsHTML()} />
+      <div class="g-stats" set:html={statsHTML(d)} />
     </div>
   </section>
 
@@ -88,7 +91,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
         <h2 class="h2" style="margin-bottom:16px;">Built to last. Finished to impress.</h2>
         <p class="lead">We focus on three things and do them properly. From a single-storey extension to a full new build, it's the same team on site and the same standards throughout — no subbing the work out and hoping for the best.</p>
       </div>
-      <div class="g-cards" set:html={homeServicesHTML()} />
+      <div class="g-cards" set:html={homeServicesHTML(d)} />
     </div>
   </section>
 
@@ -99,7 +102,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
         <span class="eyebrow" style="margin-bottom:16px;">Why Choose LME</span>
         <h2 class="h2">Trusted by Lincolnshire homeowners</h2>
       </div>
-      <div class="g-4" set:html={valuePropsHTML()} />
+      <div class="g-4" set:html={valuePropsHTML(d)} />
     </div>
   </section>
 
@@ -113,7 +116,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
         </div>
         <a class="btn btn-go" href="/projects" style="padding:14px 24px;font-size:14px;">All Projects →</a>
       </div>
-      <div class="g-cards" set:html={featuredHTML()} />
+      <div class="g-cards" set:html={featuredHTML(d)} />
     </div>
   </section>
 
@@ -124,7 +127,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
         <span class="eyebrow" style="margin-bottom:16px;">Straight From Site</span>
         <h2 class="h2">Our Work Gallery</h2>
       </div>
-      <div class="g-gallery reveal" set:html={galleryHTML()} />
+      <div class="g-gallery reveal" set:html={galleryHTML(d)} />
     </div>
   </section>
 
@@ -135,7 +138,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
         <span class="eyebrow" style="color:#5cc6e8;margin-bottom:16px;">How We Work</span>
         <h2 class="h2" style="color:#fff;">A clear, structured process.</h2>
       </div>
-      <div class="g-4" set:html={processHTML()} />
+      <div class="g-4" set:html={processHTML(d)} />
     </div>
   </section>
 
@@ -147,7 +150,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
         <h2 class="h2" style="margin-bottom:16px;">Rated 4.9/5 by Lincolnshire homeowners</h2>
         <div class="stars" style="font-size:22px;">★★★★★</div>
       </div>
-      <div class="g-cards" set:html={testimonialsHTML()} />
+      <div class="g-cards" set:html={testimonialsHTML(d)} />
     </div>
   </section>
 
@@ -155,7 +158,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
   <section style="background:#fff;border-top:1px solid #ececea;border-bottom:1px solid #ececea;">
     <div class="wrap" style="padding-top:clamp(40px,5vw,56px);padding-bottom:clamp(40px,5vw,56px);">
       <div style="text-align:center;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.5px;color:#79828f;text-transform:uppercase;margin-bottom:28px;">Accredited &amp; Trusted By</div>
-      <div class="g-acc reveal" set:html={accHTML()} />
+      <div class="g-acc reveal" set:html={accHTML(d)} />
     </div>
   </section>
 
@@ -183,7 +186,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
         </div>
         <a class="btn btn-go" href="/blog" style="padding:14px 24px;font-size:14px;">All Articles →</a>
       </div>
-      <div class="g-cards" set:html={homeBlogHTML()} />
+      <div class="g-cards" set:html={homeBlogHTML(d)} />
     </div>
   </section>
 

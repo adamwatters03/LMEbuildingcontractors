@@ -240,5 +240,19 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
 </div>
 
 <script src="/assets/js/interactions.js" is:inline></script>
+<script is:inline>
+  /* Storyblok visual-editor bridge: only loads inside the Storyblok editor */
+  if (location.search.includes('_storyblok')) {
+    var sbb = document.createElement('script');
+    sbb.src = 'https://app.storyblok.com/f/storyblok-v2-latest.js';
+    sbb.onload = function () {
+      if (window.StoryblokBridge) {
+        var bridge = new window.StoryblokBridge();
+        bridge.on(['published', 'change'], function () { location.reload(); });
+      }
+    };
+    document.head.appendChild(sbb);
+  }
+</script>
 </body>
 </html>

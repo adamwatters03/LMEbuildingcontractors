@@ -1,12 +1,8 @@
 /* =========================================================
    LME Building Contractors — HTML render helpers
-   Pure functions returning HTML strings, used with Astro set:html.
-   Ported from the original SPA renderer; links are real URLs.
+   Pure functions: take the resolved data object `d` (from
+   data.js) and return HTML strings, used with Astro set:html.
    ========================================================= */
-import {
-  stats, services, faqs, posts, postMeta, author, valueProps, process,
-  projectList, comingSoon, testimonials, accreditations, gallery, team, coverage
-} from './content.js';
 
 export function esc(s) {
   return String(s).replace(/[&<>"']/g, function (c) {
@@ -21,7 +17,6 @@ function asset(src) {
   return '/' + src;
 }
 
-// image slot: shows the real photo, falls back to a labelled placeholder
 export function slot(extra, label, src, alt) {
   var img = src
     ? '<img src="' + asset(src) + '" alt="' + esc(alt || label) + '" loading="lazy" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">'
@@ -33,8 +28,8 @@ var CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=
 var PIN = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.4"></circle></svg>';
 var TICK_CIRCLE = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#33b8de" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M7.5 12.5 L10.5 15.5 L16.5 8.5"></path></svg>';
 
-export function statsHTML() {
-  return stats.map(function (st) {
+export function statsHTML(d) {
+  return d.stats.map(function (st) {
     return '<div class="stat reveal">' +
       '<div class="stat-num"><span class="num" data-count="' + st.n + '" data-dec="' + st.dec + '">0</span>' +
       (st.suf ? '<span class="suf">' + esc(st.suf) + '</span>' : '') + '</div>' +
@@ -44,8 +39,8 @@ export function statsHTML() {
   }).join('');
 }
 
-export function homeServicesHTML() {
-  return services.map(function (svc) {
+export function homeServicesHTML(d) {
+  return d.services.map(function (svc) {
     return '<a class="card card-link reveal zoom-wrap" href="/services#svc-' + svc.id + '" style="overflow:hidden;display:block;text-decoration:none;">' +
       '<div style="position:relative;height:210px;overflow:hidden;">' +
         slot('fill zoom', 'Drop service photo', svc.img, svc.title) +
@@ -59,8 +54,8 @@ export function homeServicesHTML() {
   }).join('');
 }
 
-export function valuePropsHTML() {
-  return valueProps.map(function (vp) {
+export function valuePropsHTML(d) {
+  return d.valueProps.map(function (vp) {
     return '<div class="reveal" style="text-align:center;padding:0 6px;">' +
       '<div style="display:flex;justify-content:center;margin-bottom:18px;">' + TICK_CIRCLE + '</div>' +
       '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:18px;margin:0 0 10px;color:#15191f;">' + esc(vp.title) + '</h3>' +
@@ -69,8 +64,8 @@ export function valuePropsHTML() {
   }).join('');
 }
 
-export function featuredHTML() {
-  return projectList.map(function (proj) {
+export function featuredHTML(d) {
+  return d.projectList.map(function (proj) {
     return '<a class="card card-link reveal zoom-wrap" href="/projects/' + proj.id + '" style="overflow:hidden;display:block;text-decoration:none;">' +
       '<div style="position:relative;height:230px;overflow:hidden;">' +
         slot('fill zoom', 'Drop cover photo', proj.cover, proj.title) +
@@ -84,15 +79,15 @@ export function featuredHTML() {
   }).join('');
 }
 
-export function galleryHTML() {
-  return gallery.map(function (src) {
+export function galleryHTML(d) {
+  return d.gallery.map(function (src) {
     return slot('r8', 'Photo', src, 'LME Building Contractors project photo')
       .replace('class="img-slot r8"', 'class="img-slot r8" style="width:100%;aspect-ratio:1/1;"');
   }).join('');
 }
 
-export function processHTML() {
-  return process.map(function (step) {
+export function processHTML(d) {
+  return d.process.map(function (step) {
     return '<div class="reveal" style="border-top:2px solid #33b8de;padding-top:22px;">' +
       '<div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:15px;color:#5cc6e8;margin-bottom:14px;">/ ' + esc(step.n) + '</div>' +
       '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:20px;margin:0 0 10px;color:#fff;">' + esc(step.title) + '</h3>' +
@@ -101,8 +96,8 @@ export function processHTML() {
   }).join('');
 }
 
-export function testimonialsHTML() {
-  return testimonials.map(function (t) {
+export function testimonialsHTML(d) {
+  return d.testimonials.map(function (t) {
     return '<div class="card reveal" style="padding:30px 28px;display:flex;flex-direction:column;gap:16px;">' +
       '<div class="stars" style="font-size:16px;">★★★★★</div>' +
       '<p style="font-size:15.5px;line-height:1.65;color:#2c333d;margin:0;flex:1;">“' + esc(t.quote) + '”</p>' +
@@ -114,21 +109,22 @@ export function testimonialsHTML() {
   }).join('');
 }
 
-export function accHTML() {
-  return accreditations.map(function (acc) {
+export function accHTML(d) {
+  return d.accreditations.map(function (acc) {
+    var src = acc.url ? acc.url : ('/assets/img/accreditations/' + acc.file);
     return '<div class="acc-chip">' +
-      '<img src="/assets/img/accreditations/' + acc.file + '" alt="' + esc(acc.name) + '" loading="lazy" ' +
+      '<img src="' + src + '" alt="' + esc(acc.name) + '" loading="lazy" ' +
       'onerror="var s=document.createElement(\'span\');s.className=\'fallback\';s.textContent=this.alt;this.replaceWith(s)">' +
       '</div>';
   }).join('');
 }
 
-export function servicesListHTML() {
-  return services.map(function (svc, idx) {
-    var inc = svc.included.map(function (i) {
+export function servicesListHTML(d) {
+  return d.services.map(function (svc, idx) {
+    var inc = (svc.included || []).map(function (i) {
       return '<div style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#3a414c;font-weight:500;line-height:1.4;"><span class="diamond" style="margin-top:6px;"></span>' + esc(i) + '</div>';
     }).join('');
-    var next = services[idx + 1];
+    var next = d.services[idx + 1];
     var nextCta = next
       ? '<a class="read-more" href="/services#svc-' + next.id + '">Up next: ' + esc(next.title) + ' →</a>'
       : '<a class="read-more" href="/contact">Ready to start? Get a free quote →</a>';
@@ -151,8 +147,8 @@ export function servicesListHTML() {
   }).join('');
 }
 
-export function faqHTML() {
-  return faqs.map(function (f) {
+export function faqHTML(d) {
+  return d.faqs.map(function (f) {
     return '<div class="faq-item">' +
       '<button class="faq-q" type="button" aria-expanded="false"><span>' + esc(f.q) + '</span>' +
       '<span class="faq-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span></button>' +
@@ -161,8 +157,8 @@ export function faqHTML() {
   }).join('');
 }
 
-export function comingHTML() {
-  return comingSoon.map(function (cs) {
+export function comingHTML(d) {
+  return d.comingSoon.map(function (cs) {
     return '<div class="reveal" style="background:#fff;border:1px dashed #cdd2c9;border-radius:10px;padding:clamp(26px,2.4vw,34px);">' +
       '<div style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:#1192bb;margin-bottom:14px;">' + esc(cs.note) + '</div>' +
       '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:21px;margin:0 0 10px;color:#3a414c;">' + esc(cs.title) + '</h3>' +
@@ -170,15 +166,15 @@ export function comingHTML() {
   }).join('');
 }
 
-export function coverageChipsHTML() {
-  return coverage.map(function (town) {
+export function coverageChipsHTML(d) {
+  return d.coverage.map(function (town) {
     return '<div style="background:#fff;border:1px solid #e7e5e0;border-radius:100px;padding:11px 22px;font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:14px;color:#2c333d;display:flex;align-items:center;gap:9px;">' + PIN + esc(town) + '</div>';
   }).join('');
 }
 
-export function projectsListHTML() {
-  return projectList.map(function (proj) {
-    var pts = proj.points.map(function (pt) {
+export function projectsListHTML(d) {
+  return d.projectList.map(function (proj) {
+    var pts = (proj.points || []).map(function (pt) {
       return '<div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#3a414c;font-weight:500;"><span class="diamond"></span>' + esc(pt) + '</div>';
     }).join('');
     return '<a class="card card-link reveal" href="/projects/' + proj.id + '" style="overflow:hidden;display:block;text-decoration:none;">' +
@@ -200,8 +196,8 @@ export function projectsListHTML() {
   }).join('');
 }
 
-export function teamHTML() {
-  return team.map(function (m) {
+export function teamHTML(d) {
+  return d.team.map(function (m) {
     return '<div class="card reveal" style="overflow:hidden;">' +
       '<div class="img-slot" style="width:100%;height:320px;">' +
         (m.img ? '<img src="' + asset(m.img) + '" alt="' + esc(m.name) + '" loading="lazy" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">' : '') +
@@ -226,7 +222,8 @@ export function blogCard(p) {
     '</div></a>';
 }
 
-export function blogListHTML() {
+export function blogListHTML(d) {
+  var posts = d.posts;
   var f = posts[0];
   var featured = '<a class="blog-featured reveal" href="/blog/' + f.slug + '">' +
     '<div class="bf-img zoom-wrap">' + slot('fill zoom', 'Photo', f.img, f.title) + '</div>' +
@@ -240,20 +237,20 @@ export function blogListHTML() {
   return featured + grid;
 }
 
-export function homeBlogHTML() {
-  return posts.slice(0, 3).map(blogCard).join('');
+export function homeBlogHTML(d) {
+  return d.posts.slice(0, 3).map(blogCard).join('');
 }
 
-/* ---------- single blog post article ---------- */
-export function postArticleHTML(p) {
-  var m = postMeta[p.slug] || {};
+export function postArticleHTML(p, d) {
+  var m = (d.postMeta && d.postMeta[p.slug]) || {};
   var tags = m.tags || [p.cat];
+  var author = d.author;
   var service = m.service || { label: 'Our Services', hash: '/services' };
   var tagsHTML = tags.map(function (t) { return '<span class="post-tag">' + esc(t) + '</span>'; }).join('');
   var sideHTML =
     '<a class="rel-service" href="' + service.hash + '"><span class="rs-label">Related service</span><span class="rs-title">' + esc(service.label) + '</span><span class="rs-link">Learn more →</span></a>' +
     (m.pull ? '<div class="pull-quote"><span class="pq-mark">“</span><p>' + esc(m.pull) + '</p></div>' : '');
-  var related = posts.filter(function (x) { return x.slug !== p.slug; }).slice(0, 3);
+  var related = d.posts.filter(function (x) { return x.slug !== p.slug; }).slice(0, 3);
   var relHTML = related.map(function (r) {
     return '<a class="card card-link reveal zoom-wrap" href="/blog/' + r.slug + '" style="overflow:hidden;display:block;text-decoration:none;">' +
       '<div style="position:relative;height:190px;overflow:hidden;">' + slot('fill zoom', 'Photo', r.img, r.title) +
@@ -288,7 +285,6 @@ export function postArticleHTML(p) {
     '</article>';
 }
 
-/* ---------- single project detail ---------- */
 export function projectDetailHTML(pr) {
   var gal = (pr.gallery || []).map(function (g) {
     return '<div class="zoom-wrap" style="position:relative;border-radius:12px;overflow:hidden;height:clamp(180px,22vw,260px);">' + slot('fill zoom', 'Photo', g, pr.title) + '</div>';
@@ -323,7 +319,6 @@ export function projectDetailHTML(pr) {
     '</section>';
 }
 
-/* ---------- policy docs ---------- */
 export function policyDoc(title, intro, sections) {
   var body = '<span class="eyebrow" style="margin-bottom:16px;">Legal</span>' +
     '<h1 class="h2" style="margin-bottom:18px;">' + title + '</h1>' +

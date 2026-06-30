@@ -1,6 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import { blogListHTML } from '../lib/render.js';
+import { getData } from '../lib/data.js';
+
+const d = await getData();
 
 const title = 'Blog | Building Advice & Project Stories | LME Building Contractors';
 const description = 'Practical advice on extensions, renovations, planning and costs in Lincolnshire, plus stories from our recent building projects.';
@@ -16,6 +19,6 @@ const description = 'Practical advice on extensions, renovations, planning and c
     </div>
   </section>
   <section class="sec tex tex-dots" style="background:#fff;">
-    <div class="wrap" set:html={blogListHTML()} />
+    <div class="wrap" set:html={blogListHTML(d)} />
   </section>
 </Base>
