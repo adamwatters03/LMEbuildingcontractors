@@ -1,5 +1,7 @@
 ---
 import { faqs } from '../lib/content.js';
+import { getData } from '../lib/data.js';
+const _diag = (await getData())._diag || 'unknown';
 
 const {
   title,
@@ -111,6 +113,7 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
 {extraJsonLd && <script type="application/ld+json" set:html={JSON.stringify(extraJsonLd)} />}
 </head>
 <body>
+<!-- LME content-source: {_diag} -->
 <div class="progress" id="progress"></div>
 
 <header class="site-header over-hero" id="siteHeader">

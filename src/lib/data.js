@@ -66,8 +66,13 @@ export async function getData() {
       about: about || local.pages.about,
       contact: contact || local.pages.contact,
     };
+
+    d._diag = `storyblok cfg:${config ? 'y' : 'n'} posts:${posts ? posts.length : 0} projects:${projects ? projects.length : 0} pages:${home ? 'y' : 'n'}`;
+  } else {
+    d._diag = 'fallback-NO-TOKEN (STORYBLOK_TOKEN not set in this build)';
   }
 
+  console.log('[LME content] ' + d._diag);
   _cache = d;
   return d;
 }
