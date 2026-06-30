@@ -2,9 +2,8 @@
 import Base from '../layouts/Base.astro';
 import { projectsListHTML, comingHTML } from '../lib/render.js';
 import { getData } from '../lib/data.js';
-import { versionFromRequest } from '../lib/preview.js';
 
-const d = await getData(versionFromRequest(Astro));
+const d = await getData();
 
 const title = 'Our Projects | Lincolnshire Builders | LME Building Contractors';
 const description = 'See recent extensions, renovations and new builds across Sleaford, Lincoln and Grantham — before-and-after photos of real Lincolnshire projects by LME Building Contractors.';

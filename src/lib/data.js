@@ -33,24 +33,21 @@ const defaults = {
   pages: local.pages,
 };
 
-const _cache = {}; // version -> { data, ts }
-const TTL = 30_000; // ms; published is briefly memoised per server instance
+let _cache = null;
 
-export async function getData(version = 'published') {
-  const cached = _cache[version];
-  if (cached && version !== 'draft' && (Date.now() - cached.ts) < TTL) return cached.data;
-
+export async function getData() {
+  if (_cache) return _cache;
   const d = { ...defaults };
 
   if (storyblokEnabled) {
     const [config, posts, projects, home, services, about, contact] = await Promise.all([
-      sbConfig(local, version).catch(() => null),
-      sbPosts(local, version).catch(() => null),
-      sbProjects(local, version).catch(() => null),
-      sbPage('home', local.pages.home, version).catch(() => null),
-      sbPage('services', local.pages.services, version).catch(() => null),
-      sbPage('about', local.pages.about, version).catch(() => null),
-      sbPage('contact', local.pages.contact, version).catch(() => null),
+      sbConfig(local).catch(() => null),
+      sbPosts(local).catch(() => null),
+      sbProjects(local).catch(() => null),
+      sbPage('home', local.pages.home).catch(() => null),
+      sbPage('services', local.pages.services).catch(() => null),
+      sbPage('about', local.pages.about).catch(() => null),
+      sbPage('contact', local.pages.contact).catch(() => null),
     ]);
 
     if (config) Object.assign(d, config);
@@ -70,11 +67,12 @@ export async function getData(version = 'published') {
       contact: contact || local.pages.contact,
     };
 
-    d._diag = `storyblok(${version}) cfg:${config ? 'y' : 'n'} posts:${posts ? posts.length : 0} projects:${projects ? projects.length : 0} pages:${home ? 'y' : 'n'}`;
+    d._diag = `storyblok cfg:${config ? 'y' : 'n'} posts:${posts ? posts.length : 0} projects:${projects ? projects.length : 0} pages:${home ? 'y' : 'n'}`;
   } else {
-    d._diag = 'fallback-NO-TOKEN (STORYBLOK_TOKEN not set)';
+    d._diag = 'fallback-NO-TOKEN (STORYBLOK_TOKEN not set in this build)';
   }
 
-  _cache[version] = { data: d, ts: Date.now() };
+  console.log('[LME content] ' + d._diag);
+  _cache = d;
   return d;
 }

@@ -2,9 +2,8 @@
 import Base from '../layouts/Base.astro';
 import { testimonialsHTML, faqHTML } from '../lib/render.js';
 import { getData } from '../lib/data.js';
-import { versionFromRequest } from '../lib/preview.js';
 
-const d = await getData(versionFromRequest(Astro));
+const d = await getData();
 const p = d.pages.contact;
 const fbUrl = d.fbUrl;
 const title = 'Contact Us | Free Quote in Lincolnshire | LME Building Contractors';

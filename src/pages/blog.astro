@@ -2,9 +2,8 @@
 import Base from '../layouts/Base.astro';
 import { blogListHTML } from '../lib/render.js';
 import { getData } from '../lib/data.js';
-import { versionFromRequest } from '../lib/preview.js';
 
-const d = await getData(versionFromRequest(Astro));
+const d = await getData();
 
 const title = 'Blog | Building Advice & Project Stories | LME Building Contractors';
 const description = 'Practical advice on extensions, renovations, planning and costs in Lincolnshire, plus stories from our recent building projects.';
