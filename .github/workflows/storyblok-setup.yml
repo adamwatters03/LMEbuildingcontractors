@@ -1,0 +1,30 @@
+name: Storyblok setup & seed
+
+on:
+  workflow_dispatch:
+    inputs:
+      space_id:
+        description: 'Storyblok space ID'
+        required: true
+        default: '293539991422659'
+      region:
+        description: 'Region: eu / us / ap / ca'
+        required: true
+        default: 'eu'
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: astro-cms
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - env:
+          STORYBLOK_OAUTH_TOKEN: ${{ secrets.STORYBLOK_OAUTH_TOKEN }}
+          STORYBLOK_SPACE_ID: ${{ github.event.inputs.space_id }}
+          STORYBLOK_REGION: ${{ github.event.inputs.region }}
+        run: node scripts/storyblok-setup.mjs
