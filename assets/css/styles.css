@@ -222,6 +222,11 @@ textarea.field{resize:vertical}
    Blog cards, article prose, project detail
    ========================================================= */
 .post-cat{display:inline-block;background:rgba(51,184,222,.1);border:1px solid rgba(51,184,222,.28);color:#1192bb;font-family:'Montserrat',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;padding:5px 11px;border-radius:100px}
+.blog-featured{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,4vw,54px);align-items:center;text-decoration:none;padding-bottom:clamp(36px,5vw,56px);margin-bottom:clamp(36px,5vw,56px);border-bottom:1px solid #ececea}
+@media(max-width:820px){.blog-featured{grid-template-columns:1fr;gap:24px}}
+.blog-featured .bf-img{border-radius:14px;overflow:hidden;position:relative;height:clamp(280px,32vw,400px)}
+.blog-featured .read-more{display:inline-flex;align-items:center;gap:6px;transition:gap .2s}
+.blog-featured:hover .read-more{gap:11px}
 .post-meta{font-size:13px;color:#79828f;font-weight:500}
 .post-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:20px;line-height:1.25;color:#15191f;margin:12px 0 10px}
 .read-more{font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;letter-spacing:.5px;color:#1192bb}

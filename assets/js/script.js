@@ -396,9 +396,9 @@
         '</div></div>';
     }).join('');
 
-    /* blog listing */
+    /* blog listing — featured post + grid */
     if (el('blog-list')) {
-      el('blog-list').innerHTML = posts.map(function (p) {
+      function postCard(p) {
         return '<a class="card card-link reveal zoom-wrap" href="#blog/' + p.slug + '" style="overflow:hidden;display:block;text-decoration:none;">' +
           '<div style="position:relative;height:200px;overflow:hidden;">' + slot('fill zoom', 'Photo', p.img, p.title) + '</div>' +
           '<div style="padding:22px 24px 26px;">' +
@@ -407,7 +407,18 @@
             '<p style="font-size:14.5px;line-height:1.6;color:#5b6470;margin:0 0 16px;">' + esc(p.excerpt) + '</p>' +
             '<span class="read-more">Read article →</span>' +
           '</div></a>';
-      }).join('');
+      }
+      var f = posts[0];
+      var featured = '<a class="blog-featured reveal" href="#blog/' + f.slug + '">' +
+        '<div class="bf-img zoom-wrap">' + slot('fill zoom', 'Photo', f.img, f.title) + '</div>' +
+        '<div>' +
+          '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;"><span class="post-cat">' + esc(f.cat) + '</span><span class="post-meta">' + esc(f.date) + '</span></div>' +
+          '<h2 class="h2" style="font-size:clamp(26px,3.2vw,40px);margin:0 0 16px;">' + esc(f.title) + '</h2>' +
+          '<p class="lead" style="margin:0 0 24px;">' + esc(f.excerpt) + '</p>' +
+          '<span class="read-more" style="font-size:14px;">Read Article ↗</span>' +
+        '</div></a>';
+      var grid = '<div class="g-cards">' + posts.slice(1).map(postCard).join('') + '</div>';
+      el('blog-list').innerHTML = featured + grid;
     }
 
     renderPolicies();
