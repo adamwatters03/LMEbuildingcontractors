@@ -183,7 +183,7 @@
     }).join('');
 
     /* testimonials */
-    el('home-testimonials').innerHTML = testimonials.map(function (t) {
+    var testimonialsHTML = testimonials.map(function (t) {
       return '<div class="card reveal" style="padding:30px 28px;display:flex;flex-direction:column;gap:16px;">' +
         '<div class="stars" style="font-size:16px;">★★★★★</div>' +
         '<p style="font-size:15.5px;line-height:1.65;color:#2c333d;margin:0;flex:1;">“' + esc(t.quote) + '”</p>' +
@@ -193,6 +193,8 @@
           '<div style="font-size:13px;color:#79828f;">' + esc(t.meta) + '</div></div>' +
         '</div></div>';
     }).join('');
+    el('home-testimonials').innerHTML = testimonialsHTML;
+    if (el('contact-testimonials')) el('contact-testimonials').innerHTML = testimonialsHTML;
 
     /* accreditations — uniform white chips, logo contained, name as text fallback */
     el('home-acc').innerHTML = accreditations.map(function (acc) {
@@ -223,14 +225,16 @@
         '</div></div>';
     }).join('');
 
-    /* services FAQ */
-    el('services-faq').innerHTML = faqs.map(function (f) {
+    /* FAQ accordion (services + contact) */
+    var faqHTML = faqs.map(function (f) {
       return '<div class="faq-item">' +
         '<button class="faq-q" type="button" aria-expanded="false"><span>' + esc(f.q) + '</span>' +
         '<span class="faq-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span></button>' +
         '<div class="faq-a"><div class="faq-a-inner">' + esc(f.a) + '</div></div>' +
         '</div>';
     }).join('');
+    el('services-faq').innerHTML = faqHTML;
+    if (el('contact-faq')) el('contact-faq').innerHTML = faqHTML;
 
     /* coming soon (services + projects) */
     var comingHTML = comingSoon.map(function (cs) {
