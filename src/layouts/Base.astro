@@ -1,7 +1,10 @@
 ---
 import { faqs } from '../lib/content.js';
 import { getData } from '../lib/data.js';
-const _diag = (await getData())._diag || 'unknown';
+import { versionFromRequest, setCache } from '../lib/preview.js';
+const _version = versionFromRequest(Astro);
+setCache(Astro, _version);
+const _diag = (await getData(_version))._diag || 'unknown';
 
 const {
   title,
@@ -12,7 +15,7 @@ const {
   extraJsonLd = null,
 } = Astro.props;
 
-const site = 'https://www.lmebuildingcontractors.uk';
+const site = 'https://lmebuildingcontractors.uk';
 const canonical = new URL(Astro.url.pathname, site).href.replace(/\/$/, Astro.url.pathname === '/' ? '/' : '');
 const ogImageAbs = ogImage.startsWith('http') ? ogImage : site + ogImage;
 
@@ -113,7 +116,6 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
 {extraJsonLd && <script type="application/ld+json" set:html={JSON.stringify(extraJsonLd)} />}
 </head>
 <body>
-<!-- LME content-source: {_diag} -->
 <div id="lme-diag" style="display:none;position:fixed;left:0;bottom:0;z-index:99999;background:#06222c;color:#5cf;font:13px/1.5 monospace;padding:10px 14px;max-width:100vw;word-break:break-word;">content-source: {_diag}</div>
 <script is:inline>if(location.search.indexOf('diag')>-1){var e=document.getElementById('lme-diag');if(e)e.style.display='block';}</script>
 <div class="progress" id="progress"></div>
@@ -246,15 +248,17 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
 
 <script src="/assets/js/interactions.js" is:inline></script>
 <script is:inline>
-  /* Storyblok visual-editor bridge: only loads inside the Storyblok editor */
+  /* Storyblok visual-editor bridge: only loads inside the Storyblok editor.
+     Reloads the (draft-rendering) preview as you edit, so changes show live. */
   if (location.search.includes('_storyblok')) {
     var sbb = document.createElement('script');
     sbb.src = 'https://app.storyblok.com/f/storyblok-v2-latest.js';
     sbb.onload = function () {
-      if (window.StoryblokBridge) {
-        var bridge = new window.StoryblokBridge();
-        bridge.on(['published', 'change'], function () { location.reload(); });
-      }
+      if (!window.StoryblokBridge) return;
+      var bridge = new window.StoryblokBridge();
+      var t;
+      function reload() { clearTimeout(t); t = setTimeout(function () { location.reload(); }, 700); }
+      bridge.on(['input', 'change', 'published'], reload);
     };
     document.head.appendChild(sbb);
   }

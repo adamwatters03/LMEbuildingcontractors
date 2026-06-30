@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.lmebuildingcontractors.uk/sitemap.xml
+Sitemap: https://lmebuildingcontractors.uk/sitemap.xml

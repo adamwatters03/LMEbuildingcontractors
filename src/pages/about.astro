@@ -2,8 +2,9 @@
 import Base from '../layouts/Base.astro';
 import { statsHTML, teamHTML } from '../lib/render.js';
 import { getData } from '../lib/data.js';
+import { versionFromRequest } from '../lib/preview.js';
 
-const d = await getData();
+const d = await getData(versionFromRequest(Astro));
 const p = d.pages.about;
 const fbUrl = d.fbUrl;
 const title = 'About Us | Sleaford & Lincolnshire Builders | LME Building Contractors';
