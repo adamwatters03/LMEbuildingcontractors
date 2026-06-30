@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import { projectList } from '../../lib/content.js';
+import { projectDetailHTML } from '../../lib/render.js';
+
+export function getStaticPaths() {
+  return projectList.map((pr) => ({ params: { id: pr.id }, props: { pr } }));
+}
+
+const { pr } = Astro.props;
+const title = pr.title + ' | LME Building Contractors';
+const description = pr.short;
+---
+<Base title={title} description={description} page="projects" ogImage={'/' + pr.cover}>
+  <Fragment set:html={projectDetailHTML(pr)} />
+</Base>
