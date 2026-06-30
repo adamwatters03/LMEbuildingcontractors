@@ -241,7 +241,7 @@
 
     /* home services cards */
     el('home-services').innerHTML = services.map(function (svc) {
-      return '<a class="card card-link reveal zoom-wrap" href="#services" data-nav="services" style="overflow:hidden;display:block;text-decoration:none;">' +
+      return '<a class="card card-link reveal zoom-wrap" href="#services/svc-' + svc.id + '" style="overflow:hidden;display:block;text-decoration:none;">' +
         '<div style="position:relative;height:210px;overflow:hidden;">' +
           slot('fill zoom', 'Drop service photo', svc.img, svc.title) +
           '<span style="position:absolute;top:14px;left:14px;font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:12px;color:#06222c;background:#33b8de;padding:6px 11px;border-radius:5px;">' + esc(svc.n) + '</span>' +
@@ -249,7 +249,7 @@
         '<div style="padding:26px 26px 30px;">' +
           '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:21px;margin:0 0 10px;color:#15191f;">' + esc(svc.title) + '</h3>' +
           '<p style="font-size:15px;line-height:1.6;color:#5b6470;margin:0 0 18px;">' + esc(svc.short) + '</p>' +
-          '<span style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.6px;color:#1192bb;">LEARN MORE →</span>' +
+          '<span class="read-more">Learn more →</span>' +
         '</div></a>';
     }).join('');
 
@@ -314,11 +314,15 @@
     }).join('');
 
     /* services page — detailed rows */
-    el('services-list').innerHTML = services.map(function (svc) {
+    el('services-list').innerHTML = services.map(function (svc, idx) {
       var inc = svc.included.map(function (i) {
         return '<div style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#3a414c;font-weight:500;line-height:1.4;"><span class="diamond" style="margin-top:6px;"></span>' + esc(i) + '</div>';
       }).join('');
-      return '<div class="card reveal g-svc" style="overflow:hidden;">' +
+      var next = services[idx + 1];
+      var nextCta = next
+        ? '<a class="read-more" href="#services/svc-' + next.id + '">Up next: ' + esc(next.title) + ' →</a>'
+        : '<a class="read-more" href="#contact" data-nav="contact">Ready to start? Get a free quote →</a>';
+      return '<div class="card reveal g-svc" id="svc-' + svc.id + '" style="overflow:hidden;scroll-margin-top:90px;">' +
         '<div style="position:relative;min-height:340px;overflow:hidden;">' + slot('fill', 'Drop service photo', svc.img, svc.title) + '</div>' +
         '<div style="padding:clamp(30px,3.4vw,52px);display:flex;flex-direction:column;justify-content:center;">' +
           '<div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:14px;letter-spacing:1px;color:#1192bb;margin-bottom:14px;">/ ' + esc(svc.n) + ' — SERVICE</div>' +
@@ -330,7 +334,9 @@
             '<div><div style="font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.3px;color:#79828f;text-transform:uppercase;margin-bottom:6px;">Typical Timeline</div><div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:20px;color:#15191f;">' + esc(svc.timeline) + '</div></div>' +
             '<div><div style="font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.3px;color:#79828f;text-transform:uppercase;margin-bottom:6px;">Investment From</div><div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:20px;color:#15191f;">' + esc(svc.priceFrom) + '</div></div>' +
           '</div>' +
-          '<a class="btn btn-cy" href="#contact" data-nav="contact" style="align-self:flex-start;">Enquire About ' + esc(svc.title) + '</a>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;">' +
+            '<a class="btn btn-cy" href="#contact" data-nav="contact">Enquire About ' + esc(svc.title) + '</a>' + nextCta +
+          '</div>' +
         '</div></div>';
     }).join('');
 
@@ -398,16 +404,6 @@
 
     /* blog listing — featured post + grid */
     if (el('blog-list')) {
-      function postCard(p) {
-        return '<a class="card card-link reveal zoom-wrap" href="#blog/' + p.slug + '" style="overflow:hidden;display:block;text-decoration:none;">' +
-          '<div style="position:relative;height:200px;overflow:hidden;">' + slot('fill zoom', 'Photo', p.img, p.title) + '</div>' +
-          '<div style="padding:22px 24px 26px;">' +
-            '<div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;"><span class="post-cat">' + esc(p.cat) + '</span><span class="post-meta">' + esc(p.date) + '</span></div>' +
-            '<h3 class="post-title">' + esc(p.title) + '</h3>' +
-            '<p style="font-size:14.5px;line-height:1.6;color:#5b6470;margin:0 0 16px;">' + esc(p.excerpt) + '</p>' +
-            '<span class="read-more">Read article →</span>' +
-          '</div></a>';
-      }
       var f = posts[0];
       var featured = '<a class="blog-featured reveal" href="#blog/' + f.slug + '">' +
         '<div class="bf-img zoom-wrap">' + slot('fill zoom', 'Photo', f.img, f.title) + '</div>' +
@@ -417,9 +413,12 @@
           '<p class="lead" style="margin:0 0 24px;">' + esc(f.excerpt) + '</p>' +
           '<span class="read-more" style="font-size:14px;">Read Article ↗</span>' +
         '</div></a>';
-      var grid = '<div class="g-cards">' + posts.slice(1).map(postCard).join('') + '</div>';
+      var grid = '<div class="g-cards">' + posts.slice(1).map(blogCard).join('') + '</div>';
       el('blog-list').innerHTML = featured + grid;
     }
+
+    /* latest posts on the homepage */
+    if (el('home-blog')) el('home-blog').innerHTML = posts.slice(0, 3).map(blogCard).join('');
 
     renderPolicies();
   }
@@ -434,6 +433,18 @@
     'renovating-a-period-property-lincolnshire': { iso: '2026-04-16', tags: ['Renovations', 'Period Properties', 'Listed Buildings', 'Lincolnshire'], service: { label: 'High-End Renovations', hash: '#services' }, pull: 'Older buildings need to breathe — which is exactly why we use lime, not cement, on solid-wall properties.' },
     'questions-to-ask-a-builder': { iso: '2026-04-02', tags: ['Hiring a Builder', 'Advice', 'Quotes', 'Guarantees'], service: { label: 'Our Services', hash: '#services' }, pull: 'A good builder will answer all ten of these without flinching. If someone’s cagey about any of them, take it as a sign.' }
   };
+
+  function blogCard(p) {
+    return '<a class="card card-link reveal zoom-wrap" href="#blog/' + p.slug + '" style="overflow:hidden;display:block;text-decoration:none;">' +
+      '<div style="position:relative;height:200px;overflow:hidden;">' + slot('fill zoom', 'Photo', p.img, p.title) +
+        '<span class="post-cat" style="position:absolute;left:14px;bottom:14px;background:rgba(255,255,255,.94);">' + esc(p.cat) + '</span></div>' +
+      '<div style="padding:22px 24px 26px;">' +
+        '<div class="post-meta" style="margin-bottom:8px;">' + esc(p.date) + ' · ' + esc(p.read) + '</div>' +
+        '<h3 class="post-title">' + esc(p.title) + '</h3>' +
+        '<p style="font-size:14.5px;line-height:1.6;color:#5b6470;margin:0 0 16px;">' + esc(p.excerpt) + '</p>' +
+        '<span class="read-more">Read article →</span>' +
+      '</div></a>';
+  }
 
   function injectPostJsonLd(p, m, tags) {
     var s = document.getElementById('post-jsonld');
@@ -665,6 +676,13 @@
       setMeta('og:description', pr.short, 'property');
     } else {
       showPage(page, skipScroll);
+      if (slug) {
+        var target = document.getElementById(slug);
+        if (target) setTimeout(function () {
+          var y = target.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - 84;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }, 90);
+      }
     }
   }
 
