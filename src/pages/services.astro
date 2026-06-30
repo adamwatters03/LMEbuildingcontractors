@@ -2,8 +2,9 @@
 import Base from '../layouts/Base.astro';
 import { servicesListHTML, faqHTML, comingHTML, coverageChipsHTML } from '../lib/render.js';
 import { getData } from '../lib/data.js';
+import { versionFromRequest } from '../lib/preview.js';
 
-const d = await getData();
+const d = await getData(versionFromRequest(Astro));
 const p = d.pages.services;
 const title = 'Building Services in Lincolnshire | Extensions, Renovations & New Builds';
 const description = 'Home extensions, high-end renovations, new builds and loft conversions across Lincolnshire. Fixed pricing, free site visits and a 10-year workmanship guarantee.';

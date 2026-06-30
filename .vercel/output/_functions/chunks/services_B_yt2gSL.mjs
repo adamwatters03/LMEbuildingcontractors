@@ -1,0 +1,30 @@
+import { t as __exportAll } from "./compiler_C5pihw0V.mjs";
+import { C as createComponent, S as createAstro, b as unescapeHTML, d as renderTemplate, h as maybeRenderHead, i as renderComponent } from "./server_CkRQXLzT.mjs";
+import { S as getData, a as faqHTML, b as $$Base, h as servicesListHTML, i as coverageChipsHTML, r as comingHTML, x as versionFromRequest } from "./render_CAvtoo7a.mjs";
+//#region src/pages/services.astro
+var services_exports = /* @__PURE__ */ __exportAll({
+	default: () => $$Services,
+	file: () => $$file,
+	url: () => $$url
+});
+createAstro("https://lmebuildingcontractors.uk");
+var $$Services = createComponent(async ($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$Services;
+	const d = await getData(versionFromRequest(Astro));
+	const p = d.pages.services;
+	return renderTemplate`${renderComponent($$result, "Base", $$Base, {
+		"title": "Building Services in Lincolnshire | Extensions, Renovations & New Builds",
+		"description": "Home extensions, high-end renovations, new builds and loft conversions across Lincolnshire. Fixed pricing, free site visits and a 10-year workmanship guarantee.",
+		"page": "services",
+		"ogImage": "/assets/img/services-hero.jpg",
+		"includeFaq": true
+	}, { "default": ($$result) => renderTemplate`${maybeRenderHead($$result)}<section class="hero hero-inner"><div class="img-slot dark fill"><img src="/assets/img/services-hero.jpg" alt="Construction blueprints with hard hat and safety glasses" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop services hero photo</span></div><div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div><div class="wrap hin"><span class="eyebrow">${p.heroEyebrow}</span><h1 class="hero-h1">${p.heroTitle}</h1><p class="hero-isub">${p.heroSub}</p><div class="hero-proof"><div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div><span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Free Quotes</span><span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Fixed Pricing</span><span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>10-Yr Guarantee</span></div></div></section><section class="sec tex tex-dots" style="background:#fff;"><div class="wrap" style="display:flex;flex-direction:column;gap:clamp(28px,3.5vw,48px);">${unescapeHTML(servicesListHTML(d))}</div></section><section class="sec tex tex-dots" style="background:#fff;border-top:1px solid #ececea;"><div class="wrap"><div class="reveal" style="text-align:center;max-width:600px;margin:0 auto clamp(36px,4vw,52px);"><span class="eyebrow" style="margin-bottom:16px;">${p.faqEyebrow}</span><h2 class="h2">${p.faqHeading}</h2></div><div class="reveal" style="max-width:840px;margin:0 auto;">${unescapeHTML(faqHTML(d))}</div></div></section><section class="sec tex tex-grid" style="background:#f5f4f1;border-top:1px solid #ececea;"><div class="wrap"><div class="reveal" style="text-align:center;max-width:640px;margin:0 auto clamp(36px,4vw,52px);"><h2 class="h2" style="margin-bottom:12px;">${unescapeHTML(p.comingHeading)}</h2><p class="lead">${p.comingLead}</p></div><div class="g-cards">${unescapeHTML(comingHTML(d))}</div></div></section><section class="sec tex tex-grid" style="background:#f5f4f1;border-top:1px solid #ececea;"><div class="wrap"><div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(30px,4vw,44px);"><span class="eyebrow" style="margin-bottom:16px;">${p.coverageEyebrow}</span><h2 class="h2" style="margin-bottom:14px;">${p.coverageHeading}</h2><p class="lead">${p.coverageLead}</p></div><div class="reveal" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:840px;margin:0 auto;">${unescapeHTML(coverageChipsHTML(d))}</div></div></section><section style="background:#1192bb;"><div class="wrap split" style="padding-top:clamp(40px,5vw,56px);padding-bottom:clamp(40px,5vw,56px);"><div style="max-width:620px;"><h2 style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(24px,2.8vw,34px);color:#fff;margin:0 0 8px;letter-spacing:-0.4px;">${p.ctaHeading}</h2><p style="font-size:16px;color:#dff4fb;margin:0;">${p.ctaText}</p></div><a class="btn" href="/contact" style="background:#fff;color:#0c3d4c;">${p.ctaButton}</a></div></section>` })}`;
+}, "/home/claude/repo/src/pages/services.astro", void 0);
+var $$file = "/home/claude/repo/src/pages/services.astro";
+var $$url = "/services";
+//#endregion
+//#region \0virtual:astro:page:src/pages/services@_@astro
+var page = () => services_exports;
+//#endregion
+export { page };

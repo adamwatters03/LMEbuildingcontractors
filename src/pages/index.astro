@@ -1,12 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getData } from '../lib/data.js';
+import { versionFromRequest } from '../lib/preview.js';
 import {
   statsHTML, homeServicesHTML, valuePropsHTML, featuredHTML, galleryHTML,
   processHTML, testimonialsHTML, accHTML, homeBlogHTML,
 } from '../lib/render.js';
 
-const d = await getData();
+const d = await getData(versionFromRequest(Astro));
 const p = d.pages.home;
 const areaChips = d.areaChips;
 const fbUrl = d.fbUrl;

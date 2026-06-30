@@ -6,7 +6,7 @@
    ========================================================= */
 
 const TOKEN = import.meta.env.STORYBLOK_TOKEN || process.env.STORYBLOK_TOKEN || '';
-const VERSION = (import.meta.env.STORYBLOK_VERSION || process.env.STORYBLOK_VERSION || 'published');
+const DEFAULT_VERSION = (import.meta.env.STORYBLOK_VERSION || process.env.STORYBLOK_VERSION || 'published');
 const REGION = (import.meta.env.STORYBLOK_REGION || process.env.STORYBLOK_REGION || 'eu');
 
 const BASE = {
@@ -18,9 +18,11 @@ const BASE = {
 
 export const storyblokEnabled = !!TOKEN;
 
-async function cdn(path, params = {}) {
+async function cdn(path, params = {}, version) {
   if (!TOKEN) return null;
-  const usp = new URLSearchParams({ token: TOKEN, version: VERSION, ...params });
+  const v = version || DEFAULT_VERSION;
+  const extra = v === 'draft' ? { cv: String(Date.now()) } : {}; // bust cache for live drafts
+  const usp = new URLSearchParams({ token: TOKEN, version: v, ...extra, ...params });
   const url = `${BASE}/v2/cdn/${path}?${usp.toString()}`;
   try {
     const res = await fetch(url);
@@ -135,26 +137,26 @@ function mapPage(content, def) {
   return out;
 }
 
-export async function sbPage(slug, def) {
-  const json = await cdn('stories/' + slug);
+export async function sbPage(slug, def, version) {
+  const json = await cdn('stories/' + slug, {}, version);
   if (!json || !json.story) return null;
   return mapPage(json.story.content, def);
 }
 
-export async function sbConfig(local) {
-  const json = await cdn('stories/config');
+export async function sbConfig(local, version) {
+  const json = await cdn('stories/config', {}, version);
   if (!json || !json.story) return null;
   return mapConfig(json.story.content, local);
 }
 
-export async function sbPosts(local) {
-  const json = await cdn('stories', { starts_with: 'blog/', per_page: '100', sort_by: 'content.iso:desc' });
+export async function sbPosts(local, version) {
+  const json = await cdn('stories', { starts_with: 'blog/', per_page: '100', sort_by: 'content.iso:desc' }, version);
   if (!json || !Array.isArray(json.stories) || !json.stories.length) return null;
   return json.stories.map((s) => mapPost(s, local));
 }
 
-export async function sbProjects(local) {
-  const json = await cdn('stories', { starts_with: 'projects/', per_page: '100' });
+export async function sbProjects(local, version) {
+  const json = await cdn('stories', { starts_with: 'projects/', per_page: '100' }, version);
   if (!json || !Array.isArray(json.stories) || !json.stories.length) return null;
   return json.stories.map((s) => mapProject(s, local));
 }

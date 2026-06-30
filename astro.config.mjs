@@ -1,9 +1,11 @@
 import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel';
 
-// Storyblok integration is added in the CMS-wiring phase (needs STORYBLOK_TOKEN).
-// During the design-port phase the site builds as static HTML with no external calls.
+// On-demand (server) rendering on Vercel so the site can:
+//  - show published content within seconds of a Storyblok publish (edge-cached), and
+//  - render DRAFT content live inside the Storyblok visual editor.
 export default defineConfig({
-  site: 'https://www.lmebuildingcontractors.uk',
-  trailingSlash: 'ignore',
-  build: { format: 'directory' },
+  site: 'https://lmebuildingcontractors.uk',
+  output: 'server',
+  adapter: vercel(),
 });
