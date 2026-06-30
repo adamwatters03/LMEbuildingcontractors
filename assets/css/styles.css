@@ -407,3 +407,17 @@ textarea.field{resize:vertical}
 }
 /* keep fixed-header offset consistent on hash-targeted content */
 .page{scroll-margin-top:90px}
+
+/* ===== Facebook / social ===== */
+.fb-pill{display:inline-flex;align-items:center;gap:9px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;letter-spacing:.2px;color:#9aa4b1;text-decoration:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:9px 16px 9px 12px;transition:all .2s}
+.fb-pill svg{width:18px;height:18px;color:#5cc6e8;flex:none;transition:color .2s}
+.fb-pill:hover{color:#fff;background:#1877f2;border-color:#1877f2}
+.fb-pill:hover svg{color:#fff}
+.fb-band{display:flex;align-items:center;gap:clamp(20px,3vw,40px);background:linear-gradient(120deg,#1877f2,#0d5fd1);border-radius:20px;padding:clamp(28px,4vw,44px) clamp(26px,4vw,52px);color:#fff;overflow:hidden;position:relative}
+.fb-band-ico{width:clamp(56px,7vw,76px);height:clamp(56px,7vw,76px);border-radius:18px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex:none}
+.fb-band-ico svg{width:55%;height:55%;color:#fff}
+.fb-band h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(21px,2.5vw,28px);margin:0 0 8px;letter-spacing:-.4px}
+.fb-band p{margin:0;font-size:15px;line-height:1.6;color:rgba(255,255,255,.9);max-width:520px}
+.fb-band .btn-fb{flex:none;background:#fff;color:#0d5fd1;font-family:'Montserrat',sans-serif;font-weight:700;border-radius:10px;padding:14px 24px;text-decoration:none;white-space:nowrap;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 22px rgba(0,0,0,.18)}
+.fb-band .btn-fb:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.26)}
+@media(max-width:760px){.fb-band{flex-direction:column;text-align:center}.fb-band p{margin:0 auto}}
