@@ -218,6 +218,34 @@ textarea.field{resize:vertical}
 .step-row{display:flex;gap:14px;align-items:flex-start}
 .step-num{width:30px;height:30px;border-radius:50%;background:#33b8de;color:#06222c;font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
 
+/* =========================================================
+   Blog cards, article prose, project detail
+   ========================================================= */
+.post-cat{display:inline-block;background:rgba(51,184,222,.1);border:1px solid rgba(51,184,222,.28);color:#1192bb;font-family:'Montserrat',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;padding:5px 11px;border-radius:100px}
+.post-meta{font-size:13px;color:#79828f;font-weight:500}
+.post-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:20px;line-height:1.25;color:#15191f;margin:12px 0 10px}
+.read-more{font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;letter-spacing:.5px;color:#1192bb}
+
+.back-link{display:inline-flex;align-items:center;gap:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:#1192bb;text-decoration:none;transition:gap .2s}
+.back-link:hover{gap:13px}
+
+.prose{max-width:760px;margin:0 auto}
+.prose>p{font-size:16.5px;line-height:1.8;color:#3a414c;margin:0 0 20px}
+.prose h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(21px,2.1vw,27px);color:#15191f;margin:38px 0 14px;letter-spacing:-.3px}
+.prose h3{font-family:'Montserrat',sans-serif;font-weight:700;font-size:19px;color:#15191f;margin:26px 0 10px}
+.prose ul{margin:0 0 22px;padding:0;list-style:none}
+.prose li{position:relative;padding-left:26px;margin-bottom:11px;font-size:16px;line-height:1.7;color:#3a414c}
+.prose li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;background:#33b8de;transform:rotate(45deg)}
+.prose strong{color:#15191f;font-weight:700}
+.prose blockquote{margin:0 0 22px;padding:18px 24px;background:#f5f4f1;border-left:3px solid #33b8de;border-radius:8px;font-size:16px;line-height:1.7;color:#3a414c}
+.prose a{color:#1192bb;font-weight:600}
+
+.spec-list{display:flex;flex-direction:column}
+.spec-row{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid #ececea}
+.spec-row:last-child{border-bottom:0}
+.spec-row .k{color:#79828f;font-weight:500;font-size:14px}
+.spec-row .v{color:#15191f;font-weight:700;font-family:'Montserrat',sans-serif;font-size:14.5px;text-align:right}
+
 /* contact methods list (clean, reference-style) */
 .contact-methods{display:flex;flex-direction:column}
 .cm-item{display:flex;gap:16px;align-items:flex-start;padding:24px 0;border-bottom:1px solid #ececea}
