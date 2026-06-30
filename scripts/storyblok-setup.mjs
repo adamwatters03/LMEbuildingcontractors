@@ -38,13 +38,23 @@ const MAPI = {
   ca: 'https://mapi-ca.storyblok.com/v1',
 }[REGION] || 'https://mapi.storyblok.com/v1';
 
-async function mapi(method, path, body) {
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+let _last = 0;
+async function mapi(method, path, body, attempt = 0) {
+  // throttle to stay under Storyblok's 6 req/s limit
+  const wait = Math.max(0, 220 - (Date.now() - _last));
+  if (wait) await sleep(wait);
+  _last = Date.now();
   const res = await fetch(`${MAPI}/spaces/${SPACE}${path}`, {
     method,
     headers: { Authorization: TOKEN, 'Content-Type': 'application/json' },
     body: body ? JSON.stringify(body) : undefined,
   });
   const text = await res.text();
+  if ((res.status === 429 || res.status >= 500) && attempt < 6) {
+    await sleep(1000 * (attempt + 1));
+    return mapi(method, path, body, attempt + 1);
+  }
   let json; try { json = text ? JSON.parse(text) : {}; } catch { json = { raw: text }; }
   if (!res.ok) throw new Error(`${method} ${path} → ${res.status}: ${text.slice(0, 400)}`);
   return json;
