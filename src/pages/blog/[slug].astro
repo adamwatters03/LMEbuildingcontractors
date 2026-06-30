@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getData } from '../../lib/data.js';
+import { postArticleHTML } from '../../lib/render.js';
+
+export async function getStaticPaths() {
+  const d = await getData();
+  return d.posts.map((p) => ({ params: { slug: p.slug }, props: { p, d } }));
+}
+
+const { p, d } = Astro.props;
+const m = (d.postMeta && d.postMeta[p.slug]) || {};
+const tags = m.tags || [p.cat];
+const site = 'https://www.lmebuildingcontractors.uk';
+const title = p.title + ' | LME Building Contractors';
+const description = p.excerpt;
+const imgAbs = p.img.startsWith('http') ? p.img : site + '/' + p.img;
+
+const jsonLd = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting',
+  headline: p.title, description: p.excerpt, image: imgAbs,
+  datePublished: m.iso, dateModified: m.iso,
+  author: { '@type': 'Person', name: d.author.name },
+  publisher: { '@type': 'Organization', name: 'LME Building Contractors', logo: { '@type': 'ImageObject', url: site + '/assets/favicon.svg' } },
+  keywords: tags.join(', '),
+  mainEntityOfPage: site + '/blog/' + p.slug,
+};
+---
+<Base title={title} description={description} page="blog" ogImage={p.img.startsWith('http') ? p.img : '/' + p.img} extraJsonLd={jsonLd}>
+  <Fragment set:html={postArticleHTML(p, d)} />
+</Base>
