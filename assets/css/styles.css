@@ -204,6 +204,18 @@ textarea.field{resize:vertical}
 .foot-link{font-size:14.5px;color:#9aa4b1;cursor:pointer;text-decoration:none;transition:color .2s}
 .foot-link:hover{color:#5cc6e8}
 
+/* contact form layout */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.fgrid{grid-template-columns:1fr}}
+.fld{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.fld>label{font-family:'Montserrat',sans-serif;font-weight:600;font-size:12.5px;letter-spacing:.2px;color:#3a414c}
+.fld .req{color:#1192bb}
+.contact-card-ico{width:46px;height:46px;border-radius:12px;background:#eaf7fc;display:flex;align-items:center;justify-content:center;margin-bottom:14px;flex:none}
+.contact-label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:1.6px;color:#1192bb;text-transform:uppercase;margin-bottom:7px}
+.contact-val{font-family:'Montserrat',sans-serif;font-weight:700;font-size:16px;color:#15191f;line-height:1.4;word-break:break-word}
+.step-row{display:flex;gap:14px;align-items:flex-start}
+.step-num{width:30px;height:30px;border-radius:50%;background:#33b8de;color:#06222c;font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+
 /* area chips (Areas We Cover) */
 .area-chip{background:#fff;border:1px solid #e7e5e0;border-radius:100px;padding:11px 20px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px;color:#2c333d;display:inline-flex;align-items:center;gap:9px;transition:border-color .2s,color .2s,transform .2s}
 .area-chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#33b8de;flex:none}

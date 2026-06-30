@@ -304,7 +304,7 @@
     if (priv) priv.innerHTML = policyDoc('Privacy Policy',
       'This policy explains how LME Building Contractors collects, uses and protects the personal information you provide through this website, in line with the UK GDPR and Data Protection Act 2018.',
       [
-        { h: 'Who we are', p: 'LME Building Contractors is a building contractor based in Sleaford, Lincolnshire. For any data queries, contact us at <a href="mailto:enquiries@lmebuilding.co.uk" style="color:#1192bb;">enquiries@lmebuilding.co.uk</a>.' },
+        { h: 'Who we are', p: 'LME Building Contractors is a building contractor based in Sleaford, Lincolnshire. For any data queries, contact us at <a href="mailto:Lmebuildingcontractors@hotmail.com" style="color:#1192bb;">Lmebuildingcontractors@hotmail.com</a>.' },
         { h: 'What we collect', p: 'When you submit our enquiry form we collect your name, email address, phone number and the project details you choose to share. We do not collect this information unless you provide it.' },
         { h: 'How we use it', p: 'We use your details solely to respond to your enquiry, provide quotations and manage any resulting project. We do not sell your data or share it with third parties for marketing.' },
         { h: 'How long we keep it', p: 'We retain enquiry information only as long as necessary to deal with your request and any legal or accounting obligations, after which it is securely deleted.' },
@@ -345,7 +345,7 @@
     services: 'Home extensions, high-end renovations, new builds and loft conversions across Lincolnshire. Fixed pricing, free site visits and a 10-year workmanship guarantee.',
     projects: 'See recent extensions, renovations and new builds across Sleaford, Lincoln and Grantham — before-and-after photos of real Lincolnshire projects by LME Building Contractors.',
     about: 'Reliable local Lincolnshire contractors with 15+ years on the tools. Fully insured and accredited, every build led on-site with a 10-year workmanship guarantee.',
-    contact: 'Get a free, no-obligation quote within one working day. Extensions, renovations and new builds across Lincolnshire. Call LME Building Contractors on 01205 835 030.',
+    contact: 'Get a free, no-obligation quote within one working day. Extensions, renovations and new builds across Lincolnshire. Call LME Building Contractors on 07592 278032.',
     privacy: 'How LME Building Contractors collects, uses and protects your personal information, in line with UK GDPR.',
     cookies: 'How this website uses cookies and how you can control them.',
     terms: 'The terms and conditions for using the LME Building Contractors website.'
@@ -525,6 +525,28 @@
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      var d = new FormData(form);
+      function g(k) { return (d.get(k) || '').toString().trim(); }
+      var subject = 'Quote request — ' + (g('type') || 'Project') + (g('location') ? ' in ' + g('location') : '');
+      var body = [
+        'Name: ' + g('name'),
+        'Email: ' + g('email'),
+        'Phone: ' + g('phone'),
+        'Location: ' + g('location'),
+        'Project type: ' + g('type'),
+        'Project size: ' + g('size'),
+        'Budget: ' + g('budget'),
+        'Preferred date: ' + g('date'),
+        'Preferred time: ' + g('time'),
+        '',
+        'Details:',
+        g('message')
+      ].join('\n');
+      // no backend: open the visitor's email client pre-filled to LME's inbox
+      try {
+        window.location.href = 'mailto:Lmebuildingcontractors@hotmail.com?subject=' +
+          encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      } catch (err) { /* ignore */ }
       form.style.display = 'none';
       var thanks = el('contact-thanks');
       if (thanks) thanks.style.display = 'block';
