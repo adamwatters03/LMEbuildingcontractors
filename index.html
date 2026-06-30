@@ -97,18 +97,45 @@
     <div class="img-slot dark fill"><img src="assets/img/home-hero.jpg" alt="Builder reviewing plans inside a timber-framed new build" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop hero build photo</span></div>
     <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.88) 0%,rgba(8,11,15,0.52) 46%,rgba(8,11,15,0.12) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
-      <p class="hero-eyebrow">Premium Lincolnshire Contractors</p>
-      <h1 class="hero-title">Building Your Vision, <span class="cy">Realised.</span></h1>
-      <p class="hero-sub">We design and build bespoke extensions, full renovations and new homes across Sleaford, Lincoln, Grantham and the wider Lincolnshire area — one team, start to finish, with a 10-year guarantee behind every job.</p>
-      <div class="hero-cta">
-        <a class="btn btn-cy" href="#contact" data-nav="contact">Get a Free Quote</a>
-        <a class="btn btn-gl" href="#projects" data-nav="projects">View Our Work</a>
-      </div>
-      <div class="hero-trustbar">
-        <div class="t-item"><span class="stars" style="font-size:14px;">★★★★★</span>&nbsp;4.9 / 5 · 127 reviews</div>
-        <div class="t-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Fully Insured</div>
-        <div class="t-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>15+ Years</div>
-        <div class="t-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>10-Year Guarantee</div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">Premium Lincolnshire Contractors</p>
+          <h1 class="hero-title">Building Your Vision, <span class="cy">Realised.</span></h1>
+          <p class="hero-sub">We design and build bespoke extensions, full renovations and new homes across Sleaford, Lincoln, Grantham and the wider Lincolnshire area — one team, start to finish, with a 10-year guarantee behind every job.</p>
+          <div class="hero-cta">
+            <a class="btn btn-cy" href="#contact" data-nav="contact">Get a Free Quote</a>
+            <a class="btn btn-gl" href="#projects" data-nav="projects">View Our Work</a>
+          </div>
+          <div class="hero-trustbar">
+            <div class="t-item"><span class="stars" style="font-size:14px;">★★★★★</span>&nbsp;4.9 / 5 · 127 reviews</div>
+            <div class="t-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Fully Insured</div>
+            <div class="t-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>15+ Years</div>
+            <div class="t-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>10-Year Guarantee</div>
+          </div>
+        </div>
+        <div class="hero-form-card">
+          <h2>Get a Free Estimate</h2>
+          <p class="hfc-sub">A quick, no-obligation quote — we'll get back to you within one working day.</p>
+          <div id="hero-thanks" style="display:none;background:#eaf7fc;border:1px solid #33b8de;border-radius:12px;padding:26px;text-align:center;">
+            <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:19px;color:#1192bb;margin-bottom:8px;">Thanks!</div>
+            <p style="font-size:14px;color:#3a414c;margin:0;">We've got your details and we'll be in touch shortly.</p>
+          </div>
+          <form id="hero-form">
+            <input type="text" name="name" required placeholder="Your name" class="field">
+            <input type="text" name="contact" required placeholder="Phone or email" class="field">
+            <select name="type" class="field">
+              <option value="">What's the project?</option>
+              <option>Home extension</option>
+              <option>Loft conversion</option>
+              <option>Garage conversion</option>
+              <option>Renovation / refurbishment</option>
+              <option>New build</option>
+              <option>Something else</option>
+            </select>
+            <button type="submit" class="btn btn-cy" style="width:100%;">Get My Free Estimate</button>
+          </form>
+          <p class="hfc-foot">Prefer to talk? Call <a href="tel:07592278032">07592 278032</a></p>
+        </div>
       </div>
     </div>
   </section>
@@ -125,7 +152,7 @@
   </section>
 
   <!-- STATS / TRUST -->
-  <section class="sec tex tex-dots" style="background:#fff;">
+  <section class="sec tex tex-grid" style="background:#f5f4f1;">
     <div class="wrap">
       <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(42px,5vw,62px);">
         <span class="eyebrow" style="margin-bottom:16px;">By The Numbers</span>
@@ -409,7 +436,7 @@
   </section>
 
   <!-- STATS -->
-  <section class="sec tex tex-dots" style="background:#fff;">
+  <section class="sec tex tex-grid" style="background:#f5f4f1;">
     <div class="wrap">
       <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(42px,5vw,62px);">
         <span class="eyebrow" style="margin-bottom:16px;">By The Numbers</span>

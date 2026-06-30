@@ -225,9 +225,11 @@
 
     /* services FAQ */
     el('services-faq').innerHTML = faqs.map(function (f) {
-      return '<div style="border-bottom:1px solid #ececea;padding:24px 0;">' +
-        '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:clamp(17px,1.6vw,20px);margin:0 0 10px;color:#15191f;">' + esc(f.q) + '</h3>' +
-        '<p style="font-size:15px;line-height:1.65;color:#5b6470;margin:0;">' + esc(f.a) + '</p></div>';
+      return '<div class="faq-item">' +
+        '<button class="faq-q" type="button" aria-expanded="false"><span>' + esc(f.q) + '</span>' +
+        '<span class="faq-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span></button>' +
+        '<div class="faq-a"><div class="faq-a-inner">' + esc(f.a) + '</div></div>' +
+        '</div>';
     }).join('');
 
     /* coming soon (services + projects) */
@@ -552,6 +554,35 @@
       if (thanks) thanks.style.display = 'block';
     });
   }
+
+  /* ---------- homepage hero estimate form ---------- */
+  var heroForm = el('hero-form');
+  if (heroForm) {
+    heroForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var d = new FormData(heroForm);
+      function g(k) { return (d.get(k) || '').toString().trim(); }
+      var subject = 'Free estimate request' + (g('type') ? ' — ' + g('type') : '');
+      var body = ['Name: ' + g('name'), 'Phone/email: ' + g('contact'), 'Project: ' + g('type'), '', '(Sent from the homepage estimate form)'].join('\n');
+      try {
+        window.location.href = 'mailto:Lmebuildingcontractors@hotmail.com?subject=' +
+          encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      } catch (err) { /* ignore */ }
+      heroForm.style.display = 'none';
+      var t = el('hero-thanks'); if (t) t.style.display = 'block';
+    });
+  }
+
+  /* ---------- FAQ accordion ---------- */
+  document.addEventListener('click', function (e) {
+    var q = e.target.closest('.faq-q');
+    if (!q) return;
+    var item = q.closest('.faq-item');
+    var ans = item.querySelector('.faq-a');
+    var open = item.classList.toggle('open');
+    q.setAttribute('aria-expanded', open ? 'true' : 'false');
+    ans.style.maxHeight = open ? (ans.scrollHeight + 'px') : '';
+  });
 
   /* ---------- cookie consent ---------- */
   var COOKIE_KEY = 'lme-cookie-consent';
