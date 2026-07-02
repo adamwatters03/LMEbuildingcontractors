@@ -22,9 +22,9 @@ const driveIcons = [
     <div class="img-slot dark fill"><img src="/assets/img/about-hero.jpg" alt="Two builders in hi-vis shaking hands on site" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop team / on-site hero photo</span></div>
     <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
-      <span class="eyebrow">{p.heroEyebrow}</span>
+      <span class="eyebrow" data-sb="heroEyebrow">{p.heroEyebrow}</span>
       <h1 class="hero-h1">{p.heroTitle}</h1>
-      <p class="hero-isub">{p.heroSub}</p>
+      <p class="hero-isub" data-sb="heroSub">{p.heroSub}</p>
       <div class="hero-proof">
         <div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>
         <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Fully Insured</span>
@@ -38,13 +38,13 @@ const driveIcons = [
   <section class="sec tex tex-dots" style="background:#fff;">
     <div class="wrap g-story">
       <div class="reveal">
-        <span class="eyebrow" style="margin-bottom:16px;">{p.storyEyebrow}</span>
-        <h2 class="h2" style="margin-bottom:20px;">{p.storyHeading}</h2>
-        <p style="font-size:15.5px;line-height:1.78;color:#5b6470;margin:0 0 16px;">{p.storyP1}</p>
-        <p style="font-size:15.5px;line-height:1.78;color:#5b6470;margin:0 0 26px;">{p.storyP2}</p>
+        <span class="eyebrow" style="margin-bottom:16px;" data-sb="storyEyebrow">{p.storyEyebrow}</span>
+        <h2 class="h2" style="margin-bottom:20px;" data-sb="storyHeading">{p.storyHeading}</h2>
+        <p style="font-size:15.5px;line-height:1.78;color:#5b6470;margin:0 0 16px;" data-sb="storyP1">{p.storyP1}</p>
+        <p style="font-size:15.5px;line-height:1.78;color:#5b6470;margin:0 0 26px;" data-sb="storyP2">{p.storyP2}</p>
         <div style="display:flex;gap:14px;flex-wrap:wrap;">
-          <a class="btn btn-cy" href="/contact">{p.storyCta1}</a>
-          <a class="btn btn-go" href="/projects">{p.storyCta2}</a>
+          <a class="btn btn-cy" href="/contact" data-sb="storyCta1">{p.storyCta1}</a>
+          <a class="btn btn-go" href="/projects" data-sb="storyCta2">{p.storyCta2}</a>
         </div>
         <a href={fbUrl} target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:#1877f2;text-decoration:none;"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8v8.44C19.61 23.08 24 18.09 24 12.07Z"/></svg>{p.storyFb}</a>
       </div>
@@ -56,8 +56,8 @@ const driveIcons = [
   <section class="sec tex tex-grid" style="background:#f5f4f1;">
     <div class="wrap">
       <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(40px,5vw,58px);">
-        <span class="eyebrow" style="margin-bottom:16px;">{p.drivesEyebrow}</span>
-        <h2 class="h2">{p.drivesHeading}</h2>
+        <span class="eyebrow" style="margin-bottom:16px;" data-sb="drivesEyebrow">{p.drivesEyebrow}</span>
+        <h2 class="h2" data-sb="drivesHeading">{p.drivesHeading}</h2>
       </div>
       <div class="g-2">
         {p.drives.map((b, i) => (
@@ -75,8 +75,8 @@ const driveIcons = [
   <section class="sec tex tex-grid" style="background:#f5f4f1;">
     <div class="wrap">
       <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(42px,5vw,62px);">
-        <span class="eyebrow" style="margin-bottom:16px;">{p.statsEyebrow}</span>
-        <h2 class="h2">{p.statsHeading}</h2>
+        <span class="eyebrow" style="margin-bottom:16px;" data-sb="statsEyebrow">{p.statsEyebrow}</span>
+        <h2 class="h2" data-sb="statsHeading">{p.statsHeading}</h2>
       </div>
       <div class="g-stats" set:html={statsHTML(d)} />
     </div>
@@ -86,8 +86,8 @@ const driveIcons = [
   <section class="sec tex tex-grid" style="background:#f5f4f1;">
     <div class="wrap">
       <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto clamp(40px,5vw,58px);">
-        <span class="eyebrow" style="margin-bottom:16px;">{p.processEyebrow}</span>
-        <h2 class="h2">{p.processHeading}</h2>
+        <span class="eyebrow" style="margin-bottom:16px;" data-sb="processEyebrow">{p.processEyebrow}</span>
+        <h2 class="h2" data-sb="processHeading">{p.processHeading}</h2>
       </div>
       <div class="g-4">
         {d.process.map((step) => (
@@ -101,8 +101,8 @@ const driveIcons = [
   <section class="sec tex tex-dots" style="background:#fff;">
     <div class="wrap">
       <div class="reveal" style="text-align:center;max-width:560px;margin:0 auto clamp(36px,4vw,52px);">
-        <span class="eyebrow" style="margin-bottom:16px;">{p.teamEyebrow}</span>
-        <h2 class="h2">{p.teamHeading}</h2>
+        <span class="eyebrow" style="margin-bottom:16px;" data-sb="teamEyebrow">{p.teamEyebrow}</span>
+        <h2 class="h2" data-sb="teamHeading">{p.teamHeading}</h2>
       </div>
       <div class="g-cards" set:html={teamHTML(d)} />
     </div>
@@ -110,9 +110,9 @@ const driveIcons = [
 
   <section style="position:relative;overflow:hidden;background:#12161d;">
     <div class="wrap reveal" style="text-align:center;padding-top:clamp(56px,7vw,88px);padding-bottom:clamp(56px,7vw,88px);max-width:760px;">
-      <h2 class="h2" style="color:#fff;margin-bottom:14px;">{p.ctaHeading}</h2>
-      <p class="lead" style="color:#aab3c0;margin:0 auto 24px;max-width:520px;">{p.ctaLead}</p>
-      <a class="btn btn-cy" href="/contact">{p.ctaButton}</a>
+      <h2 class="h2" style="color:#fff;margin-bottom:14px;" data-sb="ctaHeading">{p.ctaHeading}</h2>
+      <p class="lead" style="color:#aab3c0;margin:0 auto 24px;max-width:520px;" data-sb="ctaLead">{p.ctaLead}</p>
+      <a class="btn btn-cy" href="/contact" data-sb="ctaButton">{p.ctaButton}</a>
     </div>
   </section>
 </Base>

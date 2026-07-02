@@ -15,9 +15,9 @@ const description = 'Get a free, no-obligation quote within one working day. Ext
     <div class="img-slot dark fill"><img src="/assets/img/contact-hero.jpg" alt="Handshake over building plans with hard hat" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop handshake / team hero photo</span></div>
     <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
-      <span class="eyebrow">{p.heroEyebrow}</span>
+      <span class="eyebrow" data-sb="heroEyebrow">{p.heroEyebrow}</span>
       <h1 class="hero-h1">{p.heroTitle}</h1>
-      <p class="hero-isub">{p.heroSub}</p>
+      <p class="hero-isub" data-sb="heroSub">{p.heroSub}</p>
       <div class="hero-proof">
         <div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>
         <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Reply in 1 Working Day</span>
@@ -32,8 +32,8 @@ const description = 'Get a free, no-obligation quote within one working day. Ext
     <div class="wrap g-contact">
       <!-- LEFT: FORM CARD -->
       <div class="box reveal" style="padding:clamp(26px,3vw,42px);">
-        <h2 style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(23px,2.6vw,30px);margin:0 0 10px;color:#15191f;letter-spacing:-.4px;">{p.formHeading}</h2>
-        <p style="font-size:15px;color:#5b6470;margin:0 0 30px;line-height:1.65;">{p.formIntro}</p>
+        <h2 style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(23px,2.6vw,30px);margin:0 0 10px;color:#15191f;letter-spacing:-.4px;" data-sb="formHeading">{p.formHeading}</h2>
+        <p style="font-size:15px;color:#5b6470;margin:0 0 30px;line-height:1.65;" data-sb="formIntro">{p.formIntro}</p>
         <div id="contact-thanks" style="display:none;background:#eaf7fc;border:1px solid #33b8de;border-radius:12px;padding:40px;text-align:center;">
           <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:24px;color:#1192bb;margin-bottom:10px;">Thanks — that's on its way!</div>
           <p style="font-size:15px;color:#3a414c;margin:0;">We've got your details and we'll be in touch within one working day. If it's urgent, give us a ring on <a href="tel:07592278032" style="color:#1192bb;font-weight:600;">07592 278032</a>.</p>
@@ -105,39 +105,39 @@ const description = 'Get a free, no-obligation quote within one working day. Ext
         <div class="cm-item">
           <div class="cm-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"></path></svg></div>
           <div>
-            <h3 class="cm-h">{p.callTitle}</h3>
-            <p class="cm-p">{p.callText}</p>
+            <h3 class="cm-h" data-sb="callTitle">{p.callTitle}</h3>
+            <p class="cm-p" data-sb="callText">{p.callText}</p>
             <a class="cm-link" href={d.phoneHref}>{d.phone}</a>
           </div>
         </div>
         <div class="cm-item">
           <div class="cm-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg></div>
           <div>
-            <h3 class="cm-h">{p.emailTitle}</h3>
-            <p class="cm-p">{p.emailText}</p>
+            <h3 class="cm-h" data-sb="emailTitle">{p.emailTitle}</h3>
+            <p class="cm-p" data-sb="emailText">{p.emailText}</p>
             <a class="cm-link" href={'mailto:' + d.email}>{d.email}</a>
           </div>
         </div>
         <div class="cm-item">
           <div class="cm-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.4"></circle></svg></div>
           <div>
-            <h3 class="cm-h">{p.whereTitle}</h3>
-            <p class="cm-p">{p.whereText}</p>
-            <div style="font-size:14px;color:#3a414c;font-weight:600;line-height:1.6;">{p.whereTowns}</div>
+            <h3 class="cm-h" data-sb="whereTitle">{p.whereTitle}</h3>
+            <p class="cm-p" data-sb="whereText">{p.whereText}</p>
+            <div style="font-size:14px;color:#3a414c;font-weight:600;line-height:1.6;" data-sb="whereTowns">{p.whereTowns}</div>
           </div>
         </div>
         <div class="cm-item">
           <div class="cm-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1192bb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></div>
           <div>
-            <h3 class="cm-h">{p.hoursTitle}</h3>
-            <p class="cm-p" style="margin-bottom:0;" set:html={p.hoursText}></p>
+            <h3 class="cm-h" data-sb="hoursTitle">{p.hoursTitle}</h3>
+            <p class="cm-p" style="margin-bottom:0;" data-sb="hoursText" set:html={p.hoursText}></p>
           </div>
         </div>
         <div class="cm-item">
           <div class="cm-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="#1192bb" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8v8.44C19.61 23.08 24 18.09 24 12.07Z"/></svg></div>
           <div>
-            <h3 class="cm-h">{p.followTitle}</h3>
-            <p class="cm-p">{p.followText}</p>
+            <h3 class="cm-h" data-sb="followTitle">{p.followTitle}</h3>
+            <p class="cm-p" data-sb="followText">{p.followText}</p>
             <a class="cm-link" href={fbUrl} target="_blank" rel="noopener">Find us on Facebook</a>
           </div>
         </div>
@@ -155,8 +155,8 @@ const description = 'Get a free, no-obligation quote within one working day. Ext
   <section class="sec" style="background:#fff;">
     <div class="wrap">
       <div class="reveal" style="text-align:center;max-width:640px;margin:0 auto clamp(38px,5vw,56px);">
-        <span class="eyebrow" style="margin-bottom:16px;">{p.testimonialsEyebrow}</span>
-        <h2 class="h2" style="margin-bottom:16px;">{p.testimonialsHeading}</h2>
+        <span class="eyebrow" style="margin-bottom:16px;" data-sb="testimonialsEyebrow">{p.testimonialsEyebrow}</span>
+        <h2 class="h2" style="margin-bottom:16px;" data-sb="testimonialsHeading">{p.testimonialsHeading}</h2>
         <div class="stars" style="font-size:22px;">★★★★★</div>
       </div>
       <div class="g-cards" set:html={testimonialsHTML(d)} />
@@ -167,8 +167,8 @@ const description = 'Get a free, no-obligation quote within one working day. Ext
   <section class="sec tex tex-grid" style="background:#f5f4f1;">
     <div class="wrap">
       <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto clamp(36px,4vw,52px);">
-        <span class="eyebrow" style="margin-bottom:16px;">{p.faqEyebrow}</span>
-        <h2 class="h2">{p.faqHeading}</h2>
+        <span class="eyebrow" style="margin-bottom:16px;" data-sb="faqEyebrow">{p.faqEyebrow}</span>
+        <h2 class="h2" data-sb="faqHeading">{p.faqHeading}</h2>
       </div>
       <div class="reveal" style="max-width:840px;margin:0 auto;" set:html={faqHTML(d)} />
     </div>

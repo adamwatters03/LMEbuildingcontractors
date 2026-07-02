@@ -248,20 +248,39 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
 
 <script src="/assets/js/interactions.js" is:inline></script>
 <script is:inline>
-  /* Storyblok visual-editor bridge: only loads inside the Storyblok editor.
-     Reloads the (draft-rendering) preview as you edit, so changes show live. */
-  if (location.search.includes('_storyblok')) {
+  /* Storyblok visual-editor bridge.
+     Loads whenever we're inside the Storyblok editor (query param OR embedded
+     iframe from storyblok.com — so it survives the www->non-www redirect).
+     - text fields tagged with data-sb update live as you type (no save needed)
+     - anything else reloads on save/publish. */
+  (function () {
+    var inEditor = location.search.indexOf('_storyblok') > -1 ||
+      (window.self !== window.top && (document.referrer || '').indexOf('storyblok.com') > -1);
+    if (!inEditor) return;
+    var HTML_FIELDS = { offerText: 1, comingHeading: 1, hoursText: 1 };
     var sbb = document.createElement('script');
     sbb.src = 'https://app.storyblok.com/f/storyblok-v2-latest.js';
     sbb.onload = function () {
       if (!window.StoryblokBridge) return;
       var bridge = new window.StoryblokBridge();
+      bridge.on('input', function (e) {
+        if (!e || !e.story || !e.story.content) return;
+        var c = e.story.content;
+        Object.keys(c).forEach(function (k) {
+          if (typeof c[k] !== 'string') return;
+          var els = document.querySelectorAll('[data-sb="' + k + '"]');
+          for (var i = 0; i < els.length; i++) {
+            if (HTML_FIELDS[k]) els[i].innerHTML = c[k]; else els[i].textContent = c[k];
+          }
+        });
+      });
       var t;
-      function reload() { clearTimeout(t); t = setTimeout(function () { location.reload(); }, 700); }
-      bridge.on(['input', 'change', 'published'], reload);
+      bridge.on(['change', 'published'], function () {
+        clearTimeout(t); t = setTimeout(function () { location.reload(); }, 400);
+      });
     };
     document.head.appendChild(sbb);
-  }
+  })();
 </script>
 </body>
 </html>
