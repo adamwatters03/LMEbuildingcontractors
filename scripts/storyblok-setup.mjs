@@ -152,13 +152,34 @@ async function ensureFolder(slug, name) {
   console.log('created folder:', slug);
   return res.story.id;
 }
+function isEmpty(v) {
+  if (v === undefined || v === null || v === '') return true;
+  if (Array.isArray(v)) return v.length === 0;
+  if (typeof v === 'object' && 'filename' in v) return !v.filename; // asset field
+  return false;
+}
+
 async function upsertStory(story) {
   const full = story._fullSlug || story.slug;
   delete story._fullSlug;
   const found = await findStory(full);
   if (found) {
-    // Preserve any edits already made in Storyblok — never overwrite content on re-run.
-    console.log('exists, keeping current content:', full);
+    // Merge: fill only missing/empty fields (e.g. newly added ones) with defaults,
+    // so the client can see the current value — but never overwrite existing edits.
+    const cur = (await mapi('GET', `/stories/${found.id}`)).story;
+    const content = cur.content || {};
+    let changed = false;
+    for (const k of Object.keys(story.content)) {
+      if (k === 'component' || k === '_uid') continue;
+      if (isEmpty(content[k]) && !isEmpty(story.content[k])) { content[k] = story.content[k]; changed = true; }
+    }
+    if (!content.component) content.component = story.content.component;
+    if (changed) {
+      await mapi('PUT', `/stories/${found.id}`, { story: { content }, publish: 1 });
+      console.log('backfilled new fields:', full);
+    } else {
+      console.log('already complete:', full);
+    }
     return;
   }
   await mapi('POST', '/stories/', { story, publish: 1 });
