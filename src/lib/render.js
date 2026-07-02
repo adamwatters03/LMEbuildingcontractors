@@ -16,6 +16,7 @@ function asset(src) {
   if (/^https?:\/\//.test(src) || src.charAt(0) === '/') return src;
   return '/' + src;
 }
+export const imgSrc = asset;
 
 export function slot(extra, label, src, alt) {
   var img = src

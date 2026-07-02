@@ -92,6 +92,9 @@ const components = [
     process: BLOKS('Process steps', ['process_step']), testimonials: BLOKS('Testimonials', ['testimonial']),
     accreditations: BLOKS('Accreditations', ['accreditation']), team: BLOKS('Team', ['team_member']),
     comingSoon: BLOKS('Coming soon', ['coming_soon']), faqs: BLOKS('FAQs', ['faq']),
+    design_tab: { type: 'tab', display_name: 'Design & site images', keys: ['fontFamily', 'colorBrand', 'colorBrandDark', 'colorBrandLight', 'radius', 'blogHeroImage', 'projectsHeroImage'] },
+    fontFamily: T('Font family (Google Font name)'), colorBrand: T('Brand colour (hex)'), colorBrandDark: T('Brand colour — dark (hex)'), colorBrandLight: T('Brand colour — light (hex)'), radius: T('Corner radius in px (blank = keep design)'),
+    blogHeroImage: AS('Blog page hero image'), projectsHeroImage: AS('Projects page hero image'),
   } },
   { name: 'blog_post', is_root: true, is_nestable: false, schema: {
     title: T('Title'), cat: T('Category'), date: T('Date (display)'), iso: T('Date (ISO, for sorting)'), read: T('Read time'),
@@ -111,7 +114,9 @@ const components = [
 function pageSchema(def) {
   const schema = {};
   for (const [k, v] of Object.entries(def)) {
-    schema[k] = Array.isArray(v) ? BLOKS(k, ['value_prop']) : TA(k);
+    if (Array.isArray(v)) schema[k] = BLOKS(k, ['value_prop']);
+    else if (/image$/i.test(k)) schema[k] = AS(k);
+    else schema[k] = TA(k);
   }
   return schema;
 }
@@ -151,14 +156,13 @@ async function upsertStory(story) {
   const full = story._fullSlug || story.slug;
   delete story._fullSlug;
   const found = await findStory(full);
-  const payload = { story, publish: 1 };
   if (found) {
-    await mapi('PUT', `/stories/${found.id}`, payload);
-    console.log('updated story:', full);
-  } else {
-    await mapi('POST', '/stories/', payload);
-    console.log('created story:', full);
+    // Preserve any edits already made in Storyblok — never overwrite content on re-run.
+    console.log('exists, keeping current content:', full);
+    return;
   }
+  await mapi('POST', '/stories/', { story, publish: 1 });
+  console.log('created story:', full);
 }
 
 function configContent() {
@@ -176,15 +180,17 @@ function configContent() {
     team: c.team.map((m) => ({ component: 'team_member', _uid: uid(), name: m.name, role: m.role, bio: m.bio, img: img(m.img, m.name) })),
     comingSoon: c.comingSoon.map((x) => ({ component: 'coming_soon', _uid: uid(), title: x.title, note: x.note, body: x.body })),
     faqs: c.faqs.map((f) => ({ component: 'faq', _uid: uid(), q: f.q, a: f.a })),
+    fontFamily: c.design.fontFamily, colorBrand: c.design.colorBrand, colorBrandDark: c.design.colorBrandDark, colorBrandLight: c.design.colorBrandLight, radius: c.design.radius,
+    blogHeroImage: img(c.siteImages.blogHero, 'Blog hero'), projectsHeroImage: img(c.siteImages.projectsHero, 'Projects hero'),
   };
 }
 
 function pageContent(name, def) {
   const content = { component: 'page_' + name };
   for (const [k, v] of Object.entries(def)) {
-    content[k] = Array.isArray(v)
-      ? v.map((b) => ({ component: 'value_prop', _uid: uid(), title: b.title, body: b.body }))
-      : v;
+    if (Array.isArray(v)) content[k] = v.map((b) => ({ component: 'value_prop', _uid: uid(), title: b.title, body: b.body }));
+    else if (/image$/i.test(k)) content[k] = img(v, name);
+    else content[k] = v;
   }
   return content;
 }

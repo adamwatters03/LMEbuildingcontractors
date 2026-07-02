@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { projectsListHTML, comingHTML } from '../lib/render.js';
+import { projectsListHTML, comingHTML , imgSrc } from '../lib/render.js';
 import { getData } from '../lib/data.js';
 import { versionFromRequest } from '../lib/preview.js';
 
@@ -11,7 +11,7 @@ const description = 'See recent extensions, renovations and new builds across Sl
 ---
 <Base title={title} description={description} page="projects" ogImage="/assets/img/projects-hero.jpg">
   <section class="hero hero-inner">
-    <div class="img-slot dark fill"><img src="/assets/img/projects-hero.jpg" alt="LME builders reviewing project plans" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop portfolio hero photo</span></div>
+    <div class="img-slot dark fill"><img src={imgSrc(d.siteImages.projectsHero)} alt="LME builders reviewing project plans" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop portfolio hero photo</span></div>
     <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
       <span class="eyebrow">Portfolio</span>

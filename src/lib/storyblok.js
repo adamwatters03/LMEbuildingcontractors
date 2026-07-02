@@ -83,6 +83,20 @@ function mapConfig(content, local) {
   if (blok(content.comingSoon).length) out.comingSoon = content.comingSoon.map((c) => ({ title: txt(c.title, ''), note: txt(c.note, 'COMING SOON'), body: txt(c.body, '') }));
   if (Array.isArray(content.gallery) && content.gallery.length) out.gallery = content.gallery.map((g) => asset(g, '')).filter(Boolean);
 
+  // global design settings
+  out.design = {
+    fontFamily: txt(content.fontFamily, local.design.fontFamily),
+    colorBrand: txt(content.colorBrand, local.design.colorBrand),
+    colorBrandDark: txt(content.colorBrandDark, local.design.colorBrandDark),
+    colorBrandLight: txt(content.colorBrandLight, local.design.colorBrandLight),
+    radius: txt(content.radius, local.design.radius),
+  };
+  // listing-page hero images
+  out.siteImages = {
+    blogHero: asset(content.blogHeroImage, local.siteImages.blogHero),
+    projectsHero: asset(content.projectsHeroImage, local.siteImages.projectsHero),
+  };
+
   return out;
 }
 
@@ -126,12 +140,15 @@ function mapPage(content, def) {
   if (!content) return null;
   const out = { ...def };
   for (const k of Object.keys(def)) {
+    const v = content[k];
     if (Array.isArray(def[k])) {
-      if (Array.isArray(content[k]) && content[k].length) {
-        out[k] = content[k].map((b, i) => ({ title: txt(b.title, (def[k][i] || {}).title), body: txt(b.body, (def[k][i] || {}).body) }));
+      if (Array.isArray(v) && v.length) {
+        out[k] = v.map((b, i) => ({ title: txt(b.title, (def[k][i] || {}).title), body: txt(b.body, (def[k][i] || {}).body) }));
       }
+    } else if (v && typeof v === 'object' && v.filename !== undefined) {
+      out[k] = v.filename || def[k]; // image (asset) field
     } else {
-      out[k] = txt(content[k], def[k]);
+      out[k] = txt(v, def[k]);
     }
   }
   return out;

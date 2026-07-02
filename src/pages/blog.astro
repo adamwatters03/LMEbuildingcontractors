@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { blogListHTML } from '../lib/render.js';
+import { blogListHTML , imgSrc } from '../lib/render.js';
 import { getData } from '../lib/data.js';
 import { versionFromRequest } from '../lib/preview.js';
 
@@ -11,7 +11,7 @@ const description = 'Practical advice on extensions, renovations, planning and c
 ---
 <Base title={title} description={description} page="blog" ogImage="/assets/img/about-hero.jpg">
   <section class="hero hero-inner">
-    <div class="img-slot dark fill"><img src="/assets/img/about-hero.jpg" alt="LME Building Contractors team" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Photo</span></div>
+    <div class="img-slot dark fill"><img src={imgSrc(d.siteImages.blogHero)} alt="LME Building Contractors team" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Photo</span></div>
     <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
       <span class="eyebrow">Advice &amp; Insights</span>

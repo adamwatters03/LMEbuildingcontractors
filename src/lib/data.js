@@ -31,6 +31,8 @@ const defaults = {
   phoneHref: local.phoneHref,
   email: local.email,
   pages: local.pages,
+  design: local.design,
+  siteImages: local.siteImages,
 };
 
 const _cache = {}; // version -> { data, ts }

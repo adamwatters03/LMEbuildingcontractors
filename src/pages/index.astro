@@ -4,7 +4,7 @@ import { getData } from '../lib/data.js';
 import { versionFromRequest } from '../lib/preview.js';
 import {
   statsHTML, homeServicesHTML, valuePropsHTML, featuredHTML, galleryHTML,
-  processHTML, testimonialsHTML, accHTML, homeBlogHTML,
+  processHTML, testimonialsHTML, accHTML, homeBlogHTML, imgSrc,
 } from '../lib/render.js';
 
 const d = await getData(versionFromRequest(Astro));
@@ -17,7 +17,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
 <Base title={title} description={description} page="home" includeFaq={true}>
   <!-- HERO -->
   <section class="hero hero-home">
-    <div class="img-slot dark fill"><img src="/assets/img/home-hero.jpg" alt="Builder reviewing plans inside a timber-framed new build" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop hero build photo</span></div>
+    <div class="img-slot dark fill"><img src={imgSrc(p.heroImage)} alt="Builder reviewing plans inside a timber-framed new build" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop hero build photo</span></div>
     <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.88) 0%,rgba(8,11,15,0.52) 46%,rgba(8,11,15,0.12) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
       <div class="hero-grid">
@@ -208,7 +208,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
 
   <!-- FINAL CTA -->
   <section style="position:relative;overflow:hidden;background:#12161d;">
-    <div class="img-slot dark fill" style="opacity:0.22;"><img src="/assets/img/newbuild.jpg" alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop build site photo (optional)</span></div>
+    <div class="img-slot dark fill" style="opacity:0.22;"><img src={imgSrc(p.finalImage)} alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop build site photo (optional)</span></div>
     <div class="wrap reveal" style="position:relative;text-align:center;padding-top:clamp(64px,8vw,104px);padding-bottom:clamp(64px,8vw,104px);max-width:820px;">
       <span class="eyebrow" style="color:#5cc6e8;margin-bottom:18px;" data-sb="finalEyebrow">{p.finalEyebrow}</span>
       <h2 class="h2" style="color:#fff;margin-bottom:16px;" data-sb="finalHeading">{p.finalHeading}</h2>

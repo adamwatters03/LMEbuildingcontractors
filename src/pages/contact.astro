@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { testimonialsHTML, faqHTML } from '../lib/render.js';
+import { testimonialsHTML, faqHTML , imgSrc } from '../lib/render.js';
 import { getData } from '../lib/data.js';
 import { versionFromRequest } from '../lib/preview.js';
 
@@ -12,7 +12,7 @@ const description = 'Get a free, no-obligation quote within one working day. Ext
 ---
 <Base title={title} description={description} page="contact" ogImage="/assets/img/contact-hero.jpg" includeFaq={true}>
   <section class="hero hero-inner">
-    <div class="img-slot dark fill"><img src="/assets/img/contact-hero.jpg" alt="Handshake over building plans with hard hat" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop handshake / team hero photo</span></div>
+    <div class="img-slot dark fill"><img src={imgSrc(p.heroImage)} alt="Handshake over building plans with hard hat" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop handshake / team hero photo</span></div>
     <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
       <span class="eyebrow" data-sb="heroEyebrow">{p.heroEyebrow}</span>

@@ -211,10 +211,27 @@ export const phone = '07592 278032';
 export const phoneHref = 'tel:07592278032';
 export const email = 'Lmebuildingcontractors@hotmail.com';
 
+/* Global design settings (applied site-wide via CSS variables). */
+export const design = {
+  fontFamily: 'Montserrat',
+  colorBrand: '#33b8de',
+  colorBrandDark: '#1192bb',
+  colorBrandLight: '#5cc6e8',
+  radius: '', // blank = keep each component's designed radius; set a number to unify
+};
+
+/* Hero images for the listing pages (kept here to avoid slug clashes with the folders). */
+export const siteImages = {
+  blogHero: 'assets/img/about-hero.jpg',
+  projectsHero: 'assets/img/projects-hero.jpg',
+};
+
 /* Per-page editable copy. Each key maps to a Storyblok field of the
    matching page story; anything blank in Storyblok falls back to these. */
 export const pages = {
   home: {
+    heroImage: 'assets/img/home-hero.jpg',
+    finalImage: 'assets/img/newbuild.jpg',
     heroEyebrow: 'Premium Lincolnshire Contractors',
     heroTitle: 'Building Your Vision,',
     heroTitleHighlight: 'Realised.',
@@ -257,6 +274,7 @@ export const pages = {
     finalCall: 'Call 07592 278032',
   },
   services: {
+    heroImage: 'assets/img/services-hero.jpg',
     heroEyebrow: 'Services We Offer',
     heroTitle: 'Comprehensive Construction Solutions',
     heroSub: 'From a single room to a full build, every LME project is delivered with the same structural rigour and premium finish.',
@@ -272,6 +290,8 @@ export const pages = {
     ctaButton: 'Book Free Consultation',
   },
   about: {
+    heroImage: 'assets/img/about-hero.jpg',
+    storyImage: 'assets/img/newbuild.jpg',
     heroEyebrow: 'About LME',
     heroTitle: 'Meet the Craftsmen Behind LME',
     heroSub: 'Reliable local contractors crafting premium spaces across Lincolnshire — led personally on every site, from first survey to final handover.',
@@ -301,6 +321,7 @@ export const pages = {
     ctaButton: 'Get in Touch',
   },
   contact: {
+    heroImage: 'assets/img/contact-hero.jpg',
     heroEyebrow: 'Get In Touch',
     heroTitle: "Let's talk about your project",
     heroSub: "Free, no-obligation quotes and design consultations — we'll get back to you within one working day.",

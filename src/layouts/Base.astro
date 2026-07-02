@@ -4,7 +4,21 @@ import { getData } from '../lib/data.js';
 import { versionFromRequest, setCache } from '../lib/preview.js';
 const _version = versionFromRequest(Astro);
 setCache(Astro, _version);
-const _diag = (await getData(_version))._diag || 'unknown';
+const _d = await getData(_version);
+const _diag = _d._diag || 'unknown';
+
+// Global design settings -> CSS variables + dynamic Google Font
+const dz = _d.design || {};
+const radiusNum = String(dz.radius || '').replace(/[^0-9.]/g, '');
+const designVars = `:root{`
+  + `--brand:${dz.colorBrand || '#33b8de'};`
+  + `--brand-dark:${dz.colorBrandDark || '#1192bb'};`
+  + `--brand-light:${dz.colorBrandLight || '#5cc6e8'};`
+  + `--font:'${(dz.fontFamily || 'Montserrat').replace(/'/g, '')}';`
+  + (radiusNum ? `--radius:${radiusNum}px;` : '')
+  + `}`;
+const fontName = (dz.fontFamily || 'Montserrat').trim();
+const fontHref = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName).replace(/%20/g, '+')}:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap`;
 
 const {
   title,
@@ -111,7 +125,9 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet" />
+{fontName !== 'Montserrat' && <link href={fontHref} rel="stylesheet" />}
 <link rel="stylesheet" href="/assets/css/styles.css" />
+<style set:html={designVars}></style>
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 {extraJsonLd && <script type="application/ld+json" set:html={JSON.stringify(extraJsonLd)} />}
 </head>
