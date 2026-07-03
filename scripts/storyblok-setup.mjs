@@ -145,10 +145,17 @@ async function findStory(fullSlug) {
   const res = await mapi('GET', `/stories?with_slug=${encodeURIComponent(fullSlug)}`);
   return (res.stories && res.stories[0]) || null;
 }
-async function ensureFolder(slug, name) {
+async function ensureFolder(slug, name, defaultType) {
   const found = await findStory(slug);
-  if (found) return found.id;
-  const res = await mapi('POST', '/stories/', { story: { name, slug, is_folder: true } });
+  if (found) {
+    // ensure "+ New entry" in this folder defaults to the right content type
+    if (defaultType) {
+      await mapi('PUT', `/stories/${found.id}`, { story: { default_root: defaultType } });
+      console.log('folder default type set:', slug, '->', defaultType);
+    }
+    return found.id;
+  }
+  const res = await mapi('POST', '/stories/', { story: { name, slug, is_folder: true, default_root: defaultType } });
   console.log('created folder:', slug);
   return res.story.id;
 }
@@ -235,7 +242,7 @@ async function run() {
   }
 
   // blog
-  const blogId = await ensureFolder('blog', 'Blog');
+  const blogId = await ensureFolder('blog', 'Blog', 'blog_post');
   for (const p of c.posts) {
     const m = c.postMeta[p.slug] || {};
     await upsertStory({
@@ -250,7 +257,7 @@ async function run() {
   }
 
   // projects
-  const projId = await ensureFolder('projects', 'Projects');
+  const projId = await ensureFolder('projects', 'Projects', 'project');
   for (const pr of c.projectList) {
     await upsertStory({
       name: pr.title, slug: pr.id, parent_id: projId, _fullSlug: 'projects/' + pr.id,
