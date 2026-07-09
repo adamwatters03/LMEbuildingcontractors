@@ -72,7 +72,7 @@ const BLOKS = (label, whitelist) => ({ type: 'bloks', restrict_components: true,
 
 const components = [
   { name: 'stat', is_nestable: true, schema: { n: T('Number'), dec: T('Decimals (0/1)'), suf: T('Suffix'), l: T('Label'), d: TA('Description') } },
-  { name: 'service', is_nestable: true, schema: { n: T('Number e.g. 01'), sid: T('ID slug e.g. ext'), title: T('Title'), short: TA('Short blurb'), body: TA('Full description'), img: AS('Image'), included: TA("What's included (one per line)"), timeline: T('Typical timeline'), priceFrom: T('Investment from') } },
+  { name: 'service', is_root: true, is_nestable: true, schema: { n: T('Order number e.g. 01'), title: T('Title'), short: TA('Short blurb'), body: TA('Full description'), img: AS('Image'), included: TA("What's included (one per line)"), timeline: T('Typical timeline'), priceFrom: T('Investment from') } },
   { name: 'value_prop', is_nestable: true, schema: { title: T('Title'), body: TA('Body') } },
   { name: 'process_step', is_nestable: true, schema: { n: T('Number'), title: T('Title'), body: TA('Body') } },
   { name: 'testimonial', is_nestable: true, schema: { quote: TA('Quote'), name: T('Name'), meta: T('Project · town') } },
@@ -87,8 +87,8 @@ const components = [
     lists_tab: { type: 'tab', display_name: 'Lists', keys: ['heroTrust', 'coverage', 'areaChips', 'gallery'] },
     heroTrust: TA('Hero trust chips (one per line)'), coverage: TA('Coverage towns (one per line)'), areaChips: TA('Area chips (one per line)'),
     gallery: { type: 'multiasset', filetypes: ['images'], display_name: 'Gallery images' },
-    blocks_tab: { type: 'tab', display_name: 'Sections', keys: ['stats', 'services', 'valueProps', 'process', 'testimonials', 'accreditations', 'team', 'comingSoon', 'faqs'] },
-    stats: BLOKS('Stats', ['stat']), services: BLOKS('Services', ['service']), valueProps: BLOKS('Value props', ['value_prop']),
+    blocks_tab: { type: 'tab', display_name: 'Sections', keys: ['stats', 'valueProps', 'process', 'testimonials', 'accreditations', 'team', 'comingSoon', 'faqs'] },
+    stats: BLOKS('Stats', ['stat']), valueProps: BLOKS('Value props', ['value_prop']),
     process: BLOKS('Process steps', ['process_step']), testimonials: BLOKS('Testimonials', ['testimonial']),
     accreditations: BLOKS('Accreditations', ['accreditation']), team: BLOKS('Team', ['team_member']),
     comingSoon: BLOKS('Coming soon', ['coming_soon']), faqs: BLOKS('FAQs', ['faq']),
@@ -106,7 +106,7 @@ const components = [
     tags: TA('Tags (one per line)'), pull: TA('Pull quote'), serviceLabel: T('Related service label'), serviceHash: T('Related service link'),
   } },
   { name: 'project', is_root: true, is_nestable: false, schema: {
-    title: T('Title'), tag: T('Type'), location: T('Location'), duration: T('Duration'),
+    title: T('Title'), tag: T('Type'), location: T('Location'), duration: T('Duration'), status: T('Status (e.g. Completed / Ongoing)'),
     cover: AS('Cover'), thumbA: AS('Thumb A'), thumbB: AS('Thumb B'),
     short: TA('Short blurb'), body: TA('Card description'), overview: TA('Overview (HTML)'),
     points: TA('Card points (one per line)'), scope: TA('What we did (one per line)'),
@@ -204,7 +204,6 @@ function configContent() {
     heroTrust: list(c.heroTrust), coverage: list(c.coverage), areaChips: list(c.areaChips),
     gallery: c.gallery.map((g) => img(g, 'LME project photo')),
     stats: c.stats.map((s) => ({ component: 'stat', _uid: uid(), n: String(s.n), dec: String(s.dec), suf: s.suf, l: s.l, d: s.d })),
-    services: c.services.map((s) => ({ component: 'service', _uid: uid(), n: s.n, sid: s.id, title: s.title, short: s.short, body: s.body, img: img(s.img, s.title), included: list(s.included), timeline: s.timeline, priceFrom: s.priceFrom })),
     valueProps: c.valueProps.map((v) => ({ component: 'value_prop', _uid: uid(), title: v.title, body: v.body })),
     process: c.process.map((p) => ({ component: 'process_step', _uid: uid(), n: p.n, title: p.title, body: p.body })),
     testimonials: c.testimonials.map((t) => ({ component: 'testimonial', _uid: uid(), quote: t.quote, name: t.name, meta: t.meta })),
@@ -264,6 +263,18 @@ async function run() {
     'Get a free, no-obligation quote and design consultation — plus £500 off projects booked this month.',
     c.pages.home.finalLead);
 
+  // services (own folder so they're add/edit like blog & projects)
+  const svcId = await ensureFolder('service', 'Services', 'service');
+  for (const s of c.services) {
+    await upsertStory({
+      name: s.title, slug: s.slug, parent_id: svcId, _fullSlug: 'service/' + s.slug,
+      content: {
+        component: 'service', n: s.n, title: s.title, short: s.short, body: s.body,
+        img: img(s.img, s.title), included: list(s.included), timeline: s.timeline, priceFrom: s.priceFrom,
+      },
+    });
+  }
+
   // blog
   const blogId = await ensureFolder('blog', 'Blog', 'blog_post');
   for (const p of c.posts) {
@@ -285,7 +296,7 @@ async function run() {
     await upsertStory({
       name: pr.title, slug: pr.id, parent_id: projId, _fullSlug: 'projects/' + pr.id,
       content: {
-        component: 'project', title: pr.title, tag: pr.tag, location: pr.location, duration: pr.duration,
+        component: 'project', title: pr.title, tag: pr.tag, location: pr.location, duration: pr.duration, status: pr.status || 'Completed',
         cover: img(pr.cover, pr.title), thumbA: img(pr.thumbA, pr.title), thumbB: img(pr.thumbB, pr.title),
         short: pr.short, body: pr.body, overview: pr.overview,
         points: list(pr.points), scope: list(pr.scope),

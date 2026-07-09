@@ -5,6 +5,7 @@ import { getData } from '../lib/data.js';
 import { versionFromRequest } from '../lib/preview.js';
 
 const d = await getData(versionFromRequest(Astro));
+const flags = d.flags || {};
 
 const title = 'Our Projects | Lincolnshire Builders | LME Building Contractors';
 const description = 'See recent extensions, renovations and new builds across Sleaford, Lincoln and Grantham — before-and-after photos of real Lincolnshire projects by LME Building Contractors.';
@@ -18,7 +19,7 @@ const description = 'See recent extensions, renovations and new builds across Sl
       <h1 class="hero-h1">Our Premier Construction Portfolio</h1>
       <p class="hero-isub">A range of successful builds and sympathetic renovations delivered across Lincolnshire.</p>
       <div class="hero-proof">
-        <div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>
+        {flags.showReviews && (<div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>)}
         <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>250+ Completed</span>
         <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Before &amp; After</span>
         <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Lincolnshire-wide</span>

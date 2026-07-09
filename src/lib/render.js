@@ -42,7 +42,7 @@ export function statsHTML(d) {
 
 export function homeServicesHTML(d) {
   return d.services.map(function (svc) {
-    return '<a class="card card-link reveal zoom-wrap" href="/services#svc-' + svc.id + '" style="overflow:hidden;display:block;text-decoration:none;">' +
+    return '<a class="card card-link reveal zoom-wrap" href="/services/' + svc.slug + '" style="overflow:hidden;display:block;text-decoration:none;">' +
       '<div style="position:relative;height:210px;overflow:hidden;">' +
         slot('fill zoom', 'Drop service photo', svc.img, svc.title) +
         '<span style="position:absolute;top:14px;left:14px;font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:12px;color:#06222c;background:#33b8de;padding:6px 11px;border-radius:5px;">' + esc(svc.n) + '</span>' +
@@ -120,32 +120,63 @@ export function accHTML(d) {
   }).join('');
 }
 
+// SERVICES LISTING — the row layout the client likes, but each row links into its own page
 export function servicesListHTML(d) {
   return d.services.map(function (svc, idx) {
-    var inc = (svc.included || []).map(function (i) {
-      return '<div style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#3a414c;font-weight:500;line-height:1.4;"><span class="diamond" style="margin-top:6px;"></span>' + esc(i) + '</div>';
-    }).join('');
-    var next = d.services[idx + 1];
-    var nextCta = next
-      ? '<a class="read-more" href="/services#svc-' + next.id + '">Up next: ' + esc(next.title) + ' →</a>'
-      : '<a class="read-more" href="/contact">Ready to start? Get a free quote →</a>';
-    return '<div class="card reveal g-svc" id="svc-' + svc.id + '" style="overflow:hidden;scroll-margin-top:90px;">' +
-      '<div style="position:relative;min-height:340px;overflow:hidden;">' + slot('fill', 'Drop service photo', svc.img, svc.title) + '</div>' +
-      '<div style="padding:clamp(30px,3.4vw,52px);display:flex;flex-direction:column;justify-content:center;">' +
-        '<div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:14px;letter-spacing:1px;color:#1192bb;margin-bottom:14px;">/ ' + esc(svc.n) + ' — SERVICE</div>' +
-        '<h2 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:clamp(24px,2.4vw,32px);margin:0 0 14px;color:#15191f;">' + esc(svc.title) + '</h2>' +
-        '<p style="font-size:16px;line-height:1.7;color:#5b6470;margin:0 0 22px;">' + esc(svc.body) + '</p>' +
-        '<div style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#15191f;text-transform:uppercase;margin-bottom:14px;">What\'s Included</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:26px;">' + inc + '</div>' +
-        '<div style="display:flex;gap:30px;flex-wrap:wrap;padding:20px 0;border-top:1px solid #efeee9;border-bottom:1px solid #efeee9;margin-bottom:26px;">' +
-          '<div><div style="font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.3px;color:#79828f;text-transform:uppercase;margin-bottom:6px;">Typical Timeline</div><div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:20px;color:#15191f;">' + esc(svc.timeline) + '</div></div>' +
-          '<div><div style="font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.3px;color:#79828f;text-transform:uppercase;margin-bottom:6px;">Investment From</div><div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:20px;color:#15191f;">' + esc(svc.priceFrom) + '</div></div>' +
-        '</div>' +
-        '<div style="display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;">' +
-          '<a class="btn btn-cy" href="/contact">Enquire About ' + esc(svc.title) + '</a>' + nextCta +
-        '</div>' +
-      '</div></div>';
+    var flip = idx % 2 === 1; // alternate image side for a bit of rhythm
+    var media = '<div class="svc-row-img zoom-wrap" style="position:relative;min-height:300px;overflow:hidden;">' + slot('fill zoom', 'Drop service photo', svc.img, svc.title) +
+      '<span style="position:absolute;top:16px;left:16px;font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:12px;color:#06222c;background:var(--brand);padding:6px 12px;border-radius:5px;">' + esc(svc.n) + '</span></div>';
+    var meta = (svc.timeline || svc.priceFrom)
+      ? '<div style="display:flex;gap:26px;flex-wrap:wrap;margin:0 0 22px;">' +
+          (svc.timeline ? '<div><div style="font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.2px;color:#79828f;text-transform:uppercase;margin-bottom:4px;">Typical Timeline</div><div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:18px;color:#15191f;">' + esc(svc.timeline) + '</div></div>' : '') +
+          (svc.priceFrom ? '<div><div style="font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.2px;color:#79828f;text-transform:uppercase;margin-bottom:4px;">Investment From</div><div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:18px;color:#15191f;">' + esc(svc.priceFrom) + '</div></div>' : '') +
+        '</div>'
+      : '';
+    var body =
+      '<div style="padding:clamp(28px,3vw,46px);display:flex;flex-direction:column;justify-content:center;">' +
+        '<div style="font-family:\'Montserrat\',sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;color:var(--brand-dark);margin-bottom:12px;">/ ' + esc(svc.n) + ' — SERVICE</div>' +
+        '<h2 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:clamp(23px,2.3vw,30px);margin:0 0 12px;color:#15191f;">' + esc(svc.title) + '</h2>' +
+        '<p style="font-size:16px;line-height:1.7;color:#5b6470;margin:0 0 20px;">' + esc(svc.short || svc.body) + '</p>' +
+        meta +
+        '<span class="read-more" style="font-size:15px;">View service details →</span>' +
+      '</div>';
+    return '<a class="card card-link reveal g-svc" href="/services/' + svc.slug + '" style="overflow:hidden;display:grid;text-decoration:none;">' +
+      (flip ? body + media : media + body) +
+      '</a>';
   }).join('');
+}
+
+// SERVICE DETAIL — a distinct "service" layout (content + sticky info card + other services)
+export function serviceDetailHTML(svc, d) {
+  var inc = (svc.included || []).map(function (i) {
+    return '<div style="display:flex;align-items:flex-start;gap:11px;font-size:15px;color:#3a414c;font-weight:500;line-height:1.5;margin-bottom:12px;">' + CHECK.replace('#5cc6e8', 'var(--brand)') + esc(i) + '</div>';
+  }).join('');
+  var others = d.services.filter(function (x) { return x.slug !== svc.slug; }).map(function (x) {
+    return '<a href="/services/' + x.slug + '" style="display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid #efeee9;text-decoration:none;color:#15191f;font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:15px;"><span style="color:var(--brand-dark);">/ ' + esc(x.n) + '</span>' + esc(x.title) + '<span style="margin-left:auto;color:var(--brand-dark);">→</span></a>';
+  }).join('');
+  return '<section class="hero hero-inner">' +
+      '<div class="img-slot dark fill"><img src="' + asset(svc.img) + '" alt="' + esc(svc.title) + '" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()"><span>Photo</span></div>' +
+      '<div class="hero-overlay" style="background:linear-gradient(0deg,rgba(8,11,15,0.82) 0%,rgba(8,11,15,0.2) 70%),linear-gradient(95deg,rgba(8,11,15,0.6),rgba(8,11,15,0.2));"></div>' +
+      '<div class="wrap hin"><span class="eyebrow">Service / ' + esc(svc.n) + '</span>' +
+        '<h1 class="hero-h1">' + esc(svc.title) + '</h1>' +
+        '<p class="hero-isub">' + esc(svc.short || '') + '</p></div>' +
+    '</section>' +
+    '<section class="sec" style="background:#fff;">' +
+      '<div class="wrap"><a class="back-link" href="/services">← All services</a>' +
+        '<div class="svc-detail" style="margin-top:18px;">' +
+          '<div class="reveal">' +
+            '<div style="font-size:16.5px;line-height:1.8;color:#3a414c;margin-bottom:30px;">' + esc(svc.body) + '</div>' +
+            (inc ? '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:19px;margin:0 0 18px;color:#15191f;">What\'s included</h3>' + inc : '') +
+          '</div>' +
+          '<div class="reveal"><div class="box svc-card">' +
+            (svc.timeline ? '<div class="spec-row"><span class="k">Typical timeline</span><span class="v">' + esc(svc.timeline) + '</span></div>' : '') +
+            (svc.priceFrom ? '<div class="spec-row"><span class="k">Investment from</span><span class="v">' + esc(svc.priceFrom) + '</span></div>' : '') +
+            '<a class="btn btn-cy" href="/contact" style="width:100%;margin:18px 0 6px;">Enquire about this</a>' +
+            (others ? '<div style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.2px;color:#79828f;text-transform:uppercase;margin:22px 0 4px;">Other services</div>' + others : '') +
+          '</div></div>' +
+        '</div>' +
+      '</div>' +
+    '</section>';
 }
 
 export function faqHTML(d) {
@@ -299,7 +330,7 @@ export function projectDetailHTML(pr) {
       '<div class="wrap hin"><span class="eyebrow">' + esc(pr.tag) + '</span>' +
         '<h1 class="hero-h1">' + esc(pr.title) + '</h1>' +
         '<div class="hero-proof"><span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.4"></circle></svg>' + esc(pr.location) + '</span>' +
-        '<span class="proof-chip">' + esc(pr.duration) + '</span><span class="proof-chip">Completed</span></div></div>' +
+        '<span class="proof-chip">' + esc(pr.duration) + '</span><span class="proof-chip">' + esc(pr.status || 'Completed') + '</span></div></div>' +
     '</section>' +
     '<section class="sec" style="background:#fff;">' +
       '<div class="wrap"><a class="back-link" href="/projects">← All projects</a>' +
@@ -312,7 +343,7 @@ export function projectDetailHTML(pr) {
             '<div class="spec-row"><span class="k">Type</span><span class="v">' + esc(pr.tag) + '</span></div>' +
             '<div class="spec-row"><span class="k">Location</span><span class="v">' + esc(pr.location) + '</span></div>' +
             '<div class="spec-row"><span class="k">Duration</span><span class="v">' + esc(pr.duration) + '</span></div>' +
-            '<div class="spec-row"><span class="k">Status</span><span class="v">Completed</span></div>' +
+            '<div class="spec-row"><span class="k">Status</span><span class="v">' + esc(pr.status || 'Completed') + '</span></div>' +
           '</div><a class="btn btn-cy" href="/contact" style="width:100%;margin-top:20px;">Start a similar project</a></div></div>' +
         '</div>' +
         (gal ? '<div class="reveal" style="margin-top:clamp(36px,4vw,52px);"><h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:19px;margin:0 0 18px;color:#15191f;">Gallery</h3><div class="g-cards">' + gal + '</div></div>' : '') +

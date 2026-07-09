@@ -7,6 +7,7 @@ setCache(Astro, _version);
 const _d = await getData(_version);
 const _diag = _d._diag || 'unknown';
 const flags = _d.flags || {};
+const services = _d.services || [];
 
 // Global design settings -> CSS variables + dynamic Google Font
 const dz = _d.design || {};
@@ -159,7 +160,17 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
 
     <nav class="nav-links" aria-label="Primary">
       {nav.map((n) => (
-        <a class:list={['nav-link', { active: page === n.key }]} href={n.href}>{n.label}<span class="underline"></span></a>
+        n.key === 'services' && services.length ? (
+          <div class="nav-dd">
+            <a class:list={['nav-link', { active: page === n.key }]} href={n.href}>{n.label}<span class="underline"></span></a>
+            <div class="nav-dd-menu">
+              {services.map((s) => <a href={`/services/${s.slug}`}>{s.title}</a>)}
+              <a href="/services" class="nav-dd-all">All services →</a>
+            </div>
+          </div>
+        ) : (
+          <a class:list={['nav-link', { active: page === n.key }]} href={n.href}>{n.label}<span class="underline"></span></a>
+        )
       ))}
       <a class="btn btn-cy nav-quote" href="/contact">Get a Free Quote</a>
     </nav>
@@ -180,6 +191,11 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
   <nav class="drawer-nav">
     <a class="drawer-link" href="/">Home</a>
     <a class="drawer-link" href="/services">Services</a>
+    {services.length > 0 && (
+      <div class="drawer-sub">
+        {services.map((s) => <a href={`/services/${s.slug}`}>{s.title}</a>)}
+      </div>
+    )}
     <a class="drawer-link" href="/projects">Projects</a>
     <a class="drawer-link" href="/blog">Blog</a>
     <a class="drawer-link" href="/about">About</a>

@@ -6,7 +6,7 @@
    in the CMS gracefully falls back — the build can't break.
    ========================================================= */
 import * as local from './content.js';
-import { sbConfig, sbPosts, sbProjects, sbPage, storyblokEnabled } from './storyblok.js';
+import { sbConfig, sbPosts, sbProjects, sbServices, sbPage, storyblokEnabled } from './storyblok.js';
 
 const defaults = {
   heroTrust: local.heroTrust,
@@ -46,10 +46,11 @@ export async function getData(version = 'published') {
   const d = { ...defaults };
 
   if (storyblokEnabled) {
-    const [config, posts, projects, home, services, about, contact] = await Promise.all([
+    const [config, posts, projects, svcs, home, services, about, contact] = await Promise.all([
       sbConfig(local, version).catch(() => null),
       sbPosts(local, version).catch(() => null),
       sbProjects(local, version).catch(() => null),
+      sbServices(local, version).catch(() => null),
       sbPage('home', local.pages.home, version).catch(() => null),
       sbPage('services', local.pages.services, version).catch(() => null),
       sbPage('about', local.pages.about, version).catch(() => null),
@@ -57,6 +58,7 @@ export async function getData(version = 'published') {
     ]);
 
     if (config) Object.assign(d, config);
+    if (svcs && svcs.length) d.services = svcs;
 
     if (posts && posts.length) {
       d.posts = posts.map((p) => ({ slug: p.slug, title: p.title, cat: p.cat, date: p.date, read: p.read, img: p.img, excerpt: p.excerpt, body: p.body }));

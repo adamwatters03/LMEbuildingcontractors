@@ -63,16 +63,7 @@ function mapConfig(content, local) {
     suf: txt(s.suf, ''), l: txt(s.l, ''), d: txt(s.d, ''),
   }));
 
-  if (blok(content.services).length) out.services = content.services.map((s, i) => {
-    const lo = local.services[i] || {};
-    return {
-      n: txt(s.n, lo.n), id: txt(s.sid, lo.id), title: txt(s.title, lo.title),
-      short: txt(s.short, lo.short), body: txt(s.body, lo.body),
-      img: asset(s.img, lo.img),
-      included: lines(s.included, lo.included || []),
-      timeline: txt(s.timeline, lo.timeline), priceFrom: txt(s.priceFrom, lo.priceFrom),
-    };
-  });
+  // services now live in their own folder (see sbServices), not in config
 
   if (blok(content.faqs).length) out.faqs = content.faqs.map((f) => ({ q: txt(f.q, ''), a: txt(f.a, '') }));
   if (blok(content.valueProps).length) out.valueProps = content.valueProps.map((v) => ({ title: txt(v.title, ''), body: txt(v.body, '') }));
@@ -133,6 +124,7 @@ function mapProject(story, local) {
     tag: txt(c.tag, ''), duration: txt(c.duration, ''),
     cover: asset(c.cover, ''), thumbA: asset(c.thumbA, ''), thumbB: asset(c.thumbB, ''),
     title: txt(c.title, story.name), location: txt(c.location, ''),
+    status: txt(c.status, 'Completed'),
     short: txt(c.short, ''), body: txt(c.body, ''),
     points: lines(c.points, []),
     scope: lines(c.scope, []),
@@ -182,4 +174,26 @@ export async function sbProjects(local, version) {
   const json = await cdn('stories', { starts_with: 'projects/', per_page: '100' }, version);
   if (!json || !Array.isArray(json.stories) || !json.stories.length) return null;
   return json.stories.map((s) => mapProject(s, local));
+}
+
+function mapService(story, local, i) {
+  const c = story.content || {};
+  const lo = local.services[i] || {};
+  return {
+    slug: story.slug, id: story.slug,
+    n: txt(c.n, lo.n || String(i + 1).padStart(2, '0')),
+    title: txt(c.title, story.name),
+    short: txt(c.short, lo.short || ''),
+    body: txt(c.body, lo.body || ''),
+    img: asset(c.img, lo.img || ''),
+    included: lines(c.included, lo.included || []),
+    timeline: txt(c.timeline, lo.timeline || ''),
+    priceFrom: txt(c.priceFrom, lo.priceFrom || ''),
+  };
+}
+
+export async function sbServices(local, version) {
+  const json = await cdn('stories', { starts_with: 'service/', per_page: '100', sort_by: 'content.n:asc' }, version);
+  if (!json || !Array.isArray(json.stories) || !json.stories.length) return null;
+  return json.stories.map((s, i) => mapService(s, local, i));
 }

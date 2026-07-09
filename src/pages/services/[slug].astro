@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getData } from '../../lib/data.js';
+import { versionFromRequest } from '../../lib/preview.js';
+import { serviceDetailHTML } from '../../lib/render.js';
+
+const version = versionFromRequest(Astro);
+const d = await getData(version);
+const { slug } = Astro.params;
+const svc = d.services.find((x) => x.slug === slug);
+if (!svc) return Astro.redirect('/services');
+
+const title = svc.title + ' | LME Building Contractors';
+const description = svc.short || svc.title;
+const img = svc.img || 'assets/img/services-hero.jpg';
+const ogImage = img.startsWith('http') ? img : '/' + img;
+---
+<Base title={title} description={description} page="services" ogImage={ogImage}>
+  <Fragment set:html={serviceDetailHTML(svc, d)} />
+</Base>
