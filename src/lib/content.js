@@ -226,6 +226,13 @@ export const siteImages = {
   projectsHero: 'assets/img/projects-hero.jpg',
 };
 
+/* Site-wide section visibility toggles (turn back on in Storyblok when content is ready). */
+export const flags = {
+  showReviews: false,        // star ratings, "4.9/5 · 127 reviews", testimonials
+  showAccreditations: false, // "Accredited & Trusted By" logos
+  showOffer: false,          // "£500 off" limited-offer banner + mentions
+};
+
 /* Per-page editable copy. Each key maps to a Storyblok field of the
    matching page story; anything blank in Storyblok falls back to these. */
 export const pages = {
@@ -269,7 +276,7 @@ export const pages = {
     fbButton: 'Follow us on Facebook',
     finalEyebrow: 'Start Your Project',
     finalHeading: 'Ready to build something exceptional?',
-    finalLead: 'Get a free, no-obligation quote and design consultation — plus £500 off projects booked this month.',
+    finalLead: 'Get a free, no-obligation quote and design consultation from a trusted local team.',
     finalCta: 'Get a Free Quote',
     finalCall: 'Call 07592 278032',
   },

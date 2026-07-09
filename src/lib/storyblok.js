@@ -96,6 +96,12 @@ function mapConfig(content, local) {
     blogHero: asset(content.blogHeroImage, local.siteImages.blogHero),
     projectsHero: asset(content.projectsHeroImage, local.siteImages.projectsHero),
   };
+  // section visibility toggles
+  out.flags = {
+    showReviews: !!content.showReviews,
+    showAccreditations: !!content.showAccreditations,
+    showOffer: !!content.showOffer,
+  };
 
   return out;
 }

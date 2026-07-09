@@ -11,6 +11,7 @@ const d = await getData(versionFromRequest(Astro));
 const p = d.pages.home;
 const areaChips = d.areaChips;
 const fbUrl = d.fbUrl;
+const flags = d.flags || {};
 const title = 'Builders in Sleaford & Lincolnshire | LME Building Contractors';
 const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston & across Lincolnshire. Home extensions, renovations & new builds — fully insured, 10-yr guarantee, free quotes.';
 ---
@@ -55,7 +56,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
         </div>
       </div>
       <div class="hero-trustbar">
-        <div class="t-item"><span class="stars" style="font-size:14px;">★★★★★</span>&nbsp;4.9 / 5 · 127 reviews</div>
+        {flags.showReviews && <div class="t-item"><span class="stars" style="font-size:14px;">★★★★★</span>&nbsp;4.9 / 5 · 127 reviews</div>}
         <div class="t-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Fully Insured</div>
         <div class="t-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>15+ Years</div>
         <div class="t-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>10-Year Guarantee</div>
@@ -64,6 +65,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
   </section>
 
   <!-- OFFER BANNER -->
+  {flags.showOffer && (
   <section style="background:#1192bb;">
     <div class="wrap split" style="padding-top:18px;padding-bottom:18px;">
       <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
@@ -73,6 +75,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
       <a class="btn" href="/contact" style="background:#fff;color:#0c3d4c;padding:12px 22px;font-size:14px;" data-sb="offerButton">{p.offerButton}</a>
     </div>
   </section>
+  )}
 
   <!-- STATS -->
   <section class="sec tex tex-grid" style="background:#f5f4f1;">
@@ -145,6 +148,7 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
   </section>
 
   <!-- TESTIMONIALS -->
+  {flags.showReviews && (
   <section class="sec tex tex-grid" style="background:#f5f4f1;">
     <div class="wrap">
       <div class="reveal" style="text-align:center;max-width:640px;margin:0 auto clamp(38px,5vw,56px);">
@@ -155,14 +159,17 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
       <div class="g-cards" set:html={testimonialsHTML(d)} />
     </div>
   </section>
+  )}
 
   <!-- ACCREDITATIONS -->
+  {flags.showAccreditations && (
   <section style="background:#fff;border-top:1px solid #ececea;border-bottom:1px solid #ececea;">
     <div class="wrap" style="padding-top:clamp(40px,5vw,56px);padding-bottom:clamp(40px,5vw,56px);">
       <div style="text-align:center;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.5px;color:#79828f;text-transform:uppercase;margin-bottom:28px;">Accredited &amp; Trusted By</div>
       <div class="g-acc reveal" set:html={accHTML(d)} />
     </div>
   </section>
+  )}
 
   <!-- AREAS WE COVER -->
   <section class="sec tex tex-grid" style="background:#f5f4f1;">

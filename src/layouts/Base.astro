@@ -6,6 +6,7 @@ const _version = versionFromRequest(Astro);
 setCache(Astro, _version);
 const _d = await getData(_version);
 const _diag = _d._diag || 'unknown';
+const flags = _d.flags || {};
 
 // Global design settings -> CSS variables + dynamic Google Font
 const dz = _d.design || {};
@@ -70,7 +71,6 @@ const businessGraph = {
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '18:00' },
     { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '09:00', closes: '13:00' },
   ],
-  aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '127', bestRating: '5' },
   hasOfferCatalog: {
     '@type': 'OfferCatalog', name: 'Building services',
     itemListElement: [
@@ -85,6 +85,9 @@ const websiteGraph = {
   '@type': 'WebSite', '@id': site + '/#website', url: site + '/',
   name: 'LME Building Contractors', publisher: { '@id': site + '/#business' }, inLanguage: 'en-GB',
 };
+if (flags.showReviews) {
+  businessGraph.aggregateRating = { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '127', bestRating: '5' };
+}
 const graph = [businessGraph, websiteGraph];
 if (includeFaq) {
   graph.push({
@@ -214,7 +217,7 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
         </div>
       </div>
       <p style="font-size:14.5px;line-height:1.7;color:#8c97a4;max-width:300px;margin:0 0 18px;">Premium craftsmanship and reliable local construction across Lincolnshire — extensions, renovations and new builds.</p>
-      <div class="stars" style="font-size:16px;margin-bottom:20px;">★★★★★ <span style="color:#8c97a4;font-family:'Montserrat';font-size:13px;letter-spacing:0;">4.9 · 127 reviews</span></div>
+      {flags.showReviews && <div class="stars" style="font-size:16px;margin-bottom:20px;">★★★★★ <span style="color:#8c97a4;font-family:'Montserrat';font-size:13px;letter-spacing:0;">4.9 · 127 reviews</span></div>}
       <a class="fb-pill" href={FB} target="_blank" rel="noopener" aria-label="Follow LME Building Contractors on Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8v8.44C19.61 23.08 24 18.09 24 12.07Z"/></svg>Follow us on Facebook</a>
     </div>
     <div>
@@ -239,7 +242,7 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
     </div>
     <div>
       <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#fff;margin-bottom:18px;">START A PROJECT</div>
-      <p style="font-size:14px;color:#8c97a4;margin:0 0 16px;line-height:1.6;">Free consultation + £500 off this month.</p>
+      <p style="font-size:14px;color:#8c97a4;margin:0 0 16px;line-height:1.6;">{flags.showOffer ? 'Free consultation + £500 off this month.' : 'Free, no-obligation consultation and quote.'}</p>
       <a class="btn btn-cy" href="/contact" style="padding:13px 22px;font-size:13px;">Get a Free Quote</a>
     </div>
   </div>

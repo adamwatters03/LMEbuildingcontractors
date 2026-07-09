@@ -33,6 +33,7 @@ const defaults = {
   pages: local.pages,
   design: local.design,
   siteImages: local.siteImages,
+  flags: local.flags,
 };
 
 const _cache = {}; // version -> { data, ts }

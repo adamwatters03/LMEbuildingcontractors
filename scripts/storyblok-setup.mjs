@@ -95,6 +95,10 @@ const components = [
     design_tab: { type: 'tab', display_name: 'Design & site images', keys: ['fontFamily', 'colorBrand', 'colorBrandDark', 'colorBrandLight', 'radius', 'blogHeroImage', 'projectsHeroImage'] },
     fontFamily: T('Font family (Google Font name)'), colorBrand: T('Brand colour (hex)'), colorBrandDark: T('Brand colour — dark (hex)'), colorBrandLight: T('Brand colour — light (hex)'), radius: T('Corner radius in px (blank = keep design)'),
     blogHeroImage: AS('Blog page hero image'), projectsHeroImage: AS('Projects page hero image'),
+    visibility_tab: { type: 'tab', display_name: 'Show / hide sections', keys: ['showReviews', 'showAccreditations', 'showOffer'] },
+    showReviews: { type: 'boolean', display_name: 'Show reviews (ratings & testimonials)' },
+    showAccreditations: { type: 'boolean', display_name: 'Show "Accredited & Trusted By" logos' },
+    showOffer: { type: 'boolean', display_name: 'Show "£500 off" offer banner' },
   } },
   { name: 'blog_post', is_root: true, is_nestable: false, schema: {
     title: T('Title'), cat: T('Category'), date: T('Date (display)'), iso: T('Date (ISO, for sorting)'), read: T('Read time'),
@@ -210,6 +214,7 @@ function configContent() {
     faqs: c.faqs.map((f) => ({ component: 'faq', _uid: uid(), q: f.q, a: f.a })),
     fontFamily: c.design.fontFamily, colorBrand: c.design.colorBrand, colorBrandDark: c.design.colorBrandDark, colorBrandLight: c.design.colorBrandLight, radius: c.design.radius,
     blogHeroImage: img(c.siteImages.blogHero, 'Blog hero'), projectsHeroImage: img(c.siteImages.projectsHero, 'Projects hero'),
+    showReviews: c.flags.showReviews, showAccreditations: c.flags.showAccreditations, showOffer: c.flags.showOffer,
   };
 }
 
@@ -221,6 +226,19 @@ function pageContent(name, def) {
     else content[k] = v;
   }
   return content;
+}
+
+// Replace a stale default value with a new one, but only if it hasn't been edited.
+async function retireField(fullSlug, field, oldValue, newValue) {
+  const found = await findStory(fullSlug);
+  if (!found) return;
+  const cur = (await mapi('GET', `/stories/${found.id}`)).story;
+  const content = cur.content || {};
+  if (content[field] === oldValue) {
+    content[field] = newValue;
+    await mapi('PUT', `/stories/${found.id}`, { story: { content }, publish: 1 });
+    console.log('retired stale value:', fullSlug + '.' + field);
+  }
 }
 
 async function run() {
@@ -240,6 +258,11 @@ async function run() {
       content: pageContent(name, def),
     });
   }
+
+  // retire the old £500 wording from the home final CTA (only if unedited)
+  await retireField('home', 'finalLead',
+    'Get a free, no-obligation quote and design consultation — plus £500 off projects booked this month.',
+    c.pages.home.finalLead);
 
   // blog
   const blogId = await ensureFolder('blog', 'Blog', 'blog_post');

@@ -6,6 +6,7 @@ import { versionFromRequest } from '../lib/preview.js';
 
 const d = await getData(versionFromRequest(Astro));
 const p = d.pages.about;
+const flags = d.flags || {};
 const fbUrl = d.fbUrl;
 const title = 'About Us | Sleaford & Lincolnshire Builders | LME Building Contractors';
 const description = 'Reliable local Lincolnshire contractors with 15+ years on the tools. Fully insured and accredited, every build led on-site with a 10-year workmanship guarantee.';
@@ -26,7 +27,7 @@ const driveIcons = [
       <h1 class="hero-h1">{p.heroTitle}</h1>
       <p class="hero-isub" data-sb="heroSub">{p.heroSub}</p>
       <div class="hero-proof">
-        <div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>
+        {flags.showReviews && (<div class="proof-rating"><span class="stars" style="font-size:15px;">★★★★★</span> <b>4.9/5</b> <span class="muted">· 127 reviews</span></div>)}
         <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>Fully Insured</span>
         <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>15+ Years</span>
         <span class="proof-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5cc6e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 6.5"></path></svg>250+ Projects</span>
