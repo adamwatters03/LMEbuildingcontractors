@@ -349,6 +349,28 @@ async function writeInventoryReport() {
   }
 }
 
+/* ONE-OFF cleanup: delete the leftover default seed entries that earlier
+   buggy re-runs resurrected after the client had removed them. Matches ONLY
+   the exact default slugs from content.js, so the client's own entries
+   (different slugs) are never touched. Authorised by the client. */
+async function pruneLeftoverDefaults() {
+  const slugs = [
+    ...c.projectList.map((p) => 'projects/' + p.id),
+    ...c.services.map((s) => 'service/' + s.slug),
+    ...c.posts.map((p) => 'blog/' + p.slug),
+  ];
+  let removed = 0;
+  for (const full of slugs) {
+    const found = await findStory(full);
+    if (found && !found.is_folder) {
+      await mapi('DELETE', `/stories/${found.id}`);
+      console.log('pruned default:', full);
+      removed += 1;
+    }
+  }
+  console.log(`pruned ${removed} leftover default entr${removed === 1 ? 'y' : 'ies'}`);
+}
+
 async function run() {
   console.log(`Setting up Storyblok space ${SPACE} (${REGION})…\n`);
   await upsertComponents();
@@ -429,6 +451,9 @@ async function run() {
       gallery: (pr.gallery || []).map((g) => img(g, pr.title)),
     },
   }));
+
+  // one-off: remove the resurrected default entries the client had deleted
+  await pruneLeftoverDefaults();
 
   // read-only inventory of the whole space, committed to a branch for review
   await writeInventoryReport();
