@@ -52,6 +52,7 @@ function mapConfig(content, local) {
   out.phone = txt(content.phone, local.phone);
   out.phoneHref = txt(content.phoneHref, local.phoneHref);
   out.email = txt(content.email, local.email);
+  out.formEndpoint = txt(content.formEndpoint, local.formEndpoint);
 
   if (content.heroTrust) out.heroTrust = lines(content.heroTrust, local.heroTrust);
   if (content.coverage) out.coverage = lines(content.coverage, local.coverage);

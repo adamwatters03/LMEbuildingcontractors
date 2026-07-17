@@ -222,6 +222,8 @@ export const fbUrl = 'https://www.facebook.com/p/LME-Building-Contractors-615546
 export const phone = '07592 278032';
 export const phoneHref = 'tel:07592278032';
 export const email = 'Lmebuildingcontractors@hotmail.com';
+// Formspree endpoint that both site forms post to (change in Storyblok → Site Config → Contact).
+export const formEndpoint = 'https://formspree.io/f/mrenpolb';
 
 /* Global design settings (applied site-wide via CSS variables). */
 export const design = {

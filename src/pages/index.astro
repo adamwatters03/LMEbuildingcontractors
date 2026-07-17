@@ -38,7 +38,9 @@ const description = 'Sleaford-based builders covering Lincoln, Grantham, Boston 
             <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:19px;color:#1192bb;margin-bottom:8px;">Thanks!</div>
             <p style="font-size:14px;color:#3a414c;margin:0;">We've got your details and we'll be in touch shortly.</p>
           </div>
-          <form id="hero-form">
+          <form id="hero-form" action={d.formEndpoint} method="POST" data-formspree data-thanks="hero-thanks">
+            <input type="hidden" name="_subject" value="New website enquiry — Homepage form" />
+            <input type="hidden" name="source" value="Homepage hero form" />
             <input type="text" name="name" required placeholder="Your name" class="field">
             <input type="text" name="contact" required placeholder="Phone or email" class="field">
             <select name="type" class="field">

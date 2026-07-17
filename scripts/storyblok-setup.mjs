@@ -83,8 +83,9 @@ const components = [
   { name: 'faq', is_nestable: true, schema: { q: T('Question'), a: TA('Answer') } },
   // content types (root)
   { name: 'config', is_root: true, is_nestable: false, schema: {
-    contact_tab: { type: 'tab', display_name: 'Contact', keys: ['phone', 'phoneHref', 'email', 'fbUrl'] },
+    contact_tab: { type: 'tab', display_name: 'Contact', keys: ['phone', 'phoneHref', 'email', 'fbUrl', 'formEndpoint'] },
     phone: T('Phone (display)'), phoneHref: T('Phone (tel: link)'), email: T('Email'), fbUrl: T('Facebook URL'),
+    formEndpoint: T('Contact form endpoint (Formspree URL that enquiries are sent to)'),
     lists_tab: { type: 'tab', display_name: 'Lists', keys: ['heroTrust', 'coverage', 'areaChips'] },
     heroTrust: TA('Hero trust chips (one per line)'), coverage: TA('Coverage towns (one per line)'), areaChips: TA('Area chips (one per line)'),
     blocks_tab: { type: 'tab', display_name: 'Sections', keys: ['stats', 'valueProps', 'process', 'testimonials', 'accreditations', 'comingSoon', 'upcomingProjects', 'faqs'] },
@@ -235,7 +236,7 @@ async function upsertStory(story) {
 function configContent() {
   return {
     component: 'config',
-    phone: c.phone, phoneHref: c.phoneHref, email: c.email, fbUrl: c.fbUrl,
+    phone: c.phone, phoneHref: c.phoneHref, email: c.email, fbUrl: c.fbUrl, formEndpoint: c.formEndpoint,
     heroTrust: list(c.heroTrust), coverage: list(c.coverage), areaChips: list(c.areaChips),
     stats: c.stats.map((s) => ({ component: 'stat', _uid: uid(), n: String(s.n), dec: String(s.dec), suf: s.suf, l: s.l, d: s.d })),
     valueProps: c.valueProps.map((v) => ({ component: 'value_prop', _uid: uid(), title: v.title, body: v.body })),

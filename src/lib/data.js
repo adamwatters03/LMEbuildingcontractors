@@ -29,6 +29,7 @@ const defaults = {
   team: local.team,
   logo: local.logo,
   logoLight: local.logoLight,
+  formEndpoint: local.formEndpoint,
   fbUrl: local.fbUrl,
   phone: local.phone,
   phoneHref: local.phoneHref,

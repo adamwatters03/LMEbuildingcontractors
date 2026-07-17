@@ -189,6 +189,41 @@
   if (el('cookie-accept')) el('cookie-accept').addEventListener('click', function () { setConsent('all'); });
   if (el('cookie-reject')) el('cookie-reject').addEventListener('click', function () { setConsent('essential'); });
 
+  /* ---------- forms (Formspree, AJAX so we stay on-site) ---------- */
+  function initForms() {
+    var forms = document.querySelectorAll('form[data-formspree]');
+    for (var i = 0; i < forms.length; i++) {
+      (function (form) {
+        var endpoint = form.getAttribute('action') || form.getAttribute('data-formspree');
+        var thanks = document.getElementById(form.getAttribute('data-thanks') || '');
+        var btn = form.querySelector('[type="submit"]');
+        form.addEventListener('submit', function (e) {
+          if (!endpoint) return; // no endpoint set -> let the browser handle it
+          e.preventDefault();
+          var label = btn ? btn.textContent : '';
+          if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+          fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+            .then(function (res) {
+              if (res.ok) {
+                form.style.display = 'none';
+                if (thanks) { thanks.style.display = 'block'; thanks.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+                form.reset();
+                return;
+              }
+              return res.json().then(function (j) {
+                throw new Error((j && j.errors && j.errors.map(function (x) { return x.message; }).join(', ')) || 'Bad response');
+              });
+            })
+            .catch(function () {
+              if (btn) { btn.disabled = false; btn.textContent = label; }
+              alert('Sorry — something went wrong sending your enquiry. Please call us on 07592 278032 or email Lmebuildingcontractors@hotmail.com and we’ll get straight back to you.');
+            });
+        });
+      })(forms[i]);
+    }
+  }
+  initForms();
+
   /* ---------- init ---------- */
   var yr = el('year'); if (yr) yr.textContent = String(new Date().getFullYear());
   observeReveals();

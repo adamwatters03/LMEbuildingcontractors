@@ -39,7 +39,9 @@ const description = 'Get a free, no-obligation quote within one working day. Ext
           <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:24px;color:#1192bb;margin-bottom:10px;">Thanks — that's on its way!</div>
           <p style="font-size:15px;color:#3a414c;margin:0;">We've got your details and we'll be in touch within one working day. If it's urgent, give us a ring on <a href="tel:07592278032" style="color:#1192bb;font-weight:600;">07592 278032</a>.</p>
         </div>
-        <form id="contact-form">
+        <form id="contact-form" action={d.formEndpoint} method="POST" data-formspree data-thanks="contact-thanks">
+          <input type="hidden" name="_subject" value="New website enquiry — Contact page" />
+          <input type="hidden" name="source" value="Contact page" />
           <div class="fgrid">
             <div class="fld"><label>Your name <span class="req">*</span></label><input type="text" name="name" required placeholder="e.g. Sarah Jones" class="field"></div>
             <div class="fld"><label>Email address <span class="req">*</span></label><input type="email" name="email" required placeholder="you@example.com" class="field"></div>
