@@ -19,6 +19,8 @@
    It is safe to re-run: existing components/stories are updated.
    ========================================================= */
 import { randomUUID } from 'node:crypto';
+import { writeFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import * as c from '../src/lib/content.js';
 
 const TOKEN = process.env.STORYBLOK_OAUTH_TOKEN;
@@ -176,26 +178,55 @@ function isEmpty(v) {
   return false;
 }
 
+// Direct children (entries) of a folder — used to decide whether to seed.
+async function folderChildren(folderId) {
+  const out = [];
+  let page = 1;
+  for (;;) {
+    const res = await mapi('GET', `/stories?with_parent=${folderId}&per_page=100&page=${page}`);
+    const st = res.stories || [];
+    out.push(...st);
+    if (st.length < 100) break;
+    page += 1;
+  }
+  return out;
+}
+
+/* Seed a folder's default entries ONLY when it is completely empty.
+   Once the client has ANY content in a folder we never touch it again —
+   this is what stops deleted defaults from being resurrected on re-runs. */
+async function seedFolderIfEmpty(folderId, label, items, makeStory) {
+  const kids = await folderChildren(folderId);
+  if (kids.length) {
+    console.log(`skip seed [${label}]: folder already has ${kids.length} entr${kids.length === 1 ? 'y' : 'ies'} — preserving your content`);
+    return;
+  }
+  for (const it of items) await upsertStory(makeStory(it));
+  console.log(`seeded [${label}]: ${items.length} default entr${items.length === 1 ? 'y' : 'ies'} (folder was empty)`);
+}
+
 async function upsertStory(story) {
   const full = story._fullSlug || story.slug;
   delete story._fullSlug;
   const found = await findStory(full);
   if (found) {
-    // Merge: fill only missing/empty fields (e.g. newly added ones) with defaults,
-    // so the client can see the current value — but never overwrite existing edits.
+    // Fill ONLY fields whose key is entirely absent from the stored content —
+    // i.e. brand-new schema fields the client has never seen. We never re-fill a
+    // field that already exists (even if the client emptied it on purpose), so
+    // running setup can't resurrect content the client removed.
     const cur = (await mapi('GET', `/stories/${found.id}`)).story;
     const content = cur.content || {};
     let changed = false;
     for (const k of Object.keys(story.content)) {
       if (k === 'component' || k === '_uid') continue;
-      if (isEmpty(content[k]) && !isEmpty(story.content[k])) { content[k] = story.content[k]; changed = true; }
+      if (!(k in content) && !isEmpty(story.content[k])) { content[k] = story.content[k]; changed = true; }
     }
     if (!content.component) content.component = story.content.component;
     if (changed) {
       await mapi('PUT', `/stories/${found.id}`, { story: { content }, publish: 1 });
-      console.log('backfilled new fields:', full);
+      console.log('added new fields only:', full);
     } else {
-      console.log('already complete:', full);
+      console.log('unchanged (preserved):', full);
     }
     return;
   }
@@ -268,6 +299,56 @@ async function retireField(fullSlug, field, oldValue, newValue) {
   }
 }
 
+// Read-only snapshot of EVERY story (folders + entries) with publish state,
+// written to a JSON file and pushed to the `sb-diagnostics` branch so the
+// current CMS state can be reviewed. Best-effort: never fails the run.
+async function writeInventoryReport() {
+  try {
+    const all = [];
+    let page = 1;
+    for (;;) {
+      const res = await mapi('GET', `/stories?per_page=100&page=${page}`);
+      const st = res.stories || [];
+      all.push(...st);
+      if (st.length < 100) break;
+      page += 1;
+    }
+    const rows = all.map((s) => ({
+      id: s.id, name: s.name, full_slug: s.full_slug, is_folder: !!s.is_folder,
+      published: !!s.published, unpublished_changes: !!s.unpublished_changes,
+      parent_id: s.parent_id, created_at: s.created_at, updated_at: s.updated_at, published_at: s.published_at,
+    }));
+    const byFolder = {};
+    for (const r of rows) {
+      if (r.is_folder) continue;
+      const top = (r.full_slug || '').split('/')[0] || '(root)';
+      const key = (r.full_slug || '').includes('/') ? top : '(root)';
+      (byFolder[key] = byFolder[key] || []).push({ slug: r.full_slug, published: r.published, unpublished_changes: r.unpublished_changes });
+    }
+    const report = {
+      generatedFor: `space ${SPACE} (${REGION})`,
+      totals: { stories: rows.length, folders: rows.filter((r) => r.is_folder).length, entries: rows.filter((r) => !r.is_folder).length },
+      byFolder,
+      all: rows,
+    };
+    writeFileSync('storyblok-inventory.json', JSON.stringify(report, null, 2));
+    const summary = Object.entries(byFolder).map(([k, v]) => `${k}: ${v.length} (${v.filter((x) => !x.published).length} unpublished)`).join(' | ');
+    console.log('\nINVENTORY: ' + summary);
+    try {
+      execSync('git config user.email "actions@github.com" && git config user.name "storyblok-setup"', { stdio: 'ignore' });
+      execSync('git checkout -B sb-diagnostics', { stdio: 'ignore' });
+      execSync('git add -f storyblok-inventory.json', { stdio: 'ignore' });
+      execSync('git commit -m "chore: storyblok inventory snapshot [skip ci]"', { stdio: 'ignore' });
+      execSync('git push -f origin sb-diagnostics', { stdio: 'ignore' });
+      console.log('inventory pushed to branch: sb-diagnostics');
+    } catch (e) {
+      console.log('inventory push skipped: ' + (e && e.message ? e.message.split('\n')[0] : e));
+    }
+  } catch (e) {
+    console.log('inventory report skipped: ' + (e && e.message ? e.message : e));
+  }
+}
+
 async function run() {
   console.log(`Setting up Storyblok space ${SPACE} (${REGION})…\n`);
   await upsertComponents();
@@ -296,42 +377,36 @@ async function run() {
 
   // team (own folder so staff can be added/edited like blog & projects)
   const teamId = await ensureFolder('team', 'Team', 'team_member');
-  for (const m of c.team) {
-    await upsertStory({
-      name: m.name, slug: m.id, parent_id: teamId, _fullSlug: 'team/' + m.id,
-      content: { component: 'team_member', name: m.name, role: m.role, bio: m.bio, img: img(m.img, m.name) },
-    });
-  }
+  await seedFolderIfEmpty(teamId, 'team', c.team, (m) => ({
+    name: m.name, slug: m.id, parent_id: teamId, _fullSlug: 'team/' + m.id,
+    content: { component: 'team_member', name: m.name, role: m.role, bio: m.bio, img: img(m.img, m.name) },
+  }));
 
   // gallery (own folder so images can just be dropped in)
   const galId = await ensureFolder('gallery', 'Gallery', 'gallery_image');
-  let gi = 0;
-  for (const g of c.gallery) {
-    gi += 1;
-    const slug = 'photo-' + String(gi).padStart(2, '0');
-    await upsertStory({
-      name: 'Gallery photo ' + gi, slug, parent_id: galId, _fullSlug: 'gallery/' + slug,
+  await seedFolderIfEmpty(galId, 'gallery', c.gallery.map((g, i) => ({ g, i })), ({ g, i }) => {
+    const slug = 'photo-' + String(i + 1).padStart(2, '0');
+    return {
+      name: 'Gallery photo ' + (i + 1), slug, parent_id: galId, _fullSlug: 'gallery/' + slug,
       content: { component: 'gallery_image', image: img(g, 'LME project photo'), caption: '' },
-    });
-  }
+    };
+  });
 
   // services (own folder so they're add/edit like blog & projects)
   const svcId = await ensureFolder('service', 'Services', 'service');
-  for (const s of c.services) {
-    await upsertStory({
-      name: s.title, slug: s.slug, parent_id: svcId, _fullSlug: 'service/' + s.slug,
-      content: {
-        component: 'service', n: s.n, title: s.title, short: s.short, body: s.body,
-        img: img(s.img, s.title), included: list(s.included), timeline: s.timeline, priceFrom: s.priceFrom,
-      },
-    });
-  }
+  await seedFolderIfEmpty(svcId, 'services', c.services, (s) => ({
+    name: s.title, slug: s.slug, parent_id: svcId, _fullSlug: 'service/' + s.slug,
+    content: {
+      component: 'service', n: s.n, title: s.title, short: s.short, body: s.body,
+      img: img(s.img, s.title), included: list(s.included), timeline: s.timeline, priceFrom: s.priceFrom,
+    },
+  }));
 
   // blog
   const blogId = await ensureFolder('blog', 'Blog', 'blog_post');
-  for (const p of c.posts) {
+  await seedFolderIfEmpty(blogId, 'blog', c.posts, (p) => {
     const m = c.postMeta[p.slug] || {};
-    await upsertStory({
+    return {
       name: p.title, slug: p.slug, parent_id: blogId, _fullSlug: 'blog/' + p.slug,
       content: {
         component: 'blog_post', title: p.title, cat: p.cat, date: p.date, iso: m.iso || '', read: p.read,
@@ -339,23 +414,24 @@ async function run() {
         tags: list(m.tags || [p.cat]), pull: m.pull || '',
         serviceLabel: (m.service && m.service.label) || 'Our Services', serviceHash: (m.service && m.service.hash) || '/services',
       },
-    });
-  }
+    };
+  });
 
   // projects
   const projId = await ensureFolder('projects', 'Projects', 'project');
-  for (const pr of c.projectList) {
-    await upsertStory({
-      name: pr.title, slug: pr.id, parent_id: projId, _fullSlug: 'projects/' + pr.id,
-      content: {
-        component: 'project', title: pr.title, tag: pr.tag, location: pr.location, duration: pr.duration, status: pr.status || 'Completed',
-        cover: img(pr.cover, pr.title), thumbA: img(pr.thumbA, pr.title), thumbB: img(pr.thumbB, pr.title),
-        short: pr.short, body: pr.body, overview: pr.overview,
-        points: list(pr.points), scope: list(pr.scope),
-        gallery: (pr.gallery || []).map((g) => img(g, pr.title)),
-      },
-    });
-  }
+  await seedFolderIfEmpty(projId, 'projects', c.projectList, (pr) => ({
+    name: pr.title, slug: pr.id, parent_id: projId, _fullSlug: 'projects/' + pr.id,
+    content: {
+      component: 'project', title: pr.title, tag: pr.tag, location: pr.location, duration: pr.duration, status: pr.status || 'Completed',
+      cover: img(pr.cover, pr.title), thumbA: img(pr.thumbA, pr.title), thumbB: img(pr.thumbB, pr.title),
+      short: pr.short, body: pr.body, overview: pr.overview,
+      points: list(pr.points), scope: list(pr.scope),
+      gallery: (pr.gallery || []).map((g) => img(g, pr.title)),
+    },
+  }));
+
+  // read-only inventory of the whole space, committed to a branch for review
+  await writeInventoryReport();
 
   console.log('\n✅ Done. Open app.storyblok.com → your space → Content to edit everything.');
 }
