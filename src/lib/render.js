@@ -189,13 +189,23 @@ export function faqHTML(d) {
   }).join('');
 }
 
-export function comingHTML(d) {
-  return d.comingSoon.map(function (cs) {
+function comingCardsHTML(list) {
+  return (list || []).map(function (cs) {
     return '<div class="reveal" style="background:#fff;border:1px dashed #cdd2c9;border-radius:10px;padding:clamp(26px,2.4vw,34px);">' +
       '<div style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:#1192bb;margin-bottom:14px;">' + esc(cs.note) + '</div>' +
       '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:21px;margin:0 0 10px;color:#3a414c;">' + esc(cs.title) + '</h3>' +
       '<p style="font-size:14.5px;line-height:1.6;color:#79828f;margin:0;">' + esc(cs.body) + '</p></div>';
   }).join('');
+}
+
+// Upcoming SERVICES (services page)
+export function comingHTML(d) {
+  return comingCardsHTML(d.comingSoon);
+}
+
+// Upcoming PROJECTS (projects page) — separate editable list
+export function upcomingProjectsHTML(d) {
+  return comingCardsHTML(d.upcomingProjects && d.upcomingProjects.length ? d.upcomingProjects : d.comingSoon);
 }
 
 export function coverageChipsHTML(d) {

@@ -9,7 +9,7 @@ export const heroTrust = ['Fully Insured', '15+ Years', '10-Year Guarantee'];
 export const stats = [
   { n: 250, dec: 0, suf: '+', l: 'Projects Completed', d: 'Homes extended, renovated and built across Lincolnshire.' },
   { n: 15, dec: 0, suf: '', l: 'Years Experience', d: 'Hands-on building expertise on every single project.' },
-  { n: 4.9, dec: 1, suf: '★', l: 'Average Rating', d: 'From 127 verified reviews by local homeowners.' },
+  { n: 25, dec: 0, suf: 'mi', l: 'Service Radius', d: 'Covering Lincolnshire within roughly 25 miles of Sleaford.' },
   { n: 10, dec: 0, suf: '-Yr', l: 'Workmanship Guarantee', d: 'Every build backed long after we hand over the keys.' }
 ];
 
@@ -180,6 +180,13 @@ export const comingSoon = [
   { title: 'Heritage Restoration', note: 'COMING SOON', body: 'Sympathetic, compliant restoration of listed and historic structures.' }
 ];
 
+/* Upcoming portfolio case studies (projects page — separate from services). */
+export const upcomingProjects = [
+  { title: 'Barn Conversion — Navenby', note: 'IN PROGRESS', body: 'A full barn-to-home conversion underway — case study and gallery to follow once complete.' },
+  { title: 'Two-Storey Extension — Lincoln', note: 'IN PROGRESS', body: 'A large rear and side extension in build — photos to come on handover.' },
+  { title: 'Contemporary New Build — Sleaford', note: 'COMING SOON', body: 'A detached new build currently on site near Sleaford.' }
+];
+
 export const testimonials = [
   { id: 't1', quote: 'From the first site visit to the final handover, LME were professional, tidy and on time. Our extension is everything we hoped for.', name: 'Sarah & Tom H.', meta: 'Two-storey extension · Sleaford' },
   { id: 't2', quote: 'The quality of workmanship is outstanding. They treated our home like their own and the finish is immaculate.', name: 'James P.', meta: 'Full renovation · Lincoln' },
@@ -206,6 +213,11 @@ export const team = [
   { id: 'joiner', img: 'assets/img/portrait.jpg', name: 'Lead Joiner', role: 'Joinery & Finishes', bio: 'Responsible for the premium finishing touches that define an LME build.' }
 ];
 
+/* Brand logo (uploaded in Storyblok → Site Config → Design & site images).
+   Leave blank to fall back to the built-in SVG wordmark. */
+export const logo = '';       // colour logo, shown in the header (light background)
+export const logoLight = '';  // white logo, shown in the dark footer (falls back to `logo`)
+
 export const fbUrl = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/';
 export const phone = '07592 278032';
 export const phoneHref = 'tel:07592278032';
@@ -228,9 +240,11 @@ export const siteImages = {
 
 /* Site-wide section visibility toggles (turn back on in Storyblok when content is ready). */
 export const flags = {
-  showReviews: false,        // star ratings, "4.9/5 · 127 reviews", testimonials
-  showAccreditations: false, // "Accredited & Trusted By" logos
-  showOffer: false,          // "£500 off" limited-offer banner + mentions
+  showReviews: false,          // star ratings, "4.9/5 · 127 reviews", testimonials
+  showAccreditations: false,   // "Accredited & Trusted By" logos
+  showOffer: false,            // "£500 off" limited-offer banner + mentions
+  showUpcomingServices: true,  // services page "Specialist Services — Coming Soon"
+  showUpcomingProjects: true,  // projects page "Upcoming Case Studies"
 };
 
 /* Per-page editable copy. Each key maps to a Storyblok field of the

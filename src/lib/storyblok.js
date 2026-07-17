@@ -72,6 +72,7 @@ function mapConfig(content, local) {
   if (blok(content.accreditations).length) out.accreditations = content.accreditations.map((a) => ({ name: txt(a.name, ''), file: '', url: asset(a.image, '') }));
   if (blok(content.team).length) out.team = content.team.map((m, i) => ({ id: 'm' + i, name: txt(m.name, ''), role: txt(m.role, ''), bio: txt(m.bio, ''), img: asset(m.img, '') }));
   if (blok(content.comingSoon).length) out.comingSoon = content.comingSoon.map((c) => ({ title: txt(c.title, ''), note: txt(c.note, 'COMING SOON'), body: txt(c.body, '') }));
+  if (blok(content.upcomingProjects).length) out.upcomingProjects = content.upcomingProjects.map((c) => ({ title: txt(c.title, ''), note: txt(c.note, 'COMING SOON'), body: txt(c.body, '') }));
   if (Array.isArray(content.gallery) && content.gallery.length) out.gallery = content.gallery.map((g) => asset(g, '')).filter(Boolean);
 
   // global design settings
@@ -87,11 +88,16 @@ function mapConfig(content, local) {
     blogHero: asset(content.blogHeroImage, local.siteImages.blogHero),
     projectsHero: asset(content.projectsHeroImage, local.siteImages.projectsHero),
   };
-  // section visibility toggles
+  // brand logo (falls back to the built-in SVG wordmark when blank)
+  out.logo = asset(content.logo, local.logo);
+  out.logoLight = asset(content.logoLight, local.logoLight);
+  // section visibility toggles (upcoming sections default ON when the field is absent)
   out.flags = {
     showReviews: !!content.showReviews,
     showAccreditations: !!content.showAccreditations,
     showOffer: !!content.showOffer,
+    showUpcomingServices: content.showUpcomingServices === undefined ? true : !!content.showUpcomingServices,
+    showUpcomingProjects: content.showUpcomingProjects === undefined ? true : !!content.showUpcomingProjects,
   };
 
   return out;
@@ -196,4 +202,29 @@ export async function sbServices(local, version) {
   const json = await cdn('stories', { starts_with: 'service/', per_page: '100', sort_by: 'content.n:asc' }, version);
   if (!json || !Array.isArray(json.stories) || !json.stories.length) return null;
   return json.stories.map((s, i) => mapService(s, local, i));
+}
+
+function mapTeamMember(story, local, i) {
+  const c = story.content || {};
+  const lo = (local.team[i]) || {};
+  return {
+    id: story.slug,
+    name: txt(c.name, story.name),
+    role: txt(c.role, lo.role || ''),
+    bio: txt(c.bio, lo.bio || ''),
+    img: asset(c.img, lo.img || ''),
+  };
+}
+
+export async function sbTeam(local, version) {
+  // sorted by creation so the seeded order (lead first) is kept and new hires append
+  const json = await cdn('stories', { starts_with: 'team/', per_page: '100', sort_by: 'created_at:asc' }, version);
+  if (!json || !Array.isArray(json.stories) || !json.stories.length) return null;
+  return json.stories.map((s, i) => mapTeamMember(s, local, i));
+}
+
+export async function sbGallery(local, version) {
+  const json = await cdn('stories', { starts_with: 'gallery/', per_page: '100', sort_by: 'created_at:asc' }, version);
+  if (!json || !Array.isArray(json.stories) || !json.stories.length) return null;
+  return json.stories.map((s) => asset((s.content || {}).image, '')).filter(Boolean);
 }

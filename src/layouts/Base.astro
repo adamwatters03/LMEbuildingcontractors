@@ -9,6 +9,11 @@ const _diag = _d._diag || 'unknown';
 const flags = _d.flags || {};
 const services = _d.services || [];
 
+// Brand logo (uploaded in Storyblok → Site Config). Falls back to the SVG wordmark.
+const _logoAsset = (s) => !s ? '' : (/^https?:\/\//.test(s) || s.charAt(0) === '/') ? s : '/' + s;
+const logo = _logoAsset(_d.logo);
+const logoLight = _logoAsset(_d.logoLight) || logo;
+
 // Global design settings -> CSS variables + dynamic Google Font
 const dz = _d.design || {};
 const radiusNum = String(dz.radius || '').replace(/[^0-9.]/g, '');
@@ -143,19 +148,25 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
 <header class="site-header over-hero" id="siteHeader">
   <div class="wrap header-inner">
     <a class="brand" href="/" aria-label="LME Building Contractors — home">
-      <svg width="50" height="34" viewBox="0 0 70 48" fill="none" style="flex:none;" aria-hidden="true">
-        <path d="M6 41 L33 14" stroke="#33b8de" stroke-width="6" stroke-linecap="round"></path>
-        <path d="M31 14 H41 L64 41 H45 Z" fill="#33b8de"></path>
-        <rect x="37" y="5" width="5.5" height="12" rx="1" fill="#33b8de"></rect>
-        <rect x="18" y="22.5" width="6.5" height="6.5" rx="1" fill="#33b8de"></rect>
-        <rect x="27" y="22.5" width="6.5" height="6.5" rx="1" fill="#33b8de"></rect>
-        <rect x="18" y="31.5" width="6.5" height="6.5" rx="1" fill="#33b8de"></rect>
-        <rect x="27" y="31.5" width="6.5" height="6.5" rx="1" fill="#33b8de"></rect>
-      </svg>
-      <span style="line-height:1;display:block;">
-        <span class="brand-name">LME <span>BUILDING</span></span>
-        <span class="brand-sub" style="display:block;">CONTRACTORS</span>
-      </span>
+      {logo ? (
+        <img src={logo} alt="LME Building Contractors" class="brand-logo" style="height:46px;width:auto;display:block;" />
+      ) : (
+        <Fragment>
+          <svg width="50" height="34" viewBox="0 0 70 48" fill="none" style="flex:none;" aria-hidden="true">
+            <path d="M6 41 L33 14" stroke="#33b8de" stroke-width="6" stroke-linecap="round"></path>
+            <path d="M31 14 H41 L64 41 H45 Z" fill="#33b8de"></path>
+            <rect x="37" y="5" width="5.5" height="12" rx="1" fill="#33b8de"></rect>
+            <rect x="18" y="22.5" width="6.5" height="6.5" rx="1" fill="#33b8de"></rect>
+            <rect x="27" y="22.5" width="6.5" height="6.5" rx="1" fill="#33b8de"></rect>
+            <rect x="18" y="31.5" width="6.5" height="6.5" rx="1" fill="#33b8de"></rect>
+            <rect x="27" y="31.5" width="6.5" height="6.5" rx="1" fill="#33b8de"></rect>
+          </svg>
+          <span style="line-height:1;display:block;">
+            <span class="brand-name">LME <span>BUILDING</span></span>
+            <span class="brand-sub" style="display:block;">CONTRACTORS</span>
+          </span>
+        </Fragment>
+      )}
     </a>
 
     <nav class="nav-links" aria-label="Primary">
@@ -218,19 +229,25 @@ const FB = 'https://www.facebook.com/p/LME-Building-Contractors-61554693284703/'
   <div class="wrap g-footer">
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-        <svg width="46" height="32" viewBox="0 0 70 48" fill="none" style="flex:none;" aria-hidden="true">
-          <path d="M6 41 L33 14" stroke="#5cc6e8" stroke-width="6" stroke-linecap="round"></path>
-          <path d="M31 14 H41 L64 41 H45 Z" fill="#5cc6e8"></path>
-          <rect x="37" y="5" width="5.5" height="12" rx="1" fill="#5cc6e8"></rect>
-          <rect x="18" y="22.5" width="6.5" height="6.5" rx="1" fill="#5cc6e8"></rect>
-          <rect x="27" y="22.5" width="6.5" height="6.5" rx="1" fill="#5cc6e8"></rect>
-          <rect x="18" y="31.5" width="6.5" height="6.5" rx="1" fill="#5cc6e8"></rect>
-          <rect x="27" y="31.5" width="6.5" height="6.5" rx="1" fill="#5cc6e8"></rect>
-        </svg>
-        <div style="line-height:1;">
-          <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:17px;letter-spacing:0.4px;color:#fff;">LME <span style="color:#5cc6e8;">BUILDING</span></div>
-          <div style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:8px;letter-spacing:5px;color:#8c97a4;margin-top:3px;">CONTRACTORS</div>
-        </div>
+        {logoLight ? (
+          <img src={logoLight} alt="LME Building Contractors" style="height:44px;width:auto;display:block;" />
+        ) : (
+          <Fragment>
+            <svg width="46" height="32" viewBox="0 0 70 48" fill="none" style="flex:none;" aria-hidden="true">
+              <path d="M6 41 L33 14" stroke="#5cc6e8" stroke-width="6" stroke-linecap="round"></path>
+              <path d="M31 14 H41 L64 41 H45 Z" fill="#5cc6e8"></path>
+              <rect x="37" y="5" width="5.5" height="12" rx="1" fill="#5cc6e8"></rect>
+              <rect x="18" y="22.5" width="6.5" height="6.5" rx="1" fill="#5cc6e8"></rect>
+              <rect x="27" y="22.5" width="6.5" height="6.5" rx="1" fill="#5cc6e8"></rect>
+              <rect x="18" y="31.5" width="6.5" height="6.5" rx="1" fill="#5cc6e8"></rect>
+              <rect x="27" y="31.5" width="6.5" height="6.5" rx="1" fill="#5cc6e8"></rect>
+            </svg>
+            <div style="line-height:1;">
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:17px;letter-spacing:0.4px;color:#fff;">LME <span style="color:#5cc6e8;">BUILDING</span></div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:8px;letter-spacing:5px;color:#8c97a4;margin-top:3px;">CONTRACTORS</div>
+            </div>
+          </Fragment>
+        )}
       </div>
       <p style="font-size:14.5px;line-height:1.7;color:#8c97a4;max-width:300px;margin:0 0 18px;">Premium craftsmanship and reliable local construction across Lincolnshire — extensions, renovations and new builds.</p>
       {flags.showReviews && <div class="stars" style="font-size:16px;margin-bottom:20px;">★★★★★ <span style="color:#8c97a4;font-family:'Montserrat';font-size:13px;letter-spacing:0;">4.9 · 127 reviews</span></div>}

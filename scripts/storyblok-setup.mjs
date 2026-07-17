@@ -77,28 +77,33 @@ const components = [
   { name: 'process_step', is_nestable: true, schema: { n: T('Number'), title: T('Title'), body: TA('Body') } },
   { name: 'testimonial', is_nestable: true, schema: { quote: TA('Quote'), name: T('Name'), meta: T('Project · town') } },
   { name: 'accreditation', is_nestable: true, schema: { name: T('Name'), image: AS('Logo') } },
-  { name: 'team_member', is_nestable: true, schema: { name: T('Name'), role: T('Role'), bio: TA('Bio'), img: AS('Portrait') } },
+  { name: 'team_member', is_root: true, is_nestable: true, schema: { name: T('Name'), role: T('Role'), bio: TA('Bio'), img: AS('Portrait') } },
+  { name: 'gallery_image', is_root: true, is_nestable: false, schema: { image: AS('Image'), caption: T('Caption (optional)') } },
   { name: 'coming_soon', is_nestable: true, schema: { title: T('Title'), note: T('Badge'), body: TA('Body') } },
   { name: 'faq', is_nestable: true, schema: { q: T('Question'), a: TA('Answer') } },
   // content types (root)
   { name: 'config', is_root: true, is_nestable: false, schema: {
     contact_tab: { type: 'tab', display_name: 'Contact', keys: ['phone', 'phoneHref', 'email', 'fbUrl'] },
     phone: T('Phone (display)'), phoneHref: T('Phone (tel: link)'), email: T('Email'), fbUrl: T('Facebook URL'),
-    lists_tab: { type: 'tab', display_name: 'Lists', keys: ['heroTrust', 'coverage', 'areaChips', 'gallery'] },
+    lists_tab: { type: 'tab', display_name: 'Lists', keys: ['heroTrust', 'coverage', 'areaChips'] },
     heroTrust: TA('Hero trust chips (one per line)'), coverage: TA('Coverage towns (one per line)'), areaChips: TA('Area chips (one per line)'),
-    gallery: { type: 'multiasset', filetypes: ['images'], display_name: 'Gallery images' },
-    blocks_tab: { type: 'tab', display_name: 'Sections', keys: ['stats', 'valueProps', 'process', 'testimonials', 'accreditations', 'team', 'comingSoon', 'faqs'] },
+    blocks_tab: { type: 'tab', display_name: 'Sections', keys: ['stats', 'valueProps', 'process', 'testimonials', 'accreditations', 'comingSoon', 'upcomingProjects', 'faqs'] },
     stats: BLOKS('Stats', ['stat']), valueProps: BLOKS('Value props', ['value_prop']),
     process: BLOKS('Process steps', ['process_step']), testimonials: BLOKS('Testimonials', ['testimonial']),
-    accreditations: BLOKS('Accreditations', ['accreditation']), team: BLOKS('Team', ['team_member']),
-    comingSoon: BLOKS('Coming soon', ['coming_soon']), faqs: BLOKS('FAQs', ['faq']),
-    design_tab: { type: 'tab', display_name: 'Design & site images', keys: ['fontFamily', 'colorBrand', 'colorBrandDark', 'colorBrandLight', 'radius', 'blogHeroImage', 'projectsHeroImage'] },
+    accreditations: BLOKS('Accreditations', ['accreditation']),
+    comingSoon: BLOKS('Upcoming services (services page)', ['coming_soon']),
+    upcomingProjects: BLOKS('Upcoming projects (projects page)', ['coming_soon']),
+    faqs: BLOKS('FAQs', ['faq']),
+    design_tab: { type: 'tab', display_name: 'Design & site images', keys: ['logo', 'logoLight', 'fontFamily', 'colorBrand', 'colorBrandDark', 'colorBrandLight', 'radius', 'blogHeroImage', 'projectsHeroImage'] },
+    logo: AS('Logo (colour — shown in the header)'), logoLight: AS('Logo (white — shown in the dark footer)'),
     fontFamily: T('Font family (Google Font name)'), colorBrand: T('Brand colour (hex)'), colorBrandDark: T('Brand colour — dark (hex)'), colorBrandLight: T('Brand colour — light (hex)'), radius: T('Corner radius in px (blank = keep design)'),
     blogHeroImage: AS('Blog page hero image'), projectsHeroImage: AS('Projects page hero image'),
-    visibility_tab: { type: 'tab', display_name: 'Show / hide sections', keys: ['showReviews', 'showAccreditations', 'showOffer'] },
+    visibility_tab: { type: 'tab', display_name: 'Show / hide sections', keys: ['showReviews', 'showAccreditations', 'showOffer', 'showUpcomingServices', 'showUpcomingProjects'] },
     showReviews: { type: 'boolean', display_name: 'Show reviews (ratings & testimonials)' },
     showAccreditations: { type: 'boolean', display_name: 'Show "Accredited & Trusted By" logos' },
     showOffer: { type: 'boolean', display_name: 'Show "£500 off" offer banner' },
+    showUpcomingServices: { type: 'boolean', display_name: 'Show "Upcoming services" section (services page)' },
+    showUpcomingProjects: { type: 'boolean', display_name: 'Show "Upcoming case studies" section (projects page)' },
   } },
   { name: 'blog_post', is_root: true, is_nestable: false, schema: {
     title: T('Title'), cat: T('Category'), date: T('Date (display)'), iso: T('Date (ISO, for sorting)'), read: T('Read time'),
@@ -202,18 +207,19 @@ function configContent() {
     component: 'config',
     phone: c.phone, phoneHref: c.phoneHref, email: c.email, fbUrl: c.fbUrl,
     heroTrust: list(c.heroTrust), coverage: list(c.coverage), areaChips: list(c.areaChips),
-    gallery: c.gallery.map((g) => img(g, 'LME project photo')),
     stats: c.stats.map((s) => ({ component: 'stat', _uid: uid(), n: String(s.n), dec: String(s.dec), suf: s.suf, l: s.l, d: s.d })),
     valueProps: c.valueProps.map((v) => ({ component: 'value_prop', _uid: uid(), title: v.title, body: v.body })),
     process: c.process.map((p) => ({ component: 'process_step', _uid: uid(), n: p.n, title: p.title, body: p.body })),
     testimonials: c.testimonials.map((t) => ({ component: 'testimonial', _uid: uid(), quote: t.quote, name: t.name, meta: t.meta })),
     accreditations: c.accreditations.map((a) => ({ component: 'accreditation', _uid: uid(), name: a.name, image: img('assets/img/accreditations/' + a.file, a.name) })),
-    team: c.team.map((m) => ({ component: 'team_member', _uid: uid(), name: m.name, role: m.role, bio: m.bio, img: img(m.img, m.name) })),
     comingSoon: c.comingSoon.map((x) => ({ component: 'coming_soon', _uid: uid(), title: x.title, note: x.note, body: x.body })),
+    upcomingProjects: c.upcomingProjects.map((x) => ({ component: 'coming_soon', _uid: uid(), title: x.title, note: x.note, body: x.body })),
     faqs: c.faqs.map((f) => ({ component: 'faq', _uid: uid(), q: f.q, a: f.a })),
+    logo: img(c.logo, 'LME Building Contractors logo'), logoLight: img(c.logoLight, 'LME Building Contractors logo'),
     fontFamily: c.design.fontFamily, colorBrand: c.design.colorBrand, colorBrandDark: c.design.colorBrandDark, colorBrandLight: c.design.colorBrandLight, radius: c.design.radius,
     blogHeroImage: img(c.siteImages.blogHero, 'Blog hero'), projectsHeroImage: img(c.siteImages.projectsHero, 'Projects hero'),
     showReviews: c.flags.showReviews, showAccreditations: c.flags.showAccreditations, showOffer: c.flags.showOffer,
+    showUpcomingServices: c.flags.showUpcomingServices, showUpcomingProjects: c.flags.showUpcomingProjects,
   };
 }
 
@@ -225,6 +231,27 @@ function pageContent(name, def) {
     else content[k] = v;
   }
   return content;
+}
+
+// Remove the old star-rating stat from the seeded config (client has no reviews yet).
+// Replaces any "4.9★ / Average Rating" stat in place with a neutral non-review stat.
+async function retireReviewStat() {
+  const found = await findStory('config');
+  if (!found) return;
+  const cur = (await mapi('GET', `/stories/${found.id}`)).story;
+  const content = cur.content || {};
+  if (!Array.isArray(content.stats)) return;
+  let changed = false;
+  content.stats = content.stats.map((s) => {
+    const isReview = s && (String(s.suf) === '★' || /rating|review/i.test(String(s.l)) || /review/i.test(String(s.d)));
+    if (!isReview) return s;
+    changed = true;
+    return { ...s, n: '25', dec: '0', suf: 'mi', l: 'Service Radius', d: 'Covering Lincolnshire within roughly 25 miles of Sleaford.' };
+  });
+  if (changed) {
+    await mapi('PUT', `/stories/${found.id}`, { story: { content }, publish: 1 });
+    console.log('retired star-rating stat from config');
+  }
 }
 
 // Replace a stale default value with a new one, but only if it hasn't been edited.
@@ -262,6 +289,30 @@ async function run() {
   await retireField('home', 'finalLead',
     'Get a free, no-obligation quote and design consultation — plus £500 off projects booked this month.',
     c.pages.home.finalLead);
+
+  // remove the seeded star-rating stat (no reviews to show yet)
+  await retireReviewStat();
+
+  // team (own folder so staff can be added/edited like blog & projects)
+  const teamId = await ensureFolder('team', 'Team', 'team_member');
+  for (const m of c.team) {
+    await upsertStory({
+      name: m.name, slug: m.id, parent_id: teamId, _fullSlug: 'team/' + m.id,
+      content: { component: 'team_member', name: m.name, role: m.role, bio: m.bio, img: img(m.img, m.name) },
+    });
+  }
+
+  // gallery (own folder so images can just be dropped in)
+  const galId = await ensureFolder('gallery', 'Gallery', 'gallery_image');
+  let gi = 0;
+  for (const g of c.gallery) {
+    gi += 1;
+    const slug = 'photo-' + String(gi).padStart(2, '0');
+    await upsertStory({
+      name: 'Gallery photo ' + gi, slug, parent_id: galId, _fullSlug: 'gallery/' + slug,
+      content: { component: 'gallery_image', image: img(g, 'LME project photo'), caption: '' },
+    });
+  }
 
   // services (own folder so they're add/edit like blog & projects)
   const svcId = await ensureFolder('service', 'Services', 'service');
