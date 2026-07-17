@@ -19,8 +19,6 @@
    It is safe to re-run: existing components/stories are updated.
    ========================================================= */
 import { randomUUID } from 'node:crypto';
-import { writeFileSync } from 'node:fs';
-import { execSync } from 'node:child_process';
 import * as c from '../src/lib/content.js';
 
 const TOKEN = process.env.STORYBLOK_OAUTH_TOKEN;
@@ -299,78 +297,6 @@ async function retireField(fullSlug, field, oldValue, newValue) {
   }
 }
 
-// Read-only snapshot of EVERY story (folders + entries) with publish state,
-// written to a JSON file and pushed to the `sb-diagnostics` branch so the
-// current CMS state can be reviewed. Best-effort: never fails the run.
-async function writeInventoryReport() {
-  try {
-    const all = [];
-    let page = 1;
-    for (;;) {
-      const res = await mapi('GET', `/stories?per_page=100&page=${page}`);
-      const st = res.stories || [];
-      all.push(...st);
-      if (st.length < 100) break;
-      page += 1;
-    }
-    const rows = all.map((s) => ({
-      id: s.id, name: s.name, full_slug: s.full_slug, is_folder: !!s.is_folder,
-      published: !!s.published, unpublished_changes: !!s.unpublished_changes,
-      parent_id: s.parent_id, created_at: s.created_at, updated_at: s.updated_at, published_at: s.published_at,
-    }));
-    const byFolder = {};
-    for (const r of rows) {
-      if (r.is_folder) continue;
-      const top = (r.full_slug || '').split('/')[0] || '(root)';
-      const key = (r.full_slug || '').includes('/') ? top : '(root)';
-      (byFolder[key] = byFolder[key] || []).push({ slug: r.full_slug, published: r.published, unpublished_changes: r.unpublished_changes });
-    }
-    const report = {
-      generatedFor: `space ${SPACE} (${REGION})`,
-      totals: { stories: rows.length, folders: rows.filter((r) => r.is_folder).length, entries: rows.filter((r) => !r.is_folder).length },
-      byFolder,
-      all: rows,
-    };
-    writeFileSync('storyblok-inventory.json', JSON.stringify(report, null, 2));
-    const summary = Object.entries(byFolder).map(([k, v]) => `${k}: ${v.length} (${v.filter((x) => !x.published).length} unpublished)`).join(' | ');
-    console.log('\nINVENTORY: ' + summary);
-    try {
-      execSync('git config user.email "actions@github.com" && git config user.name "storyblok-setup"', { stdio: 'ignore' });
-      execSync('git checkout -B sb-diagnostics', { stdio: 'ignore' });
-      execSync('git add -f storyblok-inventory.json', { stdio: 'ignore' });
-      execSync('git commit -m "chore: storyblok inventory snapshot [skip ci]"', { stdio: 'ignore' });
-      execSync('git push -f origin sb-diagnostics', { stdio: 'ignore' });
-      console.log('inventory pushed to branch: sb-diagnostics');
-    } catch (e) {
-      console.log('inventory push skipped: ' + (e && e.message ? e.message.split('\n')[0] : e));
-    }
-  } catch (e) {
-    console.log('inventory report skipped: ' + (e && e.message ? e.message : e));
-  }
-}
-
-/* ONE-OFF cleanup: delete the leftover default seed entries that earlier
-   buggy re-runs resurrected after the client had removed them. Matches ONLY
-   the exact default slugs from content.js, so the client's own entries
-   (different slugs) are never touched. Authorised by the client. */
-async function pruneLeftoverDefaults() {
-  const slugs = [
-    ...c.projectList.map((p) => 'projects/' + p.id),
-    ...c.services.map((s) => 'service/' + s.slug),
-    ...c.posts.map((p) => 'blog/' + p.slug),
-  ];
-  let removed = 0;
-  for (const full of slugs) {
-    const found = await findStory(full);
-    if (found && !found.is_folder) {
-      await mapi('DELETE', `/stories/${found.id}`);
-      console.log('pruned default:', full);
-      removed += 1;
-    }
-  }
-  console.log(`pruned ${removed} leftover default entr${removed === 1 ? 'y' : 'ies'}`);
-}
-
 async function run() {
   console.log(`Setting up Storyblok space ${SPACE} (${REGION})…\n`);
   await upsertComponents();
@@ -451,12 +377,6 @@ async function run() {
       gallery: (pr.gallery || []).map((g) => img(g, pr.title)),
     },
   }));
-
-  // one-off: remove the resurrected default entries the client had deleted
-  await pruneLeftoverDefaults();
-
-  // read-only inventory of the whole space, committed to a branch for review
-  await writeInventoryReport();
 
   console.log('\n✅ Done. Open app.storyblok.com → your space → Content to edit everything.');
 }
