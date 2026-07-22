@@ -14,6 +14,7 @@ export async function GET() {
     ['/privacy', '0.3', 'yearly'],
     ['/cookies', '0.3', 'yearly'],
     ['/terms', '0.3', 'yearly'],
+    ...d.services.map((s) => ['/services/' + s.slug, '0.7', 'monthly']),
     ...d.posts.map((p) => ['/blog/' + p.slug, '0.6', 'yearly']),
     ...d.projectList.map((pr) => ['/projects/' + pr.id, '0.6', 'yearly']),
   ];

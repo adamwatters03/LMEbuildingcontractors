@@ -1,0 +1,133 @@
+---
+import Base from '../layouts/Base.astro';
+import { getData } from '../lib/data.js';
+import { versionFromRequest } from '../lib/preview.js';
+
+const d = await getData(versionFromRequest(Astro));
+const services = (d.services || []).slice(0, 4);
+const title = 'Page Not Found (404) | LME Building Contractors';
+const description = "Sorry — that page doesn't exist. Head back to the LME Building Contractors homepage or explore our building services across Lincolnshire.";
+const links = [
+  { href: '/services', label: 'Our Services' },
+  { href: '/projects', label: 'Recent Projects' },
+  { href: '/about', label: 'About Us' },
+  { href: '/blog', label: 'Blog & Advice' },
+];
+---
+<Base title={title} description={description} page="404">
+  <section class="err-hero">
+    <div class="err-overlay"></div>
+    <div class="wrap err-wrap">
+      <div class="err-code" aria-hidden="true">404</div>
+      <span class="eyebrow" style="color:#5cc6e8;justify-content:center;">Page Not Found</span>
+      <h1 class="err-title">This page has gone off-site.</h1>
+      <p class="err-sub">The page you're after may have moved, been renamed, or never existed. Let's get you back on solid ground — try one of these instead.</p>
+
+      <div class="err-cta">
+        <a class="btn btn-cy" href="/">← Back to Home</a>
+        <a class="btn btn-gl" href="/contact">Get a Free Quote</a>
+      </div>
+
+      <div class="err-links">
+        {links.map((l) => (
+          <a class="err-link" href={l.href}>{l.label}<span aria-hidden="true">→</span></a>
+        ))}
+      </div>
+
+      {services.length > 0 && (
+        <div class="err-svc">
+          <span class="err-svc-label">Popular services</span>
+          <div class="err-svc-row">
+            {services.map((s) => (
+              <a class="err-chip" href={`/services/${s.slug}`}>{s.title}</a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <p class="err-call">Prefer to talk? Call us on <a href={d.phoneHref}>{d.phone}</a>.</p>
+    </div>
+  </section>
+
+  <style>
+    .err-hero {
+      position: relative;
+      background:
+        radial-gradient(1100px 520px at 50% -8%, rgba(51,184,222,0.18), transparent 60%),
+        #12161d;
+      color: #fff;
+      overflow: hidden;
+      padding: clamp(90px, 15vh, 170px) 0 clamp(64px, 10vh, 120px);
+      text-align: center;
+    }
+    .err-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 46px 46px;
+      -webkit-mask-image: radial-gradient(80% 60% at 50% 30%, #000 40%, transparent 100%);
+      mask-image: radial-gradient(80% 60% at 50% 30%, #000 40%, transparent 100%);
+      pointer-events: none;
+    }
+    .err-wrap { position: relative; max-width: 720px; }
+    .err-code {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(96px, 22vw, 220px);
+      line-height: 0.9;
+      letter-spacing: -4px;
+      margin: 0 0 6px;
+      background: linear-gradient(180deg, var(--brand, #33b8de), var(--brand-dark, #1192bb));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    .err-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: clamp(26px, 4vw, 40px);
+      letter-spacing: -0.6px;
+      margin: 6px 0 14px;
+      color: #fff;
+    }
+    .err-sub {
+      font-size: clamp(15px, 1.6vw, 17px);
+      line-height: 1.7;
+      color: #aab3c0;
+      margin: 0 auto 30px;
+      max-width: 540px;
+    }
+    .err-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+    .err-links {
+      display: flex; flex-wrap: wrap; gap: 10px 26px; justify-content: center;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      padding: 22px 0; margin-bottom: 30px;
+    }
+    .err-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 15px;
+      color: #e6ebf1; text-decoration: none; transition: color .18s ease;
+    }
+    .err-link span { color: var(--brand-light, #5cc6e8); transition: transform .18s ease; }
+    .err-link:hover { color: var(--brand-light, #5cc6e8); }
+    .err-link:hover span { transform: translateX(4px); }
+    .err-svc { margin-bottom: 28px; }
+    .err-svc-label {
+      display: block; font-family: 'Montserrat', sans-serif; font-weight: 700;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: #79828f; margin-bottom: 14px;
+    }
+    .err-svc-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .err-chip {
+      font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13.5px;
+      color: #cdd6df; text-decoration: none;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px; padding: 9px 18px; transition: all .18s ease;
+    }
+    .err-chip:hover { background: var(--brand, #33b8de); border-color: var(--brand, #33b8de); color: #06222c; }
+    .err-call { font-size: 14.5px; color: #8c97a4; margin: 0; }
+    .err-call a { color: var(--brand-light, #5cc6e8); font-weight: 700; text-decoration: none; }
+    .err-call a:hover { text-decoration: underline; }
+  </style>
+</Base>
