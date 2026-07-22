@@ -1,6 +1,7 @@
 ---
 import { faqs } from '../lib/content.js';
 import { getData } from '../lib/data.js';
+import { optImg } from '../lib/render.js';
 import { versionFromRequest, setCache } from '../lib/preview.js';
 const _version = versionFromRequest(Astro);
 setCache(Astro, _version);
@@ -10,9 +11,9 @@ const flags = _d.flags || {};
 const services = _d.services || [];
 
 // Brand logo (uploaded in Storyblok → Site Config). Falls back to the SVG wordmark.
-const _logoAsset = (s) => !s ? '' : (/^https?:\/\//.test(s) || s.charAt(0) === '/') ? s : '/' + s;
-const logo = _logoAsset(_d.logo);
-const logoLight = _logoAsset(_d.logoLight) || logo;
+// optImg resizes/compresses Storyblok-hosted logos; SVGs and local files pass through.
+const logo = _d.logo ? optImg(_d.logo, 420) : '';
+const logoLight = (_d.logoLight ? optImg(_d.logoLight, 420) : '') || logo;
 
 // Global design settings -> CSS variables + dynamic Google Font
 const dz = _d.design || {};

@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { servicesListHTML, faqHTML, comingHTML, coverageChipsHTML , imgSrc } from '../lib/render.js';
+import { servicesListHTML, faqHTML, comingHTML, coverageChipsHTML , imgSrc, optImg } from '../lib/render.js';
 import { getData } from '../lib/data.js';
 import { versionFromRequest } from '../lib/preview.js';
 
@@ -12,7 +12,7 @@ const description = 'Home extensions, high-end renovations, new builds and loft 
 ---
 <Base title={title} description={description} page="services" ogImage="/assets/img/services-hero.jpg" includeFaq={true}>
   <section class="hero hero-inner">
-    <div class="img-slot dark fill"><img src={imgSrc(p.heroImage)} alt="Construction blueprints with hard hat and safety glasses" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop services hero photo</span></div>
+    <div class="img-slot dark fill"><img src={optImg(p.heroImage, 1680, { quality: 78 })} alt="Construction blueprints with hard hat and safety glasses" fetchpriority="high" decoding="async" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop services hero photo</span></div>
     <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
       <span class="eyebrow" data-sb="heroEyebrow">{p.heroEyebrow}</span>

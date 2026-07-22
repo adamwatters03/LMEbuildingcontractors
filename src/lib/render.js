@@ -18,10 +18,40 @@ function asset(src) {
 }
 export const imgSrc = asset;
 
-export function slot(extra, label, src, alt) {
-  var img = src
-    ? '<img src="' + asset(src) + '" alt="' + esc(alt || label) + '" loading="lazy" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">'
-    : '';
+/* Storyblok Image Service: resize + convert to WebP + compress a
+   client-uploaded asset on the fly. No-ops on local files, SVGs and
+   already-transformed URLs, so it's always safe to wrap a src in it. */
+export function sbImage(src, width, opts) {
+  opts = opts || {};
+  if (!src || typeof src !== 'string') return src;
+  if (!/\/\/[a-z0-9-]*\.storyblok\.com\//i.test(src)) return src; // only Storyblok CDN assets
+  if (/\.svg(\?|$)/i.test(src)) return src;                        // never rasterise vector logos
+  if (src.indexOf('/m/') !== -1) return src;                       // already has a transform
+  var h = Math.round(opts.height || 0);
+  var q = opts.quality || 80;
+  return src + '/m/' + Math.round(width || 0) + 'x' + h + '/filters:format(webp):quality(' + q + ')';
+}
+
+// optimized absolute src for a given display width (combines asset() + sbImage)
+export function optImg(src, width, opts) {
+  return asset(sbImage(src, width, opts));
+}
+
+// build a responsive <img> src + 2x srcset for a Storyblok asset (empty srcset for local files)
+function imgAttrs(src, width, opts) {
+  var one = optImg(src, width, opts);
+  var two = optImg(src, width * 2, opts);
+  var srcset = (two !== one) ? ' srcset="' + one + ' 1x, ' + two + ' 2x"' : '';
+  return { src: one, srcset: srcset };
+}
+
+export function slot(extra, label, src, alt, width) {
+  var img = '';
+  if (src) {
+    var a = imgAttrs(src, width || 800);
+    img = '<img src="' + a.src + '" alt="' + esc(alt || label) + '"' + a.srcset +
+      ' loading="lazy" decoding="async" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">';
+  }
   return '<div class="img-slot ' + extra + '">' + img + '<span>' + esc(label) + '</span></div>';
 }
 
@@ -82,7 +112,7 @@ export function featuredHTML(d) {
 
 export function galleryHTML(d) {
   return d.gallery.map(function (src) {
-    return slot('r8', 'Photo', src, 'LME Building Contractors project photo')
+    return slot('r8', 'Photo', src, 'LME Building Contractors project photo', 600)
       .replace('class="img-slot r8"', 'class="img-slot r8" style="width:100%;aspect-ratio:1/1;"');
   }).join('');
 }
@@ -154,8 +184,9 @@ export function serviceDetailHTML(svc, d) {
   var others = d.services.filter(function (x) { return x.slug !== svc.slug; }).map(function (x) {
     return '<a href="/services/' + x.slug + '" style="display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid #efeee9;text-decoration:none;color:#15191f;font-family:\'Montserrat\',sans-serif;font-weight:600;font-size:15px;"><span style="color:var(--brand-dark);">/ ' + esc(x.n) + '</span>' + esc(x.title) + '<span style="margin-left:auto;color:var(--brand-dark);">→</span></a>';
   }).join('');
+  var svcHero = imgAttrs(svc.img, 1680, { quality: 78 });
   return '<section class="hero hero-inner">' +
-      '<div class="img-slot dark fill"><img src="' + asset(svc.img) + '" alt="' + esc(svc.title) + '" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()"><span>Photo</span></div>' +
+      '<div class="img-slot dark fill"><img src="' + svcHero.src + '"' + svcHero.srcset + ' alt="' + esc(svc.title) + '" fetchpriority="high" decoding="async" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()"><span>Photo</span></div>' +
       '<div class="hero-overlay" style="background:linear-gradient(0deg,rgba(8,11,15,0.82) 0%,rgba(8,11,15,0.2) 70%),linear-gradient(95deg,rgba(8,11,15,0.6),rgba(8,11,15,0.2));"></div>' +
       '<div class="wrap hin"><span class="eyebrow">Service / ' + esc(svc.n) + '</span>' +
         '<h1 class="hero-h1">' + esc(svc.title) + '</h1>' +
@@ -225,8 +256,8 @@ export function projectsListHTML(d) {
         '<span style="position:absolute;top:14px;left:14px;font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;color:#06222c;background:#33b8de;padding:6px 12px;border-radius:5px;">' + esc(proj.tag) + '</span>' +
       '</div>' +
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;">' +
-        '<div style="position:relative;height:84px;">' + slot('r6 fill', 'Detail', proj.thumbA, proj.title + ' detail') + '</div>' +
-        '<div style="position:relative;height:84px;">' + slot('r6 fill', 'Detail', proj.thumbB, proj.title + ' detail') + '</div>' +
+        '<div style="position:relative;height:84px;">' + slot('r6 fill', 'Detail', proj.thumbA, proj.title + ' detail', 320) + '</div>' +
+        '<div style="position:relative;height:84px;">' + slot('r6 fill', 'Detail', proj.thumbB, proj.title + ' detail', 320) + '</div>' +
       '</div>' +
       '<div style="padding:10px 26px 30px;">' +
         '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:21px;margin:0 0 8px;color:#15191f;line-height:1.2;">' + esc(proj.title) + '</h3>' +
@@ -240,9 +271,10 @@ export function projectsListHTML(d) {
 
 export function teamHTML(d) {
   return d.team.map(function (m) {
+    var portrait = imgAttrs(m.img, 700);
     return '<div class="card reveal" style="overflow:hidden;">' +
       '<div class="img-slot" style="width:100%;height:320px;">' +
-        (m.img ? '<img src="' + asset(m.img) + '" alt="' + esc(m.name) + '" loading="lazy" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">' : '') +
+        (m.img ? '<img src="' + portrait.src + '"' + portrait.srcset + ' alt="' + esc(m.name) + '" loading="lazy" decoding="async" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">' : '') +
         '<span>Drop portrait</span></div>' +
       '<div style="padding:24px 26px 28px;">' +
         '<h3 style="font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:20px;margin:0 0 4px;color:#15191f;">' + esc(m.name) + '</h3>' +
@@ -268,7 +300,7 @@ export function blogListHTML(d) {
   var posts = d.posts;
   var f = posts[0];
   var featured = '<a class="blog-featured reveal" href="/blog/' + f.slug + '">' +
-    '<div class="bf-img zoom-wrap">' + slot('fill zoom', 'Photo', f.img, f.title) + '</div>' +
+    '<div class="bf-img zoom-wrap">' + slot('fill zoom', 'Photo', f.img, f.title, 1000) + '</div>' +
     '<div>' +
       '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;"><span class="post-cat">' + esc(f.cat) + '</span><span class="post-meta">' + esc(f.date) + '</span></div>' +
       '<h2 class="h2" style="font-size:clamp(26px,3.2vw,40px);margin:0 0 16px;">' + esc(f.title) + '</h2>' +
@@ -311,7 +343,7 @@ export function postArticleHTML(p, d) {
         '</div>' +
       '</section>' +
       '<section style="background:#fff;padding:clamp(28px,4vw,44px) 0 0;">' +
-        '<div class="wrap" style="max-width:1080px;"><div class="post-cover">' + slot('fill', 'Photo', p.img, p.title) + '</div></div>' +
+        '<div class="wrap" style="max-width:1080px;"><div class="post-cover">' + slot('fill', 'Photo', p.img, p.title, 1200) + '</div></div>' +
       '</section>' +
       '<section class="sec" style="background:#fff;">' +
         '<div class="wrap post-layout" style="max-width:1080px;">' +
@@ -334,8 +366,9 @@ export function projectDetailHTML(pr) {
   var scope = (pr.scope || []).map(function (s) {
     return '<div style="display:flex;align-items:flex-start;gap:11px;font-size:15px;color:#3a414c;line-height:1.5;margin-bottom:12px;"><span class="diamond" style="margin-top:6px;"></span>' + esc(s) + '</div>';
   }).join('');
+  var prHero = imgAttrs(pr.cover, 1680, { quality: 78 });
   return '<section class="hero hero-inner">' +
-      '<div class="img-slot dark fill"><img src="' + asset(pr.cover) + '" alt="' + esc(pr.title) + '" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()"><span>Photo</span></div>' +
+      '<div class="img-slot dark fill"><img src="' + prHero.src + '"' + prHero.srcset + ' alt="' + esc(pr.title) + '" fetchpriority="high" decoding="async" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()"><span>Photo</span></div>' +
       '<div class="hero-overlay" style="background:linear-gradient(0deg,rgba(8,11,15,0.8) 0%,rgba(8,11,15,0.2) 70%),linear-gradient(95deg,rgba(8,11,15,0.62),rgba(8,11,15,0.2));"></div>' +
       '<div class="wrap hin"><span class="eyebrow">' + esc(pr.tag) + '</span>' +
         '<h1 class="hero-h1">' + esc(pr.title) + '</h1>' +

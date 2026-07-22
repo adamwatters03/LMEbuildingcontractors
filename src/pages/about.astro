@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { statsHTML, teamHTML , imgSrc } from '../lib/render.js';
+import { statsHTML, teamHTML , imgSrc, optImg } from '../lib/render.js';
 import { getData } from '../lib/data.js';
 import { versionFromRequest } from '../lib/preview.js';
 
@@ -20,7 +20,7 @@ const driveIcons = [
 ---
 <Base title={title} description={description} page="about" ogImage="/assets/img/about-hero.jpg">
   <section class="hero hero-inner">
-    <div class="img-slot dark fill"><img src={imgSrc(p.heroImage)} alt="Two builders in hi-vis shaking hands on site" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop team / on-site hero photo</span></div>
+    <div class="img-slot dark fill"><img src={optImg(p.heroImage, 1680, { quality: 78 })} alt="Two builders in hi-vis shaking hands on site" fetchpriority="high" decoding="async" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop team / on-site hero photo</span></div>
     <div class="hero-overlay" style="background:linear-gradient(95deg,rgba(8,11,15,0.86) 0%,rgba(8,11,15,0.5) 50%,rgba(8,11,15,0.16) 100%),linear-gradient(0deg,rgba(8,11,15,0.72) 0%,rgba(8,11,15,0) 55%);"></div>
     <div class="wrap hin">
       <span class="eyebrow" data-sb="heroEyebrow">{p.heroEyebrow}</span>
@@ -49,7 +49,7 @@ const driveIcons = [
         </div>
         <a href={fbUrl} target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:#1877f2;text-decoration:none;"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8v8.44C19.61 23.08 24 18.09 24 12.07Z"/></svg>{p.storyFb}</a>
       </div>
-      <div class="img-slot r10 reveal r-right" style="width:100%;height:clamp(340px,40vw,480px);"><img src={imgSrc(p.storyImage)} alt="New build under construction by LME Building Contractors" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop team / on-site photo</span></div>
+      <div class="img-slot r10 reveal r-right" style="width:100%;height:clamp(340px,40vw,480px);"><img src={optImg(p.storyImage, 900)} alt="New build under construction by LME Building Contractors" loading="lazy" decoding="async" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"><span>Drop team / on-site photo</span></div>
     </div>
   </section>
 
